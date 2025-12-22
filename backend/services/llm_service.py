@@ -149,65 +149,79 @@ Original text: {original_text}"""
         if not keywords:
             return text
         
-        # Paraphrase by replacing words and adding keywords naturally
+        original_text = text
         words = text.split()
         rewritten_words = []
         keywords_used = []
-        i = 0
         
+        # More aggressive replacement patterns
+        adjective_replacements = {
+            'amazing': ['bright', 'shiny', 'playful', 'creative', 'curious'],
+            'great': ['creative', 'curious', 'bright'],
+            'good': ['gentle', 'warm', 'playful'],
+            'beautiful': ['bright', 'shiny', 'playful'],
+            'interesting': ['curious', 'playful', 'creative'],
+            'fun': ['playful', 'creative', 'curious'],
+            'incredible': ['bright', 'shiny', 'playful'],
+            'wonderful': ['bright', 'playful', 'creative'],
+            'fantastic': ['bright', 'creative', 'curious'],
+        }
+        
+        noun_replacements = {
+            'trip': ['journey', 'adventure', 'discovery'],
+            'story': ['adventure', 'journey', 'discovery'],
+            'finding': ['discovery', 'adventure'],
+            'balance': ['harmony', 'rhythm'],
+            'beat': ['rhythm', 'harmony'],
+            'knowledge': ['wisdom', 'courage'],
+            'bravery': ['courage', 'wisdom'],
+            'experience': ['adventure', 'journey', 'discovery'],
+        }
+        
+        # First pass: aggressive word replacement
+        i = 0
         while i < len(words):
             word = words[i]
-            word_lower = word.lower().strip('.,!?;:')
+            word_clean = word.strip('.,!?;:')
+            word_lower = word_clean.lower()
             replaced = False
-            
-            # Try to replace common adjectives with keyword adjectives
-            adjective_replacements = {
-                'amazing': ['bright', 'shiny', 'playful'],
-                'great': ['creative', 'curious'],
-                'good': ['gentle', 'warm'],
-                'beautiful': ['bright', 'shiny'],
-                'interesting': ['curious', 'playful'],
-                'fun': ['playful', 'creative'],
-                'fast': ['swift', 'rapid'],
-                'slow': ['gentle', 'steady'],
-            }
             
             # Try adjective replacement
             if word_lower in adjective_replacements:
                 for keyword in keywords:
-                    if keyword.lower() in adjective_replacements[word_lower] and keyword.lower() not in keywords_used:
-                        rewritten_words.append(keyword)
-                        keywords_used.append(keyword.lower())
+                    kw_lower = keyword.lower()
+                    if kw_lower in adjective_replacements[word_lower] and kw_lower not in keywords_used:
+                        # Preserve capitalization and punctuation
+                        if word[0].isupper():
+                            rewritten_words.append(keyword.capitalize() + word[len(word_clean):])
+                        else:
+                            rewritten_words.append(keyword + word[len(word_clean):])
+                        keywords_used.append(kw_lower)
                         replaced = True
                         break
             
             # Try noun replacement
-            noun_replacements = {
-                'trip': ['journey', 'adventure'],
-                'story': ['adventure', 'journey'],
-                'finding': ['discovery'],
-                'balance': ['harmony'],
-                'beat': ['rhythm'],
-                'knowledge': ['wisdom'],
-                'bravery': ['courage'],
-            }
-            
             if not replaced and word_lower in noun_replacements:
                 for keyword in keywords:
-                    if keyword.lower() in noun_replacements[word_lower] and keyword.lower() not in keywords_used:
-                        rewritten_words.append(keyword)
-                        keywords_used.append(keyword.lower())
+                    kw_lower = keyword.lower()
+                    if kw_lower in noun_replacements[word_lower] and kw_lower not in keywords_used:
+                        if word[0].isupper():
+                            rewritten_words.append(keyword.capitalize() + word[len(word_clean):])
+                        else:
+                            rewritten_words.append(keyword + word[len(word_clean):])
+                        keywords_used.append(kw_lower)
                         replaced = True
                         break
             
-            # Try to add descriptive keywords before nouns
+            # Try adding adjectives before nouns
             if not replaced and i < len(words) - 1:
                 next_word = words[i + 1].lower().strip('.,!?;:')
-                if next_word in ['book', 'novel', 'story', 'journey', 'experience', 'learning', 'adventure']:
+                if next_word in ['book', 'novel', 'story', 'journey', 'experience', 'learning', 'adventure', 'reading', 'writing', 'practice', 'method', 'routine']:
                     for keyword in keywords:
-                        if keyword.lower() in ['bright', 'playful', 'creative', 'curious', 'adventure', 'journey', 'discovery'] and keyword.lower() not in keywords_used:
+                        kw_lower = keyword.lower()
+                        if kw_lower in ['bright', 'playful', 'creative', 'curious', 'gentle', 'swift', 'warm'] and kw_lower not in keywords_used:
                             rewritten_words.append(keyword)
-                            keywords_used.append(keyword.lower())
+                            keywords_used.append(kw_lower)
                             replaced = True
                             break
             
@@ -216,40 +230,59 @@ Original text: {original_text}"""
             
             i += 1
         
-        # Second pass: add remaining keywords naturally if not used yet
-        if len(keywords_used) < len(keywords):
-            for keyword in keywords:
-                if keyword.lower() not in keywords_used:
-                    keyword_lower = keyword.lower()
-                    
-                    # Add concrete nouns/adjectives in natural positions
-                    if keyword_lower in ['silver', 'gold', 'bronze', 'wind', 'rain', 'storm', 'mountain', 'valley', 'river']:
-                        # Find a good insertion point (before nouns or in descriptive phrases)
-                        for i in range(len(rewritten_words) - 1, max(0, len(rewritten_words) - 8), -1):
-                            word = rewritten_words[i].lower().strip('.,!?;:')
-                            if word in ['the', 'a', 'an', 'this', 'that', 'my', 'our', 'your', 'with', 'in', 'on']:
-                                rewritten_words.insert(i + 1, keyword)
-                                keywords_used.append(keyword_lower)
-                                break
-        
         rewritten = ' '.join(rewritten_words)
         
-        # Clean up punctuation and spacing
-        rewritten = rewritten.replace(' ,', ',').replace(' .', '.').replace(' !', '!').replace(' ?', '?')
-        rewritten = rewritten.replace('  ', ' ')
+        # Second pass: add remaining keywords in natural positions
+        for keyword in keywords:
+            if keyword.lower() not in keywords_used:
+                kw_lower = keyword.lower()
+                # Add before common nouns
+                insertion_points = [
+                    ('the book', f'the {keyword} book'),
+                    ('this book', f'this {keyword} book'),
+                    ('a book', f'a {keyword} book'),
+                    ('my reading', f'my {keyword} reading'),
+                    ('the learning', f'the {keyword} learning'),
+                    ('this experience', f'this {keyword} experience'),
+                    ('so much', f'{keyword} and so much'),
+                    ('really helps', f'really helps with {keyword}'),
+                ]
+                
+                for pattern, replacement in insertion_points:
+                    if pattern in rewritten.lower() and kw_lower not in keywords_used:
+                        # Case-insensitive replace
+                        import re
+                        rewritten = re.sub(re.escape(pattern), replacement, rewritten, flags=re.IGNORECASE, count=1)
+                        keywords_used.append(kw_lower)
+                        break
         
-        # If no keywords were integrated, try a different approach
+        # Third pass: if still no keywords used, force insertion
         if not keywords_used:
-            # Add keywords as part of natural phrases
-            first_keyword = keywords[0].lower()
-            if first_keyword in ['playful', 'creative', 'curious', 'bright', 'shiny']:
-                rewritten = rewritten.replace('so much', f'{keywords[0]} and so much', 1)
-                keywords_used.append(first_keyword)
-            elif first_keyword in ['adventure', 'journey', 'discovery']:
-                rewritten = rewritten.replace('learning', f'{keywords[0]} and learning', 1)
-                keywords_used.append(first_keyword)
+            first_keyword = keywords[0]
+            # Insert at natural break points
+            if '!' in rewritten:
+                rewritten = rewritten.replace('!', f' This {first_keyword} experience!', 1)
+            elif '.' in rewritten:
+                rewritten = rewritten.replace('.', f' This relates to {first_keyword}.', 1)
+            else:
+                rewritten = f"{rewritten} This connects to {first_keyword}."
+            keywords_used.append(first_keyword.lower())
         
-        return rewritten.strip()
+        # Clean up
+        rewritten = rewritten.replace('  ', ' ').strip()
+        
+        # Ensure text was actually modified
+        if rewritten == original_text:
+            # Force modification by adding keyword phrase
+            first_keyword = keywords[0]
+            if rewritten.endswith('!'):
+                rewritten = rewritten[:-1] + f' This {first_keyword} journey!' 
+            elif rewritten.endswith('.'):
+                rewritten = rewritten[:-1] + f' This {first_keyword} experience.'
+            else:
+                rewritten = f"{rewritten} This {first_keyword} learning journey."
+        
+        return rewritten
     
     def _is_adjective_context(self, word: str, words: List[str], index: int) -> bool:
         """Check if word is in an adjective context"""

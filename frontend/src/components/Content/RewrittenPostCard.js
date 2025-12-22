@@ -11,14 +11,14 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return '刚刚';
-    if (diffMins < 60) return `${diffMins}分钟前`;
-    if (diffHours < 24) return `${diffHours}小时前`;
-    if (diffDays < 7) return `${diffDays}天前`;
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hr ago`;
+    if (diffDays < 7) return `${diffDays} days ago`;
     
-    return date.toLocaleDateString('zh-CN', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     });
   };
@@ -27,7 +27,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
   const formatNumber = (num) => {
     if (num < 1000) return num.toString();
     if (num < 10000) return `${(num / 1000).toFixed(1)}k`;
-    return `${(num / 10000).toFixed(1)}万`;
+    return `${(num / 1000).toFixed(1)}k`;
   };
 
   return (
@@ -42,7 +42,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
           <div className="post-author">{post.author}</div>
           <div className="post-timestamp">{formatTimestamp(post.timestamp)}</div>
         </div>
-        <div className="rewritten-badge">已改写</div>
+        <div className="rewritten-badge">Rewritten</div>
       </div>
       
       <div className="post-content">
@@ -89,7 +89,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
           onClick={() => onCompare(post, rewriteData)}
           data-testid="compare-button"
         >
-          对比原文
+          Compare Original
         </button>
       </div>
     </div>

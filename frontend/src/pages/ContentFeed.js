@@ -96,7 +96,7 @@ const ContentFeed = () => {
       <div className="content-feed">
         <div className="feed-loading">
           <div className="loading-spinner"></div>
-          <p>加载中...</p>
+          <p>Loading...</p>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ const ContentFeed = () => {
         <div className="feed-error">
           <p>❌ {error}</p>
           <button onClick={() => window.location.reload()} className="retry-button">
-            重试
+            Retry
           </button>
         </div>
       </div>
@@ -118,13 +118,13 @@ const ContentFeed = () => {
   return (
     <div className="content-feed">
       <div className="feed-header">
-        <h1>改写内容</h1>
-        <p className="feed-subtitle">基于课程大纲改写的社交媒体内容</p>
+        <h1>Rewritten Content</h1>
+        <p className="feed-subtitle">Social media content rewritten based on curriculum</p>
       </div>
       <div className="rewritten-posts-list">
         {rewrittenPosts.length === 0 ? (
           <div className="post-list-empty">
-            <p>暂无内容</p>
+            <p>No content available</p>
           </div>
         ) : (
           rewrittenPosts.map(({ post, rewriteData }) => (

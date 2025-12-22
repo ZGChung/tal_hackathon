@@ -4,8 +4,8 @@ import './ComparisonView.css';
 // Simple diff algorithm to highlight changes
 const computeDiff = (original, rewritten) => {
   const result = [];
-  const originalWords = original.split(/(\s+|[，。！？、；：])/);
-  const rewrittenWords = rewritten.split(/(\s+|[，。！？、；：])/);
+  const originalWords = original.split(/(\s+|[.,!?;:])/);
+  const rewrittenWords = rewritten.split(/(\s+|[.,!?;:])/);
   
   let origIdx = 0;
   let rewriteIdx = 0;
@@ -75,7 +75,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
     <div className="comparison-view-overlay" data-testid="comparison-view">
       <div className="comparison-view-container">
         <div className="comparison-header">
-          <h2>内容对比</h2>
+          <h2>Content Comparison</h2>
           <button className="close-button" onClick={onClose} data-testid="close-button">
             ✕
           </button>
@@ -108,7 +108,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
         </div>
 
         <div className="keywords-section">
-          <h3>改写此内容时使用的关键词</h3>
+          <h3>Keywords Used in Rewriting This Content</h3>
           <div className="keywords-list">
             {rewriteData.keywords_used && rewriteData.keywords_used.length > 0 ? (
               rewriteData.keywords_used.map((keyword, index) => (
@@ -117,7 +117,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
                 </span>
               ))
             ) : (
-              <span className="no-keywords">无关键词</span>
+              <span className="no-keywords">No keywords</span>
             )}
           </div>
         </div>

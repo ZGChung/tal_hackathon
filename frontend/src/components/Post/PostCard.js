@@ -11,14 +11,14 @@ const PostCard = ({ post }) => {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return '刚刚';
-    if (diffMins < 60) return `${diffMins}分钟前`;
-    if (diffHours < 24) return `${diffHours}小时前`;
-    if (diffDays < 7) return `${diffDays}天前`;
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hr ago`;
+    if (diffDays < 7) return `${diffDays} days ago`;
     
-    return date.toLocaleDateString('zh-CN', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     });
   };
@@ -27,7 +27,7 @@ const PostCard = ({ post }) => {
   const formatNumber = (num) => {
     if (num < 1000) return num.toString();
     if (num < 10000) return `${(num / 1000).toFixed(1)}k`;
-    return `${(num / 10000).toFixed(1)}万`;
+    return `${(num / 1000).toFixed(1)}k`;
   };
 
   return (

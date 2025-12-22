@@ -6,7 +6,7 @@ const PostList = ({ posts }) => {
   if (!posts || posts.length === 0) {
     return (
       <div className="post-list-empty">
-        <p>暂无内容</p>
+        <p>No content available</p>
       </div>
     );
   }

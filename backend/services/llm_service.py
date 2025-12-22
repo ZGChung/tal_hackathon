@@ -94,51 +94,32 @@ Original text: {original_text}"""
         if not relevant_keywords and keywords:
             relevant_keywords = keywords[:2]
         
-        # Naturally incorporate keywords into Chinese text
-        if any('\u4e00' <= char <= '\u9fff' for char in original_text):
-            # Map keywords to natural Chinese phrases
-            additions = []
-            for kw in relevant_keywords[:2]:
-                kw_lower = kw.lower()
-                if 'reading' in kw_lower or '阅读' in kw_lower or 'literature' in kw_lower or '文学' in kw_lower:
-                    additions.append("提升阅读能力和文学素养")
-                elif 'writing' in kw_lower or '写作' in kw_lower:
-                    additions.append("加强写作技巧")
-                elif 'vocabulary' in kw_lower or '词汇' in kw_lower:
-                    additions.append("扩展词汇量")
-                elif 'language' in kw_lower or '语言' in kw_lower:
-                    additions.append("提高语言表达能力")
-                elif 'learning' in kw_lower or '学习' in kw_lower or 'education' in kw_lower or '教育' in kw_lower:
-                    additions.append("促进学习效果")
-            
-            if additions:
-                # Add naturally to the text
-                rewritten = f"{original_text} 通过这种方式，我们可以{additions[0]}。"
-                return rewritten, relevant_keywords
-            else:
-                # Generic addition if no specific match
-                rewritten = f"{original_text} 这有助于我们更好地学习和成长。"
-                return rewritten, relevant_keywords[:1] if relevant_keywords else []
+        # All text is now in English, incorporate keywords naturally
+        additions = []
+        for kw in relevant_keywords[:2]:
+            kw_lower = kw.lower()
+            if 'reading' in kw_lower or 'literature' in kw_lower:
+                additions.append("improve reading skills and literary appreciation")
+            elif 'writing' in kw_lower:
+                additions.append("enhance writing abilities")
+            elif 'vocabulary' in kw_lower:
+                additions.append("expand vocabulary")
+            elif 'language' in kw_lower:
+                additions.append("develop language skills")
+            elif 'learning' in kw_lower or 'education' in kw_lower:
+                additions.append("enhance learning outcomes")
+            elif 'comprehension' in kw_lower:
+                additions.append("improve comprehension skills")
+            elif 'critical thinking' in kw_lower or 'analysis' in kw_lower:
+                additions.append("develop critical thinking and analytical skills")
+        
+        if additions:
+            rewritten = f"{original_text} This helps us {additions[0]}."
+            return rewritten, relevant_keywords
         else:
-            # English text
-            additions = []
-            for kw in relevant_keywords[:2]:
-                kw_lower = kw.lower()
-                if 'reading' in kw_lower or 'literature' in kw_lower:
-                    additions.append("improve reading skills and literary appreciation")
-                elif 'writing' in kw_lower:
-                    additions.append("enhance writing abilities")
-                elif 'vocabulary' in kw_lower:
-                    additions.append("expand vocabulary")
-                elif 'language' in kw_lower:
-                    additions.append("develop language skills")
-            
-            if additions:
-                rewritten = f"{original_text} This helps us {additions[0]}."
-                return rewritten, relevant_keywords
-            else:
-                rewritten = f"{original_text} This contributes to our learning and growth."
-                return rewritten, relevant_keywords[:1] if relevant_keywords else []
+            # Generic addition if no specific match
+            rewritten = f"{original_text} This contributes to our learning and growth."
+            return rewritten, relevant_keywords[:1] if relevant_keywords else []
     
     def _filter_relevant_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """

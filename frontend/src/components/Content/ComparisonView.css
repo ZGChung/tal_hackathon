@@ -77,16 +77,22 @@
   background-color: #ffebee;
   color: #c62828;
   text-decoration: line-through;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 2px 0;
+  line-height: 1.6;
 }
 
 .diff-added {
   background-color: #e8f5e9;
   color: #2e7d32;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 4px 6px;
+  border-radius: 4px;
   font-weight: 500;
+  display: inline-block;
+  margin: 2px 0;
+  line-height: 1.6;
 }
 
 .diff-unchanged {

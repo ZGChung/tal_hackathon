@@ -1,63 +1,98 @@
 import React from 'react';
 import './ComparisonView.css';
 
-// Simple diff algorithm to highlight changes
+// Split text into sentences (highest level)
+const splitIntoSentences = (text) => {
+  // Split by sentence endings: . ! ? followed by space or end
+  return text.split(/([.!?]\s+|[.!?]$)/).filter(s => s.trim().length > 0);
+};
+
+// Split text into clauses (second level - by commas, semicolons)
+const splitIntoClauses = (text) => {
+  // Split by commas, semicolons, and colons
+  return text.split(/([,;:]\s+)/).filter(s => s.trim().length > 0);
+};
+
+// Compute diff at sentence/clause level for better readability
 const computeDiff = (original, rewritten) => {
   const result = [];
-  const originalWords = original.split(/(\s+|[.,!?;:])/);
-  const rewrittenWords = rewritten.split(/(\s+|[.,!?;:])/);
+  
+  // First, try sentence-level comparison
+  const originalSentences = splitIntoSentences(original);
+  const rewrittenSentences = splitIntoSentences(rewritten);
   
   let origIdx = 0;
   let rewriteIdx = 0;
   
-  while (origIdx < originalWords.length || rewriteIdx < rewrittenWords.length) {
-    if (origIdx >= originalWords.length) {
-      // Only in rewritten
-      result.push({ type: 'added', text: rewrittenWords[rewriteIdx] });
+  while (origIdx < originalSentences.length || rewriteIdx < rewrittenSentences.length) {
+    if (origIdx >= originalSentences.length) {
+      // Only in rewritten - entire sentence added
+      result.push({ type: 'added', text: rewrittenSentences[rewriteIdx] });
       rewriteIdx++;
-    } else if (rewriteIdx >= rewrittenWords.length) {
-      // Only in original
-      result.push({ type: 'removed', text: originalWords[origIdx] });
+    } else if (rewriteIdx >= rewrittenSentences.length) {
+      // Only in original - entire sentence removed
+      result.push({ type: 'removed', text: originalSentences[origIdx] });
       origIdx++;
-    } else if (originalWords[origIdx] === rewrittenWords[rewriteIdx]) {
-      // Same word
-      result.push({ type: 'unchanged', text: originalWords[origIdx] });
-      origIdx++;
-      rewriteIdx++;
     } else {
-      // Different - try to find next match
-      let foundMatch = false;
-      for (let lookAhead = 1; lookAhead <= 5 && origIdx + lookAhead < originalWords.length; lookAhead++) {
-        if (originalWords[origIdx + lookAhead] === rewrittenWords[rewriteIdx]) {
-          // Found match ahead, mark words as removed
-          for (let i = 0; i < lookAhead; i++) {
-            result.push({ type: 'removed', text: originalWords[origIdx + i] });
-          }
-          origIdx += lookAhead;
-          foundMatch = true;
-          break;
-        }
-      }
+      const origSentence = originalSentences[origIdx].trim();
+      const rewriteSentence = rewrittenSentences[rewriteIdx].trim();
       
-      if (!foundMatch) {
-        // Check if rewritten word appears later in original
-        let foundInOriginal = false;
-        for (let lookAhead = 1; lookAhead <= 5 && rewriteIdx + lookAhead < rewrittenWords.length; lookAhead++) {
-          if (rewrittenWords[rewriteIdx + lookAhead] === originalWords[origIdx]) {
-            // Found match ahead in rewritten, mark words as added
-            for (let i = 0; i < lookAhead; i++) {
-              result.push({ type: 'added', text: rewrittenWords[rewriteIdx + i] });
-            }
-            rewriteIdx += lookAhead;
-            foundInOriginal = true;
-            break;
-          }
-        }
+      // Normalize for comparison (remove extra spaces)
+      const origNormalized = origSentence.replace(/\s+/g, ' ');
+      const rewriteNormalized = rewriteSentence.replace(/\s+/g, ' ');
+      
+      if (origNormalized === rewriteNormalized) {
+        // Same sentence
+        result.push({ type: 'unchanged', text: origSentence + ' ' });
+        origIdx++;
+        rewriteIdx++;
+      } else {
+        // Different sentences - try clause-level comparison
+        const origClauses = splitIntoClauses(origSentence);
+        const rewriteClauses = splitIntoClauses(rewriteSentence);
         
-        if (!foundInOriginal) {
-          // No match found, mark both as changed
-          result.push({ type: 'removed', text: originalWords[origIdx] });
-          result.push({ type: 'added', text: rewrittenWords[rewriteIdx] });
+        if (origClauses.length === 1 && rewriteClauses.length === 1) {
+          // Single clause - entire sentence is different
+          result.push({ type: 'removed', text: origSentence + ' ' });
+          result.push({ type: 'added', text: rewriteSentence + ' ' });
+          origIdx++;
+          rewriteIdx++;
+        } else {
+          // Multiple clauses - compare at clause level
+          let origClauseIdx = 0;
+          let rewriteClauseIdx = 0;
+          
+          while (origClauseIdx < origClauses.length || rewriteClauseIdx < rewriteClauses.length) {
+            if (origClauseIdx >= origClauses.length) {
+              // Only in rewritten
+              result.push({ type: 'added', text: rewriteClauses[rewriteClauseIdx] });
+              rewriteClauseIdx++;
+            } else if (rewriteClauseIdx >= rewriteClauses.length) {
+              // Only in original
+              result.push({ type: 'removed', text: origClauses[origClauseIdx] });
+              origClauseIdx++;
+            } else {
+              const origClause = origClauses[origClauseIdx].trim();
+              const rewriteClause = rewriteClauses[rewriteClauseIdx].trim();
+              
+              const origClauseNorm = origClause.replace(/\s+/g, ' ');
+              const rewriteClauseNorm = rewriteClause.replace(/\s+/g, ' ');
+              
+              if (origClauseNorm === rewriteClauseNorm) {
+                // Same clause
+                result.push({ type: 'unchanged', text: origClause });
+                origClauseIdx++;
+                rewriteClauseIdx++;
+              } else {
+                // Different clauses
+                result.push({ type: 'removed', text: origClause });
+                result.push({ type: 'added', text: rewriteClause });
+                origClauseIdx++;
+                rewriteClauseIdx++;
+              }
+            }
+          }
+          
           origIdx++;
           rewriteIdx++;
         }

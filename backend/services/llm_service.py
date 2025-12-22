@@ -67,47 +67,39 @@ Original text: {original_text}"""
         if not keywords:
             return original_text, []
         
-        # Select 2-3 most relevant keywords that can be naturally integrated
+        # Select diverse keywords to ensure variety across posts
+        # Use a hash of the text to deterministically select different keywords for different posts
+        import hashlib
+        text_hash = int(hashlib.md5(original_text.encode()).hexdigest()[:8], 16)
+        
         relevant_keywords = []
         text_lower = original_text.lower()
         
-        # Find keywords that can be naturally incorporated
-        # Prioritize concrete words (nouns, adjectives) over abstract concepts
-        for keyword in keywords[:15]:  # Check first 15 keywords
+        # Filter out generic words and words already in text
+        candidate_keywords = []
+        for keyword in keywords:
             keyword_lower = keyword.lower().strip()
-            # Skip if keyword is too generic or already in text
-            if len(keyword_lower) < 3 or keyword_lower in text_lower:
-                continue
-            
-            # Prefer concrete vocabulary words (single words, not phrases)
-            if len(keyword.split()) == 1 and keyword_lower not in ['and', 'the', 'for', 'with', 'from']:
-                # Check if keyword can be naturally integrated
-                if self._can_integrate_keyword(original_text, keyword):
+            if (len(keyword_lower) >= 3 and 
+                keyword_lower not in text_lower and 
+                keyword_lower not in ['and', 'the', 'for', 'with', 'from', 'are', 'was', 'were']):
+                candidate_keywords.append(keyword)
+        
+        if not candidate_keywords:
+            # Fallback to all keywords if no candidates
+            candidate_keywords = [k for k in keywords if len(k.lower().strip()) >= 3]
+        
+        # Select 2-3 keywords using hash-based rotation for diversity
+        # This ensures different posts use different keywords
+        num_to_select = min(3, len(candidate_keywords))
+        if num_to_select > 0:
+            start_idx = text_hash % len(candidate_keywords)
+            for i in range(num_to_select):
+                idx = (start_idx + i) % len(candidate_keywords)
+                keyword = candidate_keywords[idx]
+                if keyword not in relevant_keywords:
                     relevant_keywords.append(keyword)
-                    if len(relevant_keywords) >= 3:
-                        break
         
-        # If no single-word keywords found, try 2-word phrases
-        if len(relevant_keywords) < 2:
-            for keyword in keywords[:15]:
-                keyword_lower = keyword.lower().strip()
-                if len(keyword.split()) == 2 and keyword_lower not in text_lower:
-                    if self._can_integrate_keyword(original_text, keyword):
-                        relevant_keywords.append(keyword)
-                        if len(relevant_keywords) >= 3:
-                            break
-        
-        # If no relevant keywords found, still try to use first few keywords
-        if not relevant_keywords and keywords:
-            # Use first 2-3 keywords that are single words
-            for keyword in keywords[:10]:
-                keyword_lower = keyword.lower().strip()
-                if len(keyword.split()) == 1 and len(keyword_lower) >= 3:
-                    relevant_keywords.append(keyword)
-                    if len(relevant_keywords) >= 2:
-                        break
-        
-        # Always ensure we have at least one keyword to work with
+        # Always ensure we have at least one keyword
         if not relevant_keywords and keywords:
             relevant_keywords = [keywords[0]]
         
@@ -253,16 +245,29 @@ Original text: {original_text}"""
         for keyword in keywords:
             if keyword.lower() not in keywords_used:
                 kw_lower = keyword.lower()
-                # Add before common nouns
+                # Expanded insertion points for more natural integration
                 insertion_points = [
-                    ('the book', f'the {keyword} book'),
-                    ('this book', f'this {keyword} book'),
-                    ('a book', f'a {keyword} book'),
-                    ('my reading', f'my {keyword} reading'),
-                    ('the learning', f'the {keyword} learning'),
-                    ('this experience', f'this {keyword} experience'),
-                    ('so much', f'{keyword} and so much'),
-                    ('really helps', f'really helps with {keyword}'),
+                    ('the morning', f'the {keyword} morning'),
+                    ('this moment', f'this {keyword} moment'),
+                    ('the experience', f'the {keyword} experience'),
+                    ('this place', f'this {keyword} place'),
+                    ('the sound', f'the {keyword} sound'),
+                    ('the colors', f'the {keyword} colors'),
+                    ('the beauty', f'the {keyword} beauty'),
+                    ('so relaxing', f'so {keyword} and relaxing'),
+                    ('so peaceful', f'so {keyword} and peaceful'),
+                    ('so beautiful', f'so {keyword} and beautiful'),
+                    ('feels amazing', f'feels {keyword} and amazing'),
+                    ('makes everything', f'makes everything {keyword}'),
+                    ('brings people', f'brings people together in {keyword}'),
+                    ('reminds me', f'reminds me of {keyword}'),
+                    ('opens up', f'opens up {keyword} new'),
+                    ('creates such', f'creates such {keyword}'),
+                    ('the rhythm', f'the {keyword} rhythm'),
+                    ('the harmony', f'the {keyword} harmony'),
+                    ('golden sunlight', f'{keyword} golden sunlight'),
+                    ('ocean breeze', f'{keyword} ocean breeze'),
+                    ('fresh air', f'{keyword} fresh air'),
                 ]
                 
                 for pattern, replacement in insertion_points:

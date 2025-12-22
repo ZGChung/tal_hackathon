@@ -35,17 +35,6 @@ def seed_database():
             admin_users = [default_admin]
             print("Created default admin user: demo_admin / demo123")
         
-        # Seed curricula for each admin user that doesn't have any
-        for admin_user in admin_users:
-            # Check if this admin already has curricula
-            existing_count = db.query(Curriculum).filter(
-                Curriculum.user_id == admin_user.id
-            ).count()
-            
-            if existing_count >= 2:
-                print(f"Admin {admin_user.username} already has {existing_count} curricula. Skipping.")
-                continue
-        
         # Read and seed curriculum files
         curriculum_files = [
             ("language_arts_curriculum.md", "Language Arts Curriculum"),
@@ -59,6 +48,17 @@ def seed_database():
             Path("../manual_test/curriculum"),
         ]
         
+        # Seed curricula for each admin user that doesn't have any
+        for admin_user in admin_users:
+            # Check if this admin already has curricula
+            existing_count = db.query(Curriculum).filter(
+                Curriculum.user_id == admin_user.id
+            ).count()
+            
+            if existing_count >= 2:
+                print(f"Admin {admin_user.username} already has {existing_count} curricula. Skipping.")
+                continue
+            
             curricula_added = 0
             for filename, display_name in curriculum_files:
                 # Skip if we already have enough for this user

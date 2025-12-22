@@ -6,6 +6,7 @@ import Register from './components/Auth/Register';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import RedNoteFeed from './pages/RedNoteFeed';
+import ContentFeed from './pages/ContentFeed';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -38,6 +39,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <RedNoteFeed />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/content"
+              element={
+                <ProtectedRoute>
+                  <ContentFeed />
                 </ProtectedRoute>
               }
             />

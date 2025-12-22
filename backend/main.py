@@ -31,6 +31,13 @@ app.include_router(rewrite.router)
 @app.on_event("startup")
 async def startup_event():
     init_db()
+    # Seed database with initial data for demo
+    try:
+        from backend.database_seed import seed_database
+        seed_database()
+    except Exception as e:
+        # Don't fail startup if seeding fails
+        print(f"Warning: Database seeding failed: {e}")
 
 
 @app.get("/")

@@ -1,14 +1,14 @@
 # Quick Deploy Guide - Render
 
-This guide will get your app deployed in ~10 minutes.
+This guide will get your app deployed in ~10 minutes using a sequential deployment strategy.
 
 ## Prerequisites
 
 -   GitHub account
--   DeepSeek API key (get it from https://platform.deepseek.com)
+-   DeepSeek API key: `YOUR-DEEPSEEK-API-KEY-HERE`
 -   Render account (free tier works)
 
-## Step-by-Step Deployment
+## Step-by-Step Deployment (Sequential)
 
 ### 1. Push to GitHub
 
@@ -18,56 +18,81 @@ git commit -m "Configure for deployment"
 git push origin main  # or your branch name
 ```
 
-### 2. Deploy on Render
+### 2. Deploy Frontend First
+
+**Step 2a: Create Frontend Service**
 
 1. Go to https://render.com and sign up/login with GitHub
+2. Click **"New +"** → **"Static Site"**
+3. Connect your GitHub repository
+4. Configure:
+   - **Name**: `tal-hackathon-frontend`
+   - **Root Directory**: Leave empty (or `frontend` if needed)
+   - **Build Command**: `cd frontend && npm install && npm run build`
+   - **Publish Directory**: `frontend/build`
+5. Click **"Create Static Site"**
+6. Wait for deployment (~3-5 minutes)
+
+**Step 2b: Get Frontend URL**
+
+1. Once deployed, copy your frontend URL from the Render dashboard
+2. It will look like: `https://tal-hackathon-frontend.onrender.com` (or similar)
+3. **Save this URL** - you'll need it for the backend!
+
+### 3. Deploy Backend
+
+**Step 3a: Create Backend Service**
+
+1. In Render dashboard, click **"New +"** → **"Web Service"**
+2. Connect your GitHub repository (same repo)
+3. Configure:
+   - **Name**: `tal-hackathon-backend`
+   - **Root Directory**: Leave empty
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r backend/requirements.txt`
+   - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. **Before clicking "Create Web Service"**, scroll to **"Environment Variables"** section and add:
+   - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY-HERE`
+   - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (paste your frontend URL from Step 2b)
+   - `LLM_API_BASE_URL` = `https://api.deepseek.com`
+   - `LLM_MODEL` = `deepseek-chat`
+5. Click **"Create Web Service"**
+6. Wait for deployment (~5-10 minutes)
+
+**Step 3b: Get Backend URL**
+
+1. Once deployed, copy your backend URL from the Render dashboard
+2. It will look like: `https://tal-hackathon-backend.onrender.com` (or similar)
+3. **Save this URL** - you'll need it for the frontend!
+
+### 4. Update Frontend with Backend URL
+
+1. Go to your **tal-hackathon-frontend** service in Render
+2. Click **"Environment"** tab
+3. Add:
+   - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (paste your backend URL from Step 3b)
+4. Click **"Save Changes"**
+5. Click **"Manual Deploy"** → **"Deploy latest commit"** to rebuild with the new environment variable
+
+### 5. Access Your App
+
+-   **Frontend**: Your frontend URL from Step 2b
+-   **Backend API**: Your backend URL from Step 3b
+-   **API Docs**: `https://YOUR-BACKEND-URL.onrender.com/docs`
+
+## Alternative: Deploy Both at Once
+
+If you prefer to deploy both services at once (simpler but requires manual URL setup):
+
+1. Go to https://render.com
 2. Click **"New +"** → **"Blueprint"**
 3. Connect your GitHub repository
 4. Render will auto-detect `render.yaml` and show both services
-5. Click **"Apply"** to deploy
-
-### 3. Wait for Initial Deployment
-
-Let both services deploy first (takes ~5-10 minutes). You'll see the URLs in the Render dashboard:
-
--   Backend URL: `https://tal-hackathon-backend.onrender.com` (or similar)
--   Frontend URL: `https://tal-hackathon-frontend.onrender.com` (or similar)
-
-### 4. Configure Environment Variables
-
-**After deployment completes, set these variables:**
-
-#### Step 1: Backend Service (Required)
-
-1. Go to your **tal-hackathon-backend** service
-2. Click **"Environment"** tab
-3. Set this **REQUIRED** variable:
-    - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY-HERE`
-4. (Optional) For better security, also set:
-    - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (replace with your actual frontend URL)
-    - *Note: If not set, CORS will allow all origins (works for initial deployment)*
-5. Click **"Save Changes"**
-
-#### Step 2: Frontend Service (Required)
-
-1. Go to your **tal-hackathon-frontend** service
-2. Click **"Environment"** tab
-3. Set this **REQUIRED** variable:
-    - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (replace with your actual backend URL from Render dashboard)
-4. Click **"Save Changes"**
-
-### 5. Redeploy Services
-
-After setting environment variables:
-
--   **Backend**: Click "Manual Deploy" → "Deploy latest commit"
--   **Frontend**: Click "Manual Deploy" → "Deploy latest commit"
-
-### 6. Access Your App
-
--   **Frontend**: `https://tal-hackathon-frontend.onrender.com`
--   **Backend API**: `https://tal-hackathon-backend.onrender.com`
--   **API Docs**: `https://tal-hackathon-backend.onrender.com/docs`
+5. Click **"Apply"** to deploy both
+6. After deployment, get both URLs and set environment variables:
+   - Backend: `DEEPSEEK_API_KEY` and `ALLOWED_ORIGINS` (with frontend URL)
+   - Frontend: `REACT_APP_API_URL` (with backend URL)
+7. Redeploy both services
 
 ## Troubleshooting
 

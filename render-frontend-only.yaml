@@ -1,0 +1,16 @@
+# Frontend-only deployment (deploy this first)
+# After deployment, get the frontend URL, then deploy backend with render.yaml
+
+services:
+  # Frontend Service (Deploy First)
+  - type: web
+    name: tal-hackathon-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      # Will be set after backend deploys
+      - key: REACT_APP_API_URL
+        sync: false  # Set manually after backend URL is known
+

@@ -1,0 +1,30 @@
+# Backend deployment (deploy this after frontend)
+# Make sure to set ALLOWED_ORIGINS with your frontend URL before deploying
+
+services:
+  # Backend API Service
+  - type: web
+    name: tal-hackathon-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./database.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEEPSEEK_API_KEY
+        sync: false  # Set this manually: YOUR-DEEPSEEK-API-KEY-HERE
+      - key: LLM_API_BASE_URL
+        value: https://api.deepseek.com
+      - key: LLM_MODEL
+        value: deepseek-chat
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      # IMPORTANT: Set this with your frontend URL before deploying!
+      # Format: https://tal-hackathon-frontend.onrender.com
+      - key: ALLOWED_ORIGINS
+        sync: false  # Set manually with your frontend URL
+    healthCheckPath: /health
+

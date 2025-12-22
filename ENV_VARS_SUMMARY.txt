@@ -7,8 +7,11 @@ After deploying on Render, copy these into your dashboard:
 BACKEND SERVICE:
 ----------------
 DEEPSEEK_API_KEY=YOUR-DEEPSEEK-API-KEY-HERE
+  ↑ REQUIRED: Set this for rewriting features to work
+
 ALLOWED_ORIGINS=https://YOUR-FRONTEND-URL.onrender.com
-  ↑ Replace with your actual frontend URL from Render
+  ↑ OPTIONAL: Set after frontend deploys (for better security)
+  If not set, CORS allows all origins (works for initial deployment)
 
 FRONTEND SERVICE:
 -----------------
@@ -17,12 +20,12 @@ REACT_APP_API_URL=https://YOUR-BACKEND-URL.onrender.com
 
 ========================================
 STEPS:
-1. Deploy services on Render
+1. Deploy services on Render (you can deploy without env vars!)
 2. Get your backend URL (e.g., tal-hackathon-backend-xyz.onrender.com)
 3. Get your frontend URL (e.g., tal-hackathon-frontend-abc.onrender.com)
-4. Set ALLOWED_ORIGINS = your frontend URL
-5. Set REACT_APP_API_URL = your backend URL
-6. Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY-HERE
+4. Backend: Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY-HERE (REQUIRED)
+5. Backend: Set ALLOWED_ORIGINS = your frontend URL (OPTIONAL, for security)
+6. Frontend: Set REACT_APP_API_URL = your backend URL (REQUIRED)
 7. Redeploy both services
 ========================================
 

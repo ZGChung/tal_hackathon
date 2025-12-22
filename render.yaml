@@ -1,0 +1,39 @@
+services:
+  # Backend API Service
+  - type: web
+    name: tal-hackathon-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./database.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: web
+          name: tal-hackathon-frontend
+          property: host
+        format: https://${host}
+    healthCheckPath: /health
+
+  # Frontend Service
+  - type: web
+    name: tal-hackathon-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: tal-hackathon-backend
+          property: host
+

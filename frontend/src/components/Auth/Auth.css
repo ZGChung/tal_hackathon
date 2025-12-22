@@ -71,6 +71,15 @@
   border: 1px solid #fcc;
 }
 
+.success-message {
+  background-color: #efe;
+  color: #3c3;
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #cfc;
+}
+
 .submit-button {
   width: 100%;
   padding: 12px;

@@ -24,7 +24,7 @@ You are the **Integration Agent** responsible for ensuring seamless integration 
 conda activate rl
 # Ensure both frontend and backend are running
 # Frontend: cd frontend && npm start
-# Backend: cd backend && uvicorn main:app --reload
+# Backend: cd backend && pip install -r requirements.txt && cd .. && uvicorn backend.main:app --reload
 ```
 
 ## Workflow

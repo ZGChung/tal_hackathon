@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from backend.services.llm_service import LLMService
 
 
@@ -14,7 +14,7 @@ class RewriterService:
         original_text: str,
         curriculum_keywords: List[str],
         preference_keywords: List[str]
-    ) -> str:
+    ) -> Tuple[str, List[str]]:
         """
         Rewrite text incorporating curriculum and preference keywords
         
@@ -24,16 +24,16 @@ class RewriterService:
             preference_keywords: Keywords from admin preferences
             
         Returns:
-            Rewritten text
+            Tuple of (rewritten_text, keywords_used)
         """
         # Combine keywords, removing duplicates
         all_keywords = list(set(curriculum_keywords + preference_keywords))
         
         # Call LLM service to rewrite
-        rewritten_text = self.llm_service.rewrite_text(
+        rewritten_text, keywords_used = self.llm_service.rewrite_text(
             original_text=original_text,
             keywords=all_keywords
         )
         
-        return rewritten_text
+        return rewritten_text, keywords_used
 

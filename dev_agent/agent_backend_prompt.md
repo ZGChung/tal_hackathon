@@ -24,7 +24,9 @@ You are the **Backend Agent** responsible for FastAPI backend development.
 conda activate rl
 cd backend
 pip install -r requirements.txt
-uvicorn main:app --reload
+# IMPORTANT: Run from project root, not backend directory
+cd ..
+uvicorn backend.main:app --reload
 ```
 
 ## Workflow

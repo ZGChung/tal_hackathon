@@ -5,6 +5,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import CurriculumUpload from '../components/Admin/CurriculumUpload';
 import CurriculumList from '../components/Admin/CurriculumList';
 import PreferencesForm from '../components/Admin/PreferencesForm';
+import PreferencesList from '../components/Admin/PreferencesList';
 import '../components/Admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -12,6 +13,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('upload');
   const curriculumListRef = useRef(null);
+  const preferencesListRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -25,6 +27,15 @@ const AdminDashboard = () => {
     }
     // Switch to list tab to show the updated list
     setActiveSection('list');
+  };
+
+  const handlePreferencesSave = () => {
+    // Refresh preferences list when preferences are saved
+    if (preferencesListRef.current && preferencesListRef.current.refresh) {
+      preferencesListRef.current.refresh();
+    }
+    // Switch to preferences list tab to show the updated preferences
+    setActiveSection('preferences-list');
   };
 
   return (
@@ -61,6 +72,12 @@ const AdminDashboard = () => {
           >
             Preferences
           </button>
+          <button
+            className={`admin-tab ${activeSection === 'preferences-list' ? 'active' : ''}`}
+            onClick={() => setActiveSection('preferences-list')}
+          >
+            Preferences List
+          </button>
         </div>
 
         <div className="admin-tab-content">
@@ -72,7 +89,14 @@ const AdminDashboard = () => {
               <CurriculumList />
             </div>
           )}
-          {activeSection === 'preferences' && <PreferencesForm />}
+          {activeSection === 'preferences' && (
+            <PreferencesForm onSaveSuccess={handlePreferencesSave} />
+          )}
+          {activeSection === 'preferences-list' && (
+            <div ref={preferencesListRef}>
+              <PreferencesList />
+            </div>
+          )}
         </div>
       </div>
     </ProtectedRoute>

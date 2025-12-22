@@ -12,159 +12,111 @@ class MockRedNoteAdapter(PlatformAdapter):
         self._posts = self._generate_sample_posts()
     
     def _generate_sample_posts(self) -> List[Post]:
-        """Generate 10-20 sample RedNote-style posts in Chinese"""
+        """Generate sample RedNote-style posts that will be modified by curriculum keywords"""
         base_time = datetime.now()
         
         posts = [
+            # RedNote-style lifestyle posts that will seamlessly integrate educational keywords
+            # These are everyday posts that can naturally incorporate learning materials
             Post(
                 id="post_001",
-                author="美食小达人",
-                text="今天做了超好吃的红烧肉！肥而不腻，入口即化～配上一碗白米饭，简直是人间美味！大家也试试吧！",
-                image_url="https://via.placeholder.com/400?text=红烧肉",
-                likes=1234,
-                timestamp=base_time - timedelta(hours=2),
-                comments=56,
-                shares=23
-            ),
-            Post(
-                id="post_002",
-                author="旅行日记",
-                text="大理洱海边的日出真的太美了！早上5点起床，看到这样的景色一切都值得了。推荐大家一定要来一次！",
-                image_url="https://via.placeholder.com/400?text=洱海日出",
-                likes=2567,
-                timestamp=base_time - timedelta(hours=5),
-                comments=89,
-                shares=45
-            ),
-            Post(
-                id="post_003",
-                author="穿搭分享",
-                text="秋季穿搭分享～这件风衣真的太百搭了！配牛仔裤、配裙子都好看。而且质量超好，穿了两年还像新的一样！",
-                image_url="https://via.placeholder.com/400?text=秋季穿搭",
+                author="CoffeeLover",
+                text="☕ Morning coffee ritual! The golden sunlight streaming through my window makes everything feel so warm and peaceful. Starting the day with this simple moment of calm. What's your morning routine?",
+                image_url="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop",
                 likes=3456,
-                timestamp=base_time - timedelta(hours=8),
-                comments=123,
-                shares=67
-            ),
-            Post(
-                id="post_004",
-                author="护肤心得",
-                text="最近换季皮肤有点敏感，用了这个面膜之后好多了！成分很温和，敏感肌也能用。已经回购第三次了！",
-                image_url="https://via.placeholder.com/400?text=面膜",
-                likes=1890,
-                timestamp=base_time - timedelta(hours=12),
-                comments=45,
-                shares=12
-            ),
-            Post(
-                id="post_005",
-                author="咖啡爱好者",
-                text="新发现的咖啡店！手冲咖啡真的绝了，豆子很香，环境也很舒服。周末来这里看书喝咖啡，太惬意了～",
-                image_url="https://via.placeholder.com/400?text=咖啡店",
-                likes=987,
-                timestamp=base_time - timedelta(hours=15),
-                comments=34,
-                shares=18
-            ),
-            Post(
-                id="post_006",
-                author="健身日记",
-                text="坚持健身一个月了！虽然很累，但是看到自己的变化真的很开心。继续加油！",
-                image_url="https://via.placeholder.com/400?text=健身",
-                likes=2345,
-                timestamp=base_time - timedelta(days=1),
-                comments=78,
-                shares=34
-            ),
-            Post(
-                id="post_007",
-                author="读书笔记",
-                text="刚读完《活着》，真的太震撼了。余华的文字总是能直击人心。推荐大家也读一读！",
-                image_url="https://via.placeholder.com/400?text=读书",
-                likes=1567,
-                timestamp=base_time - timedelta(days=1, hours=3),
-                comments=56,
-                shares=28
-            ),
-            Post(
-                id="post_008",
-                author="宠物日常",
-                text="我家猫咪今天又做了蠢事，把水杯打翻了😂 但是看到它无辜的小眼神，真的生不起气来～",
-                image_url="https://via.placeholder.com/400?text=猫咪",
-                likes=4567,
-                timestamp=base_time - timedelta(days=1, hours=6),
+                timestamp=base_time - timedelta(hours=1),
                 comments=234,
                 shares=89
             ),
             Post(
-                id="post_009",
-                author="手工DIY",
-                text="自己做的耳环！虽然花了很多时间，但是看到成品真的很满意。手工的乐趣就在于此吧～",
-                image_url="https://via.placeholder.com/400?text=手工",
-                likes=1234,
-                timestamp=base_time - timedelta(days=2),
-                comments=45,
-                shares=19
+                id="post_002",
+                author="TravelDiary",
+                text="✈️ Just arrived at the beach! The ocean breeze feels amazing and the sound of waves is so relaxing. Sometimes you need to step away from everything and just breathe. Nature is the best therapy!",
+                image_url="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=300&fit=crop",
+                likes=5678,
+                timestamp=base_time - timedelta(hours=3),
+                comments=456,
+                shares=123
             ),
             Post(
-                id="post_010",
-                author="摄影分享",
-                text="今天拍到了超美的晚霞！大自然的色彩真的太神奇了。分享给大家～",
-                image_url="https://via.placeholder.com/400?text=晚霞",
-                likes=3456,
-                timestamp=base_time - timedelta(days=2, hours=4),
-                comments=123,
+                id="post_003",
+                author="FoodieLife",
+                text="🍰 Tried this new dessert place downtown! The presentation was beautiful and every bite was incredible. Food brings people together and creates such happy memories. Highly recommend checking it out!",
+                image_url="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=300&fit=crop",
+                likes=4321,
+                timestamp=base_time - timedelta(hours=5),
+                comments=189,
+                shares=67
+            ),
+            Post(
+                id="post_004",
+                author="FitnessJourney",
+                text="💪 Finished my workout and feeling energized! Exercise has become such an important part of my daily routine. The progress might be slow, but consistency is key. Small steps lead to big changes!",
+                image_url="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+                likes=2890,
+                timestamp=base_time - timedelta(hours=7),
+                comments=145,
                 shares=56
             ),
             Post(
-                id="post_011",
-                author="美食探店",
-                text="这家日料店真的不错！三文鱼很新鲜，寿司也做得很好。价格虽然有点贵，但是值得！",
-                image_url="https://via.placeholder.com/400?text=日料",
-                likes=2789,
-                timestamp=base_time - timedelta(days=3),
-                comments=67,
-                shares=23
+                id="post_005",
+                author="ArtGallery",
+                text="🎨 Spent the afternoon at the art museum! Each painting tells a story and seeing different perspectives is so inspiring. Art has this way of making you think and feel deeply. Love exploring new exhibitions!",
+                image_url="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop",
+                likes=4123,
+                timestamp=base_time - timedelta(hours=9),
+                comments=278,
+                shares=98
             ),
             Post(
-                id="post_012",
-                author="美妆教程",
-                text="今天分享一个日常妆容教程～简单易学，适合新手。需要的产品都在图片里了！",
-                image_url="https://via.placeholder.com/400?text=美妆",
-                likes=4123,
-                timestamp=base_time - timedelta(days=3, hours=2),
-                comments=189,
+                id="post_006",
+                author="MusicVibes",
+                text="🎵 Listening to this new album and it's hitting different! Music has this power to transport you to another place. The rhythm and melody create such a beautiful experience. What are you listening to today?",
+                image_url="https://images.unsplash.com/photo-1532619675605-1ede6c9ed2d7?w=400&h=300&fit=crop",
+                likes=3567,
+                timestamp=base_time - timedelta(hours=11),
+                comments=201,
                 shares=78
             ),
             Post(
-                id="post_013",
-                author="家居装饰",
-                text="重新布置了房间！换了一些小装饰，整个房间的氛围都不一样了。家就是要让自己舒服的地方～",
-                image_url="https://via.placeholder.com/400?text=家居",
-                likes=1890,
-                timestamp=base_time - timedelta(days=4),
-                comments=56,
-                shares=34
+                id="post_007",
+                author="CityExplorer",
+                text="🏙️ Walking through the city streets and noticing all the small details. Every corner has something interesting to discover. Urban exploration is like a treasure hunt - you never know what you'll find!",
+                image_url="https://images.unsplash.com/photo-1512820790803-83ca750da815?w=400&h=300&fit=crop",
+                likes=5234,
+                timestamp=base_time - timedelta(hours=13),
+                comments=312,
+                shares=134
             ),
             Post(
-                id="post_014",
-                author="运动健身",
-                text="今天跑了5公里！虽然很累，但是跑完的感觉真的很爽。运动真的能让人心情变好！",
-                image_url="https://via.placeholder.com/400?text=跑步",
-                likes=2234,
-                timestamp=base_time - timedelta(days=4, hours=5),
-                comments=78,
-                shares=29
+                id="post_008",
+                author="NatureLover",
+                text="🌲 Hiking in the mountains today! The fresh air and quiet surroundings are so refreshing. Being in nature always reminds me to slow down and appreciate the simple things. Perfect way to recharge!",
+                image_url="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=300&fit=crop",
+                likes=3890,
+                timestamp=base_time - timedelta(hours=15),
+                comments=167,
+                shares=89
             ),
             Post(
-                id="post_015",
-                author="学习打卡",
-                text="今天学习了3个小时！虽然很累，但是看到自己的进步真的很开心。继续坚持！",
-                image_url="https://via.placeholder.com/400?text=学习",
-                likes=1456,
-                timestamp=base_time - timedelta(days=5),
-                comments=34,
-                shares=15
+                id="post_009",
+                author="BookNook",
+                text="📖 Cozy reading corner setup complete! There's something special about curling up with a good book and a warm drink. Reading opens up new worlds and different perspectives. What's on your reading list?",
+                image_url="https://images.unsplash.com/photo-1506880018603-83d9b7b8c3b1?w=400&h=300&fit=crop",
+                likes=4456,
+                timestamp=base_time - timedelta(hours=17),
+                comments=289,
+                shares=112
+            ),
+            Post(
+                id="post_010",
+                author="SunsetChaser",
+                text="🌅 Caught the most beautiful sunset tonight! The colors were absolutely stunning - oranges, pinks, and purples painting the sky. Moments like these make you appreciate the beauty around us. Nature never disappoints!",
+                image_url="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop",
+                likes=3789,
+                timestamp=base_time - timedelta(hours=19),
+                comments=198,
+                shares=76
             ),
         ]
         

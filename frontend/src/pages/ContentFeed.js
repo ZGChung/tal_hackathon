@@ -14,6 +14,8 @@ const ContentFeed = () => {
   const [comparingRewriteData, setComparingRewriteData] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchAndRewrite = async () => {
       try {
         setLoading(true);
@@ -21,6 +23,8 @@ const ContentFeed = () => {
 
         // Fetch posts from RedNote feed
         const feedData = await getFeed();
+        if (!isMounted) return;
+        
         setPosts(feedData);
 
         // Rewrite each post
@@ -28,12 +32,14 @@ const ContentFeed = () => {
           feedData.map(async (post) => {
             try {
               const rewriteData = await rewriteText(post.text);
+              if (!isMounted) return null;
               return {
                 post,
                 rewriteData,
               };
             } catch (err) {
               console.error(`Failed to rewrite post ${post.id}:`, err);
+              if (!isMounted) return null;
               // Return original post if rewrite fails
               return {
                 post,
@@ -47,15 +53,30 @@ const ContentFeed = () => {
           })
         );
 
-        setRewrittenPosts(rewrittenData);
+        if (isMounted) {
+          // Filter out null items, but show all posts (even if not modified)
+          const validPosts = rewrittenData.filter(
+            (item) => item && item.rewriteData
+          );
+          
+          setRewrittenPosts(validPosts);
+        }
       } catch (err) {
-        setError(err.message || 'Failed to load feed');
+        if (isMounted) {
+          setError(err.message || 'Failed to load feed');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchAndRewrite();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleCompare = (post, rewriteData) => {
@@ -73,7 +94,7 @@ const ContentFeed = () => {
       <div className="content-feed">
         <div className="feed-loading">
           <div className="loading-spinner"></div>
-          <p>加载中...</p>
+          <p>Loading...</p>
         </div>
       </div>
     );
@@ -85,7 +106,7 @@ const ContentFeed = () => {
         <div className="feed-error">
           <p>❌ {error}</p>
           <button onClick={() => window.location.reload()} className="retry-button">
-            重试
+            Retry
           </button>
         </div>
       </div>
@@ -95,13 +116,13 @@ const ContentFeed = () => {
   return (
     <div className="content-feed">
       <div className="feed-header">
-        <h1>改写内容</h1>
-        <p className="feed-subtitle">基于课程大纲改写的社交媒体内容</p>
+        <h1>Rewritten Content</h1>
+        <p className="feed-subtitle">Social media content rewritten based on curriculum</p>
       </div>
       <div className="rewritten-posts-list">
         {rewrittenPosts.length === 0 ? (
           <div className="post-list-empty">
-            <p>暂无内容</p>
+            <p>No content available</p>
           </div>
         ) : (
           rewrittenPosts.map(({ post, rewriteData }) => (

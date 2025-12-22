@@ -30,7 +30,7 @@ const RedNoteFeed = () => {
       <div className="rednote-feed">
         <div className="feed-loading">
           <div className="loading-spinner"></div>
-          <p>加载中...</p>
+          <p>Loading...</p>
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ const RedNoteFeed = () => {
         <div className="feed-error">
           <p>❌ {error}</p>
           <button onClick={() => window.location.reload()} className="retry-button">
-            重试
+            Retry
           </button>
         </div>
       </div>
@@ -52,8 +52,8 @@ const RedNoteFeed = () => {
   return (
     <div className="rednote-feed">
       <div className="feed-header">
-        <h1>小红书</h1>
-        <p className="feed-subtitle">发现美好生活</p>
+        <h1>RedNote</h1>
+        <p className="feed-subtitle">Discover Beautiful Life</p>
       </div>
       <PostList posts={posts} />
     </div>

@@ -10,6 +10,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { login: contextLogin } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -17,7 +18,13 @@ const Login = () => {
 
   useEffect(() => {
     if (location.state?.message) {
-      setErrorMessage(location.state.message);
+      // Check if it's a success message
+      if (location.state.message.toLowerCase().includes('successful') || 
+          location.state.message.toLowerCase().includes('success')) {
+        setSuccessMessage(location.state.message);
+      } else {
+        setErrorMessage(location.state.message);
+      }
     }
   }, [location]);
 
@@ -39,6 +46,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
+    setSuccessMessage(''); // Clear success message when attempting login
 
     if (!validate()) {
       return;
@@ -57,7 +65,10 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (error) {
-      setErrorMessage(error.message || 'Invalid credentials');
+      // Extract error message from Error object or error object
+      const errorMsg = error?.message || error?.response?.data?.detail || 'Invalid credentials. Please check your username and password.';
+      setErrorMessage(errorMsg);
+      console.error('Login error:', error); // Debug log
     } finally {
       setLoading(false);
     }
@@ -68,6 +79,7 @@ const Login = () => {
       <div className="auth-card">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
+          {successMessage && <div className="success-message">{successMessage}</div>}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
           <div className="form-group">

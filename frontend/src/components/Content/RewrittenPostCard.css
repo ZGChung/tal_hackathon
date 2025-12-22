@@ -1,32 +1,38 @@
 .rewritten-post-card {
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-  padding: 16px;
-  transition: box-shadow 0.3s ease;
-  border-left: 4px solid #4caf50;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  padding: 0;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .rewritten-post-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(255, 36, 66, 0.12);
+  transform: translateY(-2px);
 }
 
 .rewritten-post-card .post-header {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  padding: 12px 16px;
   position: relative;
+  background: #fff;
 }
 
 .rewritten-badge {
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  background: linear-gradient(135deg, #ff2442 0%, #ff6b9d 100%);
   color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
   font-weight: 600;
   margin-left: auto;
+  letter-spacing: 0.3px;
 }
 
 .post-avatar {
@@ -34,16 +40,17 @@
 }
 
 .avatar-placeholder {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+  background: linear-gradient(135deg, #ff2442 0%, #ff6b9d 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .post-author-info {
@@ -52,7 +59,7 @@
 
 .post-author {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
   margin-bottom: 2px;
 }
@@ -63,37 +70,75 @@
 }
 
 .post-content {
-  margin-bottom: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-text {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.8;
   color: #333;
-  margin-bottom: 12px;
+  padding: 12px 16px;
   word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: 0.2px;
+  text-align: left;
 }
 
 .post-image-container {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
-  margin-top: 12px;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .post-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.post-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%);
+  color: #ff6b9d;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+
+.placeholder-text {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .post-footer {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-top: 12px;
+  gap: 20px;
+  padding: 10px 16px;
   border-top: 1px solid #f0f0f0;
+  background: #ffffff;
 }
 
 .post-stat {
@@ -119,20 +164,23 @@
 }
 
 .compare-button {
-  background: #4caf50;
+  background: linear-gradient(135deg, #ff2442 0%, #ff6b9d 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   margin-left: auto;
+  box-shadow: 0 2px 8px rgba(255, 36, 66, 0.2);
 }
 
 .compare-button:hover {
-  background: #45a049;
+  background: linear-gradient(135deg, #ff1a35 0%, #ff5a8a 100%);
+  box-shadow: 0 4px 12px rgba(255, 36, 66, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Responsive design */

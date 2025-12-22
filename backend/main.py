@@ -36,11 +36,13 @@ async def startup_event():
     try:
         from backend.database_seed import seed_database
         import traceback
+
         seed_database()
     except Exception as e:
         # Don't fail startup if seeding fails, but print full error for debugging
         print(f"Warning: Database seeding failed: {e}")
         import traceback
+
         traceback.print_exc()
 
 

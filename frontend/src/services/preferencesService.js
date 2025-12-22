@@ -6,19 +6,19 @@ import api from '../utils/api';
  * @throws {Error} If preferences not found (404) or other error
  */
 export const getPreferences = async () => {
-  try {
-    const response = await api.get('/api/preferences');
-    return response.data;
-  } catch (error) {
-    // Re-throw with status code preserved for proper handling
-    if (error.response?.status === 404 || error.status === 404) {
-      const notFoundError = new Error('Preferences not found');
-      notFoundError.status = 404;
-      notFoundError.response = error.response;
-      throw notFoundError;
+    try {
+        const response = await api.get('/api/preferences');
+        return response.data;
+    } catch (error) {
+        // Re-throw with status code preserved for proper handling
+        if (error.response?.status === 404 || error.status === 404) {
+            const notFoundError = new Error('Preferences not found');
+            notFoundError.status = 404;
+            notFoundError.response = error.response;
+            throw notFoundError;
+        }
+        throw error;
     }
-    throw error;
-  }
 };
 
 /**
@@ -30,8 +30,8 @@ export const getPreferences = async () => {
  * @returns {Promise<Object>} The created preferences
  */
 export const createPreferences = async (preferencesData) => {
-  const response = await api.post('/api/preferences', preferencesData);
-  return response.data;
+    const response = await api.post('/api/preferences', preferencesData);
+    return response.data;
 };
 
 /**
@@ -44,6 +44,6 @@ export const createPreferences = async (preferencesData) => {
  * @returns {Promise<Object>} The updated preferences
  */
 export const updatePreferences = async (preferencesId, preferencesData) => {
-  const response = await api.put(`/api/preferences/${preferencesId}`, preferencesData);
-  return response.data;
+    const response = await api.put(`/api/preferences/${preferencesId}`, preferencesData);
+    return response.data;
 };

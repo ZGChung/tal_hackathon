@@ -16,9 +16,37 @@ export const register = async (username, password, role) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.detail || 'Registration failed. Please try again.'
-    );
+    // The api interceptor returns an object with a 'message' property
+    // It also includes 'data' with the original response data
+    let errorMessage = 'Registration failed. Please try again.';
+    
+    // Check the transformed message first (from interceptor)
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    // Fallback to original response detail
+    else if (error.data?.detail) {
+      errorMessage = error.data.detail;
+    }
+    // Fallback to original axios error structure
+    else if (error.response?.data?.detail) {
+      errorMessage = error.response.data.detail;
+    }
+    // Handle validation errors (422) which might have different structure
+    else if (error.data && typeof error.data === 'object') {
+      // Pydantic validation errors might be in error.data
+      const detail = error.data.detail || JSON.stringify(error.data);
+      errorMessage = Array.isArray(detail) ? detail.map(e => e.msg || e).join(', ') : detail;
+    }
+    
+    console.error('Registration error details:', {
+      message: error.message,
+      data: error.data,
+      response: error.response?.data,
+      fullError: error
+    }); // Debug log
+    
+    throw new Error(errorMessage);
   }
 };
 

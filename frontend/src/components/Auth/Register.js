@@ -52,7 +52,10 @@ const Register = () => {
       // Redirect to login after successful registration
       navigate('/login', { state: { message: 'Registration successful! Please login.' } });
     } catch (error) {
-      setErrorMessage(error.message || 'Registration failed');
+      // Extract error message from Error object or error object
+      const errorMsg = error?.message || error?.response?.data?.detail || 'Registration failed. Please check your input and try again.';
+      setErrorMessage(errorMsg);
+      console.error('Registration error:', error); // Debug log
     } finally {
       setLoading(false);
     }

@@ -5,6 +5,7 @@ This document provides an overview of all development tasks broken down for the 
 ## Task Breakdown Summary
 
 ### Backend Tasks
+
 1. **Task 01**: Backend Authentication System
 2. **Task 02**: Backend Curriculum Upload & Parsing
 3. **Task 03**: Backend Admin Preferences API
@@ -12,33 +13,39 @@ This document provides an overview of all development tasks broken down for the 
 5. **Task 05**: Backend Mock RedNote Adapter
 
 ### Frontend Tasks
+
 6. **Task 06**: Frontend Authentication UI
 7. **Task 07**: Frontend Admin Dashboard
 8. **Task 08**: Frontend Mock RedNote Feed UI
 9. **Task 09**: Frontend Content Display & Comparison
 
 ### Integration Tasks
+
 10. **Task 10**: Frontend-Backend Integration & End-to-End Flow
 
 ## Recommended Development Order
 
 ### Phase 1: Foundation (Start Here)
-- Task 01: Backend Authentication
-- Task 06: Frontend Authentication UI
+
+-   Task 01: Backend Authentication
+-   Task 06: Frontend Authentication UI
 
 ### Phase 2: Core Features
-- Task 02: Backend Curriculum Upload
-- Task 03: Backend Admin Preferences
-- Task 07: Frontend Admin Dashboard
+
+-   Task 02: Backend Curriculum Upload
+-   Task 03: Backend Admin Preferences
+-   Task 07: Frontend Admin Dashboard
 
 ### Phase 3: Content & Rewriting
-- Task 05: Backend Mock RedNote
-- Task 08: Frontend RedNote Feed
-- Task 04: Backend Content Rewriting Engine
-- Task 09: Frontend Content Display
+
+-   Task 05: Backend Mock RedNote
+-   Task 08: Frontend RedNote Feed
+-   Task 04: Backend Content Rewriting Engine
+-   Task 09: Frontend Content Display
 
 ### Phase 4: Integration & Polish
-- Task 10: Integration & E2E Testing
+
+-   Task 10: Integration & E2E Testing
 
 ## How to Use These Tasks
 
@@ -62,8 +69,7 @@ All Tasks → Task 10 (Integration)
 
 ## Notes
 
-- Each task is designed to be independent and completable by a single agent
-- Tasks follow TDD principles - write tests first
-- Keep architecture scalable for future enhancements
-- Focus on core functionality first, polish later
-
+-   Each task is designed to be independent and completable by a single agent
+-   Tasks follow TDD principles - write tests first
+-   Keep architecture scalable for future enhancements
+-   Focus on core functionality first, polish later

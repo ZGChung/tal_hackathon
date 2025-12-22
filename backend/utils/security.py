@@ -1,17 +1,11 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
 import os
 
-# Password hashing context
-# Configure to avoid bcrypt bug detection issues with newer bcrypt versions
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-    # Don't set bcrypt__ident or bcrypt__rounds explicitly - let passlib handle it
-    # This avoids issues with bcrypt bug detection
-)
+# Use bcrypt directly instead of passlib to avoid initialization bug detection issues
+# This avoids the 72-byte error during passlib's detect_wrap_bug function
 
 # JWT settings
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
@@ -20,17 +14,22 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash"""
+    """Verify a password against its hash using bcrypt directly"""
     try:
-        # Ensure password is a string and not too long (bcrypt limit is 72 bytes)
-        if isinstance(plain_password, bytes):
-            plain_password = plain_password.decode('utf-8')
+        # Ensure password is bytes for bcrypt
+        if isinstance(plain_password, str):
+            password_bytes = plain_password.encode('utf-8')
+        else:
+            password_bytes = plain_password
         
-        # Truncate if necessary (though this shouldn't happen with normal passwords)
-        if len(plain_password.encode('utf-8')) > 72:
-            plain_password = plain_password[:72]
+        # Ensure hash is bytes
+        if isinstance(hashed_password, str):
+            hash_bytes = hashed_password.encode('utf-8')
+        else:
+            hash_bytes = hashed_password
         
-        return pwd_context.verify(plain_password, hashed_password)
+        # Use bcrypt directly
+        return bcrypt.checkpw(password_bytes, hash_bytes)
     except (ValueError, TypeError) as e:
         # Handle bcrypt errors gracefully
         print(f"Password verification error: {e}")
@@ -38,7 +37,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def get_password_hash(password: str) -> str:
-    """Hash a password"""
+    """Hash a password using bcrypt directly"""
     try:
         # Ensure password is a string
         if isinstance(password, bytes):
@@ -49,16 +48,20 @@ def get_password_hash(password: str) -> str:
         # Strip whitespace
         password = password.strip()
         
-        # Check password length in bytes (bcrypt limit is 72 bytes)
+        # Convert to bytes for bcrypt
         password_bytes = password.encode('utf-8')
+        
+        # Check password length (bcrypt limit is 72 bytes)
         if len(password_bytes) > 72:
             print(f"WARNING: Password is {len(password_bytes)} bytes, truncating to 72")
-            # Truncate the bytes, then decode back to string
-            password = password_bytes[:72].decode('utf-8', errors='ignore')
+            password_bytes = password_bytes[:72]
         
-        # Use passlib's hash method directly with the password as a string
-        # Passlib will handle the encoding internally
-        return pwd_context.hash(password)
+        # Generate salt and hash using bcrypt directly
+        salt = bcrypt.gensalt(rounds=12)
+        hashed = bcrypt.hashpw(password_bytes, salt)
+        
+        # Return as string (bcrypt hash is always ASCII)
+        return hashed.decode('utf-8')
     except (ValueError, TypeError) as e:
         # Handle bcrypt errors with more detail
         print(f"Password hashing error - password type: {type(password)}, length: {len(str(password)) if password else 0}")

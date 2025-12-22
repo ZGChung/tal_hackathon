@@ -61,65 +61,171 @@ Original text: {original_text}"""
     def _mock_rewrite(self, original_text: str, keywords: List[str]) -> Tuple[str, List[str]]:
         """
         Mock rewrite function for testing/development
-        Naturally incorporates relevant keywords into the text
+        Naturally incorporates relevant keywords by paraphrasing and polishing the text
         """
         if not keywords:
-            return original_text
+            return original_text, []
         
-        # Select 2-3 most relevant keywords (prioritize education-related ones)
+        # Select 2-3 most relevant keywords that can be naturally integrated
         relevant_keywords = []
         text_lower = original_text.lower()
         
-        # Priority keywords that match common curriculum topics
-        priority_terms = {
-            'reading': ['reading', 'literature', 'comprehension', 'literary', 'text'],
-            'writing': ['writing', 'composition', 'essay', 'narrative', 'expository'],
-            'vocabulary': ['vocabulary', 'word', 'words', 'lexicon'],
-            'language': ['language', 'linguistics', 'communication', 'speaking', 'listening'],
-            'learning': ['learning', 'study', 'education', 'teaching', 'instruction']
+        # Find keywords that can be naturally incorporated
+        # Prioritize concrete words (nouns, adjectives) over abstract concepts
+        for keyword in keywords[:15]:  # Check first 15 keywords
+            keyword_lower = keyword.lower().strip()
+            # Skip if keyword is too generic or already in text
+            if len(keyword_lower) < 3 or keyword_lower in text_lower:
+                continue
+            
+            # Prefer concrete vocabulary words (single words, not phrases)
+            if len(keyword.split()) == 1 and keyword_lower not in ['and', 'the', 'for', 'with', 'from']:
+                # Check if keyword can be naturally integrated
+                if self._can_integrate_keyword(original_text, keyword):
+                    relevant_keywords.append(keyword)
+                    if len(relevant_keywords) >= 3:
+                        break
+        
+        # If no single-word keywords found, try 2-word phrases
+        if len(relevant_keywords) < 2:
+            for keyword in keywords[:15]:
+                keyword_lower = keyword.lower().strip()
+                if len(keyword.split()) == 2 and keyword_lower not in text_lower:
+                    if self._can_integrate_keyword(original_text, keyword):
+                        relevant_keywords.append(keyword)
+                        if len(relevant_keywords) >= 3:
+                            break
+        
+        if not relevant_keywords:
+            return original_text, []
+        
+        # Rewrite by paraphrasing and incorporating keywords naturally
+        rewritten = self._paraphrase_with_keywords(original_text, relevant_keywords)
+        
+        return rewritten, relevant_keywords
+    
+    def _can_integrate_keyword(self, text: str, keyword: str) -> bool:
+        """Check if a keyword can be naturally integrated into the text"""
+        keyword_lower = keyword.lower()
+        text_lower = text.lower()
+        
+        # Don't use if already present
+        if keyword_lower in text_lower:
+            return False
+        
+        # Check if keyword relates to common themes in educational content
+        educational_themes = [
+            'reading', 'writing', 'learning', 'study', 'book', 'literature',
+            'vocabulary', 'language', 'comprehension', 'analysis', 'thinking',
+            'creative', 'explore', 'discover', 'adventure', 'journey',
+            'bright', 'shiny', 'playful', 'curious', 'wisdom', 'courage',
+            'silver', 'gold', 'wind', 'rain', 'storm', 'harmony', 'rhythm'
+        ]
+        
+        # Accept if keyword matches educational themes or is a concrete noun/adjective
+        return any(theme in keyword_lower for theme in educational_themes) or len(keyword.split()) == 1
+    
+    def _paraphrase_with_keywords(self, text: str, keywords: List[str]) -> str:
+        """Paraphrase text while naturally incorporating keywords"""
+        if not keywords:
+            return text
+        
+        # Simple paraphrasing patterns
+        words = text.split()
+        rewritten_words = []
+        keywords_used = []
+        
+        # Try to replace synonyms or add keywords naturally
+        synonym_map = {
+            'amazing': ['wonderful', 'incredible', 'fantastic'],
+            'great': ['excellent', 'outstanding', 'remarkable'],
+            'good': ['nice', 'fine', 'pleasant'],
+            'beautiful': ['gorgeous', 'stunning', 'lovely'],
+            'interesting': ['fascinating', 'engaging', 'captivating'],
+            'fun': ['enjoyable', 'entertaining', 'playful'],
+            'learn': ['discover', 'explore', 'understand'],
+            'read': ['study', 'examine', 'peruse'],
+            'write': ['compose', 'create', 'craft'],
         }
         
-        # Find matching keywords
-        for keyword in keywords[:10]:  # Check first 10 keywords
-            keyword_lower = keyword.lower()
-            for category, terms in priority_terms.items():
-                if any(term in keyword_lower for term in terms):
-                    if keyword not in relevant_keywords:
-                        relevant_keywords.append(keyword)
-                        break
-            if len(relevant_keywords) >= 2:
-                break
+        # First pass: try to replace words with keywords
+        for word in words:
+            word_lower = word.lower().strip('.,!?;:')
+            replaced = False
+            
+            # Try to replace with keywords
+            for keyword in keywords:
+                if keyword.lower() not in keywords_used:
+                    # If keyword is an adjective and we're looking for descriptive words
+                    if self._is_adjective_context(word, words, words.index(word)):
+                        if keyword.lower() in ['bright', 'shiny', 'playful', 'creative', 'curious', 'gentle', 'swift']:
+                            # Replace with keyword
+                            rewritten_words.append(keyword)
+                            keywords_used.append(keyword.lower())
+                            replaced = True
+                            break
+                    # If keyword is a noun and fits context
+                    elif self._is_noun_context(word, words, words.index(word)):
+                        if keyword.lower() in ['adventure', 'journey', 'discovery', 'harmony', 'rhythm', 'wisdom', 'courage']:
+                            rewritten_words.append(keyword)
+                            keywords_used.append(keyword.lower())
+                            replaced = True
+                            break
+            
+            if not replaced:
+                rewritten_words.append(word)
         
-        # If no priority matches, use first 2 keywords
-        if not relevant_keywords and keywords:
-            relevant_keywords = keywords[:2]
+        # Second pass: add keywords naturally if not used yet
+        if len(keywords_used) < len(keywords):
+            # Add remaining keywords as adjectives or in descriptive phrases
+            for keyword in keywords:
+                if keyword.lower() not in keywords_used:
+                    keyword_lower = keyword.lower()
+                    # Add before nouns or at natural break points
+                    if keyword_lower in ['silver', 'gold', 'bronze', 'wind', 'rain', 'storm']:
+                        # Add as descriptive element
+                        if len(rewritten_words) > 0:
+                            # Find a good insertion point
+                            for i in range(len(rewritten_words) - 1, max(0, len(rewritten_words) - 5), -1):
+                                if rewritten_words[i].lower() in ['the', 'a', 'an', 'this', 'that']:
+                                    rewritten_words.insert(i + 1, keyword)
+                                    keywords_used.append(keyword_lower)
+                                    break
         
-        # All text is now in English, incorporate keywords naturally
-        additions = []
-        for kw in relevant_keywords[:2]:
-            kw_lower = kw.lower()
-            if 'reading' in kw_lower or 'literature' in kw_lower:
-                additions.append("improve reading skills and literary appreciation")
-            elif 'writing' in kw_lower:
-                additions.append("enhance writing abilities")
-            elif 'vocabulary' in kw_lower:
-                additions.append("expand vocabulary")
-            elif 'language' in kw_lower:
-                additions.append("develop language skills")
-            elif 'learning' in kw_lower or 'education' in kw_lower:
-                additions.append("enhance learning outcomes")
-            elif 'comprehension' in kw_lower:
-                additions.append("improve comprehension skills")
-            elif 'critical thinking' in kw_lower or 'analysis' in kw_lower:
-                additions.append("develop critical thinking and analytical skills")
+        rewritten = ' '.join(rewritten_words)
         
-        if additions:
-            rewritten = f"{original_text} This helps us {additions[0]}."
-            return rewritten, relevant_keywords
-        else:
-            # Generic addition if no specific match
-            rewritten = f"{original_text} This contributes to our learning and growth."
-            return rewritten, relevant_keywords[:1] if relevant_keywords else []
+        # Clean up punctuation and spacing
+        rewritten = rewritten.replace(' ,', ',').replace(' .', '.').replace(' !', '!').replace(' ?', '?')
+        rewritten = rewritten.replace('  ', ' ')
+        
+        # If no keywords were integrated, try a different approach
+        if not keywords_used:
+            # Add keywords as part of natural phrases
+            first_keyword = keywords[0].lower()
+            if first_keyword in ['playful', 'creative', 'curious', 'bright', 'shiny']:
+                rewritten = rewritten.replace('so much', f'{keywords[0]} and so much', 1)
+                keywords_used.append(first_keyword)
+            elif first_keyword in ['adventure', 'journey', 'discovery']:
+                rewritten = rewritten.replace('learning', f'{keywords[0]} and learning', 1)
+                keywords_used.append(first_keyword)
+        
+        return rewritten.strip()
+    
+    def _is_adjective_context(self, word: str, words: List[str], index: int) -> bool:
+        """Check if word is in an adjective context"""
+        if index > 0:
+            prev_word = words[index - 1].lower().strip('.,!?;:')
+            if prev_word in ['is', 'are', 'was', 'were', 'seems', 'looks', 'feels', 'very', 'really', 'so', 'quite']:
+                return True
+        return False
+    
+    def _is_noun_context(self, word: str, words: List[str], index: int) -> bool:
+        """Check if word is in a noun context"""
+        if index > 0:
+            prev_word = words[index - 1].lower().strip('.,!?;:')
+            if prev_word in ['the', 'a', 'an', 'this', 'that', 'my', 'our', 'your']:
+                return True
+        return False
     
     def _filter_relevant_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """

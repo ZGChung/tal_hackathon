@@ -54,16 +54,15 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
               alt="Post"
               className="post-image"
               onError={(e) => {
-                e.target.src = `https://via.placeholder.com/400x300/ff6b9d/ffffff?text=${encodeURIComponent(post.author || 'Post')}`;
+                e.target.style.display = 'none';
+                e.target.nextElementSibling.style.display = 'flex';
               }}
             />
-          ) : (
-            <img
-              src={`https://via.placeholder.com/400x300/ff6b9d/ffffff?text=${encodeURIComponent(post.author || 'Post')}`}
-              alt="Post placeholder"
-              className="post-image"
-            />
-          )}
+          ) : null}
+          <div className="post-image-placeholder" style={{ display: post.image_url ? 'none' : 'flex' }}>
+            <div className="placeholder-icon">📷</div>
+            <div className="placeholder-text">Image Placeholder</div>
+          </div>
         </div>
       </div>
       

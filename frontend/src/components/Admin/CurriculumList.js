@@ -137,48 +137,15 @@ const CurriculumList = forwardRef((props, ref) => {
                     <h3 className="curriculum-title">{formatFilename(curriculum.filename)}</h3>
                     <span className="curriculum-filename">{curriculum.filename}</span>
                   </div>
-                  <div className="curriculum-card-actions">
-                    <div className="curriculum-meta">
-                      <span className="curriculum-date">
-                        <span className="meta-icon">📅</span>
-                        {formatDate(curriculum.created_at)}
-                      </span>
-                      <span className="keyword-count">
-                        <span className="meta-icon">🏷️</span>
-                        {keywords.length} keywords
-                      </span>
-                    </div>
-                    {isConfirming ? (
-                      <div className="delete-confirmation">
-                        <span className="delete-confirm-text">Delete this curriculum?</span>
-                        <button
-                          type="button"
-                          className="delete-confirm-btn"
-                          onClick={() => handleDelete(curriculum.id, curriculum.filename)}
-                          disabled={isDeleting}
-                        >
-                          {isDeleting ? 'Deleting...' : 'Confirm'}
-                        </button>
-                        <button
-                          type="button"
-                          className="delete-cancel-btn"
-                          onClick={cancelDelete}
-                          disabled={isDeleting}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() => handleDelete(curriculum.id, curriculum.filename)}
-                        disabled={isDeleting || deleteConfirmId !== null}
-                        title="Delete curriculum"
-                      >
-                        🗑️
-                      </button>
-                    )}
+                  <div className="curriculum-meta">
+                    <span className="curriculum-date">
+                      <span className="meta-icon">📅</span>
+                      {formatDate(curriculum.created_at)}
+                    </span>
+                    <span className="keyword-count">
+                      <span className="meta-icon">🏷️</span>
+                      {keywords.length} keywords
+                    </span>
                   </div>
                 </div>
                 
@@ -199,19 +166,85 @@ const CurriculumList = forwardRef((props, ref) => {
                         </span>
                       )}
                     </div>
-                    {hasMoreKeywords && (
-                      <button
-                        type="button"
-                        className="toggle-keywords-btn"
-                        onClick={() => toggleExpand(curriculum.id)}
-                      >
-                        {isExpanded ? 'Show Less' : `Show All ${keywords.length} Keywords`}
-                      </button>
-                    )}
+                    <div className="keywords-actions">
+                      {hasMoreKeywords && (
+                        <button
+                          type="button"
+                          className="toggle-keywords-btn"
+                          onClick={() => toggleExpand(curriculum.id)}
+                        >
+                          {isExpanded ? 'Show Less' : `Show All ${keywords.length} Keywords`}
+                        </button>
+                      )}
+                      {isConfirming ? (
+                        <div className="delete-confirmation">
+                          <span className="delete-confirm-text">Delete?</span>
+                          <button
+                            type="button"
+                            className="delete-confirm-btn"
+                            onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? 'Deleting...' : 'Confirm'}
+                          </button>
+                          <button
+                            type="button"
+                            className="delete-cancel-btn"
+                            onClick={cancelDelete}
+                            disabled={isDeleting}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                          disabled={isDeleting || deleteConfirmId !== null}
+                          title="Delete curriculum"
+                        >
+                          🗑️ Delete
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <div className="curriculum-keywords-section">
                     <span className="no-keywords">No keywords extracted</span>
+                    <div className="keywords-actions">
+                      {isConfirming ? (
+                        <div className="delete-confirmation">
+                          <span className="delete-confirm-text">Delete?</span>
+                          <button
+                            type="button"
+                            className="delete-confirm-btn"
+                            onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? 'Deleting...' : 'Confirm'}
+                          </button>
+                          <button
+                            type="button"
+                            className="delete-cancel-btn"
+                            onClick={cancelDelete}
+                            disabled={isDeleting}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                          disabled={isDeleting || deleteConfirmId !== null}
+                          title="Delete curriculum"
+                        >
+                          🗑️ Delete
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

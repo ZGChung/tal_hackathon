@@ -17,11 +17,17 @@ const Dashboard = () => {
     const appFromState = location.state?.selectedApp;
     const appFromStorage = localStorage.getItem('selectedApp');
     
-    if (appFromState || appFromStorage === 'rednote') {
+    // Auto-select RedNote on first load if no app is selected
+    if (appFromState || appFromStorage) {
       setSelectedApp(appFromState || appFromStorage);
       setShowAppSelection(false);
+    } else if (!isAdmin && user?.role === 'Student') {
+      // Auto-select RedNote for students on first visit
+      setSelectedApp('rednote');
+      localStorage.setItem('selectedApp', 'rednote');
+      setShowAppSelection(false);
     }
-  }, [location]);
+  }, [location, isAdmin, user]);
 
   const handleAppSelect = (appId) => {
     setSelectedApp(appId);

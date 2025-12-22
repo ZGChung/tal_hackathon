@@ -100,17 +100,18 @@ def parse_markdown_keywords(content: str) -> List[str]:
         is_category = ' and ' in keyword_lower or ' or ' in keyword_lower
         
         if not is_broad and not is_too_long and not is_category:
-            # Extract individual words/phrases from compound terms
-            # Split by common separators and add individual meaningful words
-            words = re.split(r'[,\s]+', keyword)
-            for word in words:
-                word = word.strip()
-                # Only add if it's a meaningful word (not too short, not a stop word)
-                if len(word) > 2 and word.lower() not in ['the', 'and', 'or', 'for', 'with', 'from', 'that', 'this']:
-                    filtered_keywords.append(word)
-            # Also keep the original if it's a reasonable length
-            if len(keyword) <= 30:
+            # If keyword is already a single word or short phrase, add it directly
+            # (comma-separated items are already split in the extraction phase)
+            if len(keyword.split()) <= 3:  # Single word or short phrase (max 3 words)
                 filtered_keywords.append(keyword)
+            else:
+                # For longer phrases, extract meaningful individual words
+                words = keyword.split()
+                for word in words:
+                    word = word.strip('.,!?;:')
+                    # Only add if it's a meaningful word (not too short, not a stop word)
+                    if len(word) > 2 and word.lower() not in ['the', 'and', 'or', 'for', 'with', 'from', 'that', 'this', 'are', 'was', 'were', 'has', 'have', 'had']:
+                        filtered_keywords.append(word)
     
     # Remove duplicates while preserving order
     seen = set()

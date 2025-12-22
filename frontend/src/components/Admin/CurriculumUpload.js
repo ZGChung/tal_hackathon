@@ -113,7 +113,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button
             type="button"
-            onClick={() => loadTemplate('language_arts_curriculum', 'Language Arts')}
+            onClick={() => loadTemplate('mathematics_curriculum', 'Mathematics')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -126,11 +126,11 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? 'Loading...' : 'Language Arts'}
+            {(loading || loadingTemplate) ? 'Loading...' : 'Mathematics'}
           </button>
           <button
             type="button"
-            onClick={() => loadTemplate('social_studies_curriculum', 'Social Studies')}
+            onClick={() => loadTemplate('science_curriculum', 'Science')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -143,7 +143,24 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? 'Loading...' : 'Social Studies'}
+            {(loading || loadingTemplate) ? 'Loading...' : 'Science'}
+          </button>
+          <button
+            type="button"
+            onClick={() => loadTemplate('computer_science_curriculum', 'Computer Science')}
+            disabled={loading || loadingTemplate}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+              opacity: (loading || loadingTemplate) ? 0.6 : 1,
+              fontSize: '14px'
+            }}
+          >
+            {(loading || loadingTemplate) ? 'Loading...' : 'Computer Science'}
           </button>
         </div>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>

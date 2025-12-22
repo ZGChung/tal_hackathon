@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 from typing import Optional
 
 from backend.database import get_db
@@ -55,7 +56,6 @@ def get_active_preferences(db: Session) -> Optional[Preferences]:
         Preferences object or None if not found
     """
     # Get most recent preferences from any admin (by updated_at, fallback to created_at)
-    from sqlalchemy import desc, func
     return db.query(Preferences).order_by(
         func.coalesce(Preferences.updated_at, Preferences.created_at).desc()
     ).first()

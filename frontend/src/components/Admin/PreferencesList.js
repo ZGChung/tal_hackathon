@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
-import { getPreferences } from '../../services/preferencesService';
+import { getPreferences, deletePreferences } from '../../services/preferencesService';
 import './Admin.css';
 
 const PreferencesList = forwardRef((props, ref) => {
   const [preferences, setPreferences] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const fetchPreferences = async () => {
     setLoading(true);
@@ -33,6 +35,34 @@ const PreferencesList = forwardRef((props, ref) => {
   useEffect(() => {
     fetchPreferences();
   }, []);
+
+  const handleDelete = async () => {
+    if (!showConfirm) {
+      // First click - show confirmation
+      setShowConfirm(true);
+      return;
+    }
+
+    // Second click - confirm deletion
+    setDeleting(true);
+    setError('');
+
+    try {
+      await deletePreferences();
+      // Clear preferences after deletion
+      setPreferences(null);
+      setShowConfirm(false);
+    } catch (err) {
+      setError(err.response?.data?.detail || err.message || 'Failed to delete preferences');
+      setShowConfirm(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirm(false);
+  };
 
   if (loading) {
     return (
@@ -70,7 +100,49 @@ const PreferencesList = forwardRef((props, ref) => {
 
   return (
     <div className="admin-section">
-      <h2>Preferences List</h2>
+      <div className="preferences-list-header">
+        <h2>Preferences List</h2>
+        {preferences && (
+          <div className="preferences-actions">
+            {showConfirm ? (
+              <div className="delete-confirmation">
+                <span className="delete-confirm-text">Delete preferences?</span>
+                <button
+                  type="button"
+                  className="delete-confirm-btn"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? 'Deleting...' : 'Confirm'}
+                </button>
+                <button
+                  type="button"
+                  className="delete-cancel-btn"
+                  onClick={cancelDelete}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="delete-btn"
+                onClick={handleDelete}
+                disabled={deleting}
+                title="Delete preferences"
+              >
+                🗑️ Delete Preferences
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      {error && (
+        <div className="message error" style={{ marginBottom: '1rem' }}>
+          {error}
+        </div>
+      )}
       <div className="preferences-card">
         <div className="preferences-section">
           <div className="preferences-section-header">

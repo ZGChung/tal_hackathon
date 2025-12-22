@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
-import { listCurricula } from '../../services/curriculumService';
+import { listCurricula, deleteCurriculum } from '../../services/curriculumService';
 import './Admin.css';
 
 const CurriculumList = forwardRef((props, ref) => {
   const [curricula, setCurricula] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
   const fetchCurricula = async () => {
     setLoading(true);
@@ -57,6 +59,33 @@ const CurriculumList = forwardRef((props, ref) => {
       .replace(/\b\w/g, l => l.toUpperCase());
   };
 
+  const handleDelete = async (curriculumId, filename) => {
+    if (deleteConfirmId !== curriculumId) {
+      // First click - show confirmation
+      setDeleteConfirmId(curriculumId);
+      return;
+    }
+
+    // Second click - confirm deletion
+    setDeletingId(curriculumId);
+    setDeleteConfirmId(null);
+    setError('');
+
+    try {
+      await deleteCurriculum(curriculumId);
+      // Refresh the list
+      await fetchCurricula();
+    } catch (err) {
+      setError(err.response?.data?.detail || err.message || 'Failed to delete curriculum');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirmId(null);
+  };
+
   if (loading) {
     return (
       <div className="admin-section">
@@ -98,6 +127,9 @@ const CurriculumList = forwardRef((props, ref) => {
             const displayKeywords = isExpanded ? keywords : keywords.slice(0, 10);
             const hasMoreKeywords = keywords.length > 10;
 
+            const isDeleting = deletingId === curriculum.id;
+            const isConfirming = deleteConfirmId === curriculum.id;
+
             return (
               <div key={curriculum.id} className="curriculum-card">
                 <div className="curriculum-card-header">
@@ -105,15 +137,48 @@ const CurriculumList = forwardRef((props, ref) => {
                     <h3 className="curriculum-title">{formatFilename(curriculum.filename)}</h3>
                     <span className="curriculum-filename">{curriculum.filename}</span>
                   </div>
-                  <div className="curriculum-meta">
-                    <span className="curriculum-date">
-                      <span className="meta-icon">📅</span>
-                      {formatDate(curriculum.created_at)}
-                    </span>
-                    <span className="keyword-count">
-                      <span className="meta-icon">🏷️</span>
-                      {keywords.length} keywords
-                    </span>
+                  <div className="curriculum-card-actions">
+                    <div className="curriculum-meta">
+                      <span className="curriculum-date">
+                        <span className="meta-icon">📅</span>
+                        {formatDate(curriculum.created_at)}
+                      </span>
+                      <span className="keyword-count">
+                        <span className="meta-icon">🏷️</span>
+                        {keywords.length} keywords
+                      </span>
+                    </div>
+                    {isConfirming ? (
+                      <div className="delete-confirmation">
+                        <span className="delete-confirm-text">Delete this curriculum?</span>
+                        <button
+                          type="button"
+                          className="delete-confirm-btn"
+                          onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? 'Deleting...' : 'Confirm'}
+                        </button>
+                        <button
+                          type="button"
+                          className="delete-cancel-btn"
+                          onClick={cancelDelete}
+                          disabled={isDeleting}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className="delete-btn"
+                        onClick={() => handleDelete(curriculum.id, curriculum.filename)}
+                        disabled={isDeleting || deleteConfirmId !== null}
+                        title="Delete curriculum"
+                      >
+                        🗑️
+                      </button>
+                    )}
                   </div>
                 </div>
                 

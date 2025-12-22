@@ -113,3 +113,37 @@ async def get_curriculum(
         created_at=curriculum.created_at
     )
 
+
+@router.delete("/{curriculum_id}", status_code=status.HTTP_200_OK)
+async def delete_curriculum(
+    curriculum_id: int,
+    current_user: User = Depends(get_admin_user),
+    db: Session = Depends(get_db)
+):
+    """Delete a curriculum (Admin only)"""
+    curriculum = db.query(Curriculum).filter(
+        Curriculum.id == curriculum_id,
+        Curriculum.user_id == current_user.id
+    ).first()
+    
+    if not curriculum:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Curriculum not found"
+        )
+    
+    # Delete the file from disk if it exists
+    file_path = Path(curriculum.file_path)
+    if file_path.exists():
+        try:
+            file_path.unlink()
+        except Exception as e:
+            # Log error but continue with database deletion
+            print(f"Warning: Failed to delete file {file_path}: {e}")
+    
+    # Delete from database
+    db.delete(curriculum)
+    db.commit()
+    
+    return {"message": "Curriculum deleted successfully"}
+

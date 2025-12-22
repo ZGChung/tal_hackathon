@@ -36,3 +36,13 @@ export const getCurriculum = async (curriculumId) => {
   const response = await api.get(`/api/curriculum/${curriculumId}`);
   return response.data;
 };
+
+/**
+ * Delete a curriculum
+ * @param {number} curriculumId - The curriculum ID to delete
+ * @returns {Promise<Object>} Success message
+ */
+export const deleteCurriculum = async (curriculumId) => {
+  const response = await api.delete(`/api/curriculum/${curriculumId}`);
+  return response.data;
+};

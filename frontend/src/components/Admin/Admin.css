@@ -122,6 +122,19 @@ button:disabled {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.curriculum-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  min-width: 200px;
 }
 
 .curriculum-title-section {
@@ -378,4 +391,102 @@ button:disabled {
   color: #999;
   margin: 0;
   font-family: monospace;
+}
+
+.preferences-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.preferences-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Delete Button Styles */
+.delete-btn {
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.delete-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Delete Confirmation Styles */
+.delete-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+}
+
+.delete-confirm-text {
+  font-size: 0.9rem;
+  color: #856404;
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.delete-confirm-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-confirm-btn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.delete-confirm-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.delete-cancel-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-cancel-btn:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.delete-cancel-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }

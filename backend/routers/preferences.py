@@ -100,3 +100,26 @@ async def update_preferences(
     
     return preferences
 
+
+@router.delete("", status_code=status.HTTP_200_OK)
+async def delete_preferences(
+    current_user: User = Depends(get_admin_user),
+    db: Session = Depends(get_db)
+):
+    """Delete preferences for current admin user"""
+    preferences = db.query(Preferences).filter(
+        Preferences.user_id == current_user.id
+    ).first()
+    
+    if not preferences:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Preferences not found for this user"
+        )
+    
+    # Delete from database
+    db.delete(preferences)
+    db.commit()
+    
+    return {"message": "Preferences deleted successfully"}
+

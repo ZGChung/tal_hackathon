@@ -47,3 +47,12 @@ export const updatePreferences = async (preferencesId, preferencesData) => {
     const response = await api.put(`/api/preferences/${preferencesId}`, preferencesData);
     return response.data;
 };
+
+/**
+ * Delete preferences for current user
+ * @returns {Promise<Object>} Success message
+ */
+export const deletePreferences = async () => {
+    const response = await api.delete('/api/preferences');
+    return response.data;
+};

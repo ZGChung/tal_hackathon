@@ -1,8 +1,8 @@
-# LearnFlow: Learning Without Effort, Injected Into Every Scroll
+# FunFlow: Learning Without Effort, Injected Into Every Scroll
 
 ## The Vision
 
-**LearnFlow** is an AI-powered platform that injects curriculum-aligned learning directly into the social media feeds kids already love. Students scroll naturally—we seamlessly embed educational content into every post, making learning happen effortlessly without them even realizing it.
+**FunFlow** is an AI-powered platform that injects curriculum-aligned learning directly into the social media feeds kids already love. Students scroll naturally—we seamlessly embed educational content into every post, making learning happen effortlessly while they have fun.
 
 ---
 
@@ -12,7 +12,7 @@ Students spend hours on social media platforms like RedNote (小红书), consumi
 - **Block access** (frustrating for students, creates resistance)
 - **Ignore the problem** (wasted learning opportunities)
 
-**LearnFlow takes a revolutionary third path**: We inject learning directly into their feeds. Kids keep scrolling—we make sure they learn while they do.
+**FunFlow takes a revolutionary third path**: We inject learning directly into their feeds. Kids keep having fun scrolling—we make sure they learn while they do.
 
 ---
 
@@ -34,7 +34,7 @@ The platform connects to social media feeds (in our demo: RedNote/小红书). St
 Here's where the magic happens: Our Large Language Model (LLM) system intelligently injects learning into each social media post:
 - **Seamlessly incorporate curriculum keywords** (e.g., if students are learning about "ancient civilizations," posts about travel get rewritten to include historical context)
 - **Maintain the original tone and style** (students don't feel like they're reading a textbook—they don't even notice the learning)
-- **Preserve engagement** (the content remains fun, relatable, and visually appealing—kids keep scrolling)
+- **Preserve the fun** (the content remains engaging, relatable, and visually appealing—kids keep scrolling because it's still fun)
 - **Zero effort required** (educational concepts appear organically—learning happens automatically while they do what they want)
 
 ### Step 5: Unified Learning Feed
@@ -77,8 +77,8 @@ Yet this personalization happens automatically—no manual curation required.
 
 ### For Students
 - **Learn without effort**: Educational concepts are injected into content they're already scrolling—no extra work required
-- **No resistance**: They keep doing what they love (scrolling social media), learning just happens automatically
-- **Invisible learning**: They don't even realize they're learning—it feels like normal social media, but with educational value embedded
+- **Keep having fun**: They keep doing what they love (scrolling social media), learning just happens automatically while they enjoy themselves
+- **Invisible learning**: They don't even realize they're learning—it feels like normal, fun social media, but with educational value embedded
 
 ### For Teachers
 - **Extend learning beyond the classroom**: Every social media scroll becomes a teaching moment
@@ -141,7 +141,7 @@ We're not just building an app—we're reimagining how education intersects with
 - Traditional learning methods struggle to compete with social media engagement
 - AI capabilities are advancing at unprecedented rates
 
-**LearnFlow represents a paradigm shift**: Instead of fighting against kids' natural behavior, we work with it. Instead of blocking their scrolling, we inject learning into it. Instead of requiring effort, we make learning effortless—happening automatically while they do what they want.
+**FunFlow represents a paradigm shift**: Instead of fighting against kids' natural behavior, we work with it. Instead of blocking their scrolling, we inject learning into it. Instead of making learning feel like work, we make it fun and effortless—happening automatically while they do what they love.
 
 This is the future of education: **intelligent, personalized, and seamlessly integrated into students' digital lives**.
 
@@ -170,9 +170,9 @@ We're not just using AI—we're pushing its boundaries in both application and m
 
 ---
 
-**LearnFlow**: Learning Without Effort—Injected Into Every Scroll
+**FunFlow**: Learning Without Effort—Injected Into Every Scroll
 
-*Where kids scroll naturally, learning flows automatically*
+*Where fun meets learning, and kids don't even notice*
 
 *Built for the TAL Hackathon - Exploring AI + Education*
 

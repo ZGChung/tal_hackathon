@@ -155,17 +155,24 @@ Original text: {original_text}"""
         rewritten_words = []
         keywords_used = []
         
-        # More aggressive replacement patterns
+        # More aggressive replacement patterns - expanded for better keyword integration
         adjective_replacements = {
-            'amazing': ['bright', 'shiny', 'playful', 'creative', 'curious'],
-            'great': ['creative', 'curious', 'bright'],
-            'good': ['gentle', 'warm', 'playful'],
-            'beautiful': ['bright', 'shiny', 'playful'],
-            'interesting': ['curious', 'playful', 'creative'],
-            'fun': ['playful', 'creative', 'curious'],
-            'incredible': ['bright', 'shiny', 'playful'],
-            'wonderful': ['bright', 'playful', 'creative'],
-            'fantastic': ['bright', 'creative', 'curious'],
+            'amazing': ['bright', 'shiny', 'playful', 'creative', 'curious', 'swift', 'gentle'],
+            'great': ['creative', 'curious', 'bright', 'playful', 'swift'],
+            'good': ['gentle', 'warm', 'playful', 'bright', 'creative'],
+            'beautiful': ['bright', 'shiny', 'playful', 'creative', 'curious'],
+            'interesting': ['curious', 'playful', 'creative', 'bright'],
+            'fun': ['playful', 'creative', 'curious', 'bright'],
+            'incredible': ['bright', 'shiny', 'playful', 'creative'],
+            'wonderful': ['bright', 'playful', 'creative', 'curious'],
+            'fantastic': ['bright', 'creative', 'curious', 'playful'],
+            'warm': ['gentle', 'warm', 'bright'],
+            'peaceful': ['gentle', 'harmony', 'calm'],
+            'relaxing': ['gentle', 'harmony', 'peaceful'],
+            'energized': ['swift', 'bright', 'playful'],
+            'inspiring': ['creative', 'bright', 'curious'],
+            'stunning': ['bright', 'shiny', 'beautiful'],
+            'refreshing': ['bright', 'swift', 'fresh'],
         }
         
         noun_replacements = {
@@ -177,6 +184,15 @@ Original text: {original_text}"""
             'knowledge': ['wisdom', 'courage'],
             'bravery': ['courage', 'wisdom'],
             'experience': ['adventure', 'journey', 'discovery'],
+            'moment': ['adventure', 'journey', 'discovery'],
+            'routine': ['journey', 'adventure', 'discovery'],
+            'power': ['courage', 'wisdom', 'strength'],
+            'beauty': ['harmony', 'rhythm', 'balance'],
+            'colors': ['silver', 'gold', 'bronze', 'bright'],
+            'sunlight': ['gold', 'bright', 'shiny'],
+            'breeze': ['wind', 'gentle', 'swift'],
+            'ocean': ['water', 'flow', 'rhythm'],
+            'sky': ['wind', 'clouds', 'bright'],
         }
         
         # First pass: aggressive word replacement

@@ -65,16 +65,16 @@ Our system leverages the sophisticated language understanding of modern LLMs to:
 -   Maintain authenticity (students can't tell content was "edited")
 -   Adapt to different content types (travel posts, lifestyle content, entertainment)
 
-### 3. **Multi-Agent AI Development System**
+### 3. **Multi-Agent AI System: Specialized Intelligence for Every Task**
 
-The platform itself was built using a cutting-edge multi-agent AI development approach:
+FunFlow uses a sophisticated multi-agent AI architecture where specialized agents work together to deliver personalized learning:
 
--   **Frontend Agent**: Specialized in React UI development
--   **Backend Agent**: Expert in FastAPI and server architecture
--   **Testing Agent**: Ensures quality through Test-Driven Development
--   **Integration Agent**: Seamlessly connects all components
+-   **Platform Agents**: Each social media platform (RedNote, YouTube, Instagram, TikTok) has its own specialized agent that understands the unique content style, format, and user behavior of that platform
+-   **Rewriting Agents**: Intelligent agents specialized in transforming content—they understand context, maintain tone, and naturally inject educational concepts without breaking the flow
+-   **Curriculum Agents**: Expert agents that analyze curriculum documents, extract learning concepts, and understand educational objectives across different subjects and grade levels
+-   **Preference Agents**: Personalized agents that apply parental and teacher preferences, ensuring content aligns with family values and learning goals
 
-This demonstrates the future of software development: AI agents collaborating to build complex systems faster and more reliably than traditional methods.
+This multi-agent approach means each agent is an expert in its domain, working together to create a seamless, intelligent learning experience. As we add more platforms and features, new specialized agents join the team, making the system more powerful and adaptable.
 
 ### 4. **Personalized Learning at Scale**
 
@@ -126,7 +126,7 @@ Yet this personalization happens automatically—no manual curation required.
 
 ### Innovation
 
--   **Multi-agent development**: Built using AI agents, demonstrating the future of software engineering
+-   **Multi-agent intelligence**: Specialized AI agents for platforms, rewriting, curriculum, and preferences working together
 -   **Test-driven development**: Ensures reliability and quality
 -   **Modern tech stack**: React frontend, FastAPI backend, SQLite database
 
@@ -181,23 +181,20 @@ Our hackathon demo showcases:
 ✅ **Role-based access** (Students vs. Administrators)
 ✅ **Beautiful, modern UI** that feels like a social media app
 ✅ **Original vs. Rewritten comparison** to demonstrate transformation
-✅ **Multi-agent development workflow** (the system was built by AI agents!)
+✅ **Multi-agent AI system** (specialized agents for platforms, rewriting, curriculum, and preferences)
 
 ---
 
 ## The Team's Innovation
 
-This project demonstrates cutting-edge AI application in two ways:
+This project demonstrates cutting-edge AI application: **Multi-agent intelligence working together**—platform agents, rewriting agents, curriculum agents, and preference agents collaborate to create a seamless, personalized learning experience that adapts to each student's needs.
 
-1. **Product Innovation**: Using LLMs to transform content for educational purposes
-2. **Development Innovation**: Using multi-agent AI systems to build the product itself
-
-We're not just using AI—we're pushing its boundaries in both application and methodology.
+We're not just using AI—we're building an intelligent ecosystem of specialized agents that work together to make learning effortless.
 
 ---
 
 **FunFlow**: Learning Without Effort—Injected Into Every Scroll
 
-_Where fun meets learning, and kids don't even notice_
+_Fun flows, learning follows_
 
 _Built for the TAL Hackathon - Exploring AI + Education_

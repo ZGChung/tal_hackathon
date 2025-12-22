@@ -130,43 +130,63 @@ Original text: {original_text}"""
         if not keywords:
             return text
         
-        # Simple paraphrasing patterns
+        # Paraphrase by replacing words and adding keywords naturally
         words = text.split()
         rewritten_words = []
         keywords_used = []
+        i = 0
         
-        # Try to replace synonyms or add keywords naturally
-        synonym_map = {
-            'amazing': ['wonderful', 'incredible', 'fantastic'],
-            'great': ['excellent', 'outstanding', 'remarkable'],
-            'good': ['nice', 'fine', 'pleasant'],
-            'beautiful': ['gorgeous', 'stunning', 'lovely'],
-            'interesting': ['fascinating', 'engaging', 'captivating'],
-            'fun': ['enjoyable', 'entertaining', 'playful'],
-            'learn': ['discover', 'explore', 'understand'],
-            'read': ['study', 'examine', 'peruse'],
-            'write': ['compose', 'create', 'craft'],
-        }
-        
-        # First pass: try to replace words with keywords
-        for word in words:
+        while i < len(words):
+            word = words[i]
             word_lower = word.lower().strip('.,!?;:')
             replaced = False
             
-            # Try to replace with keywords
-            for keyword in keywords:
-                if keyword.lower() not in keywords_used:
-                    # If keyword is an adjective and we're looking for descriptive words
-                    if self._is_adjective_context(word, words, words.index(word)):
-                        if keyword.lower() in ['bright', 'shiny', 'playful', 'creative', 'curious', 'gentle', 'swift']:
-                            # Replace with keyword
-                            rewritten_words.append(keyword)
-                            keywords_used.append(keyword.lower())
-                            replaced = True
-                            break
-                    # If keyword is a noun and fits context
-                    elif self._is_noun_context(word, words, words.index(word)):
-                        if keyword.lower() in ['adventure', 'journey', 'discovery', 'harmony', 'rhythm', 'wisdom', 'courage']:
+            # Try to replace common adjectives with keyword adjectives
+            adjective_replacements = {
+                'amazing': ['bright', 'shiny', 'playful'],
+                'great': ['creative', 'curious'],
+                'good': ['gentle', 'warm'],
+                'beautiful': ['bright', 'shiny'],
+                'interesting': ['curious', 'playful'],
+                'fun': ['playful', 'creative'],
+                'fast': ['swift', 'rapid'],
+                'slow': ['gentle', 'steady'],
+            }
+            
+            # Try adjective replacement
+            if word_lower in adjective_replacements:
+                for keyword in keywords:
+                    if keyword.lower() in adjective_replacements[word_lower] and keyword.lower() not in keywords_used:
+                        rewritten_words.append(keyword)
+                        keywords_used.append(keyword.lower())
+                        replaced = True
+                        break
+            
+            # Try noun replacement
+            noun_replacements = {
+                'trip': ['journey', 'adventure'],
+                'story': ['adventure', 'journey'],
+                'finding': ['discovery'],
+                'balance': ['harmony'],
+                'beat': ['rhythm'],
+                'knowledge': ['wisdom'],
+                'bravery': ['courage'],
+            }
+            
+            if not replaced and word_lower in noun_replacements:
+                for keyword in keywords:
+                    if keyword.lower() in noun_replacements[word_lower] and keyword.lower() not in keywords_used:
+                        rewritten_words.append(keyword)
+                        keywords_used.append(keyword.lower())
+                        replaced = True
+                        break
+            
+            # Try to add descriptive keywords before nouns
+            if not replaced and i < len(words) - 1:
+                next_word = words[i + 1].lower().strip('.,!?;:')
+                if next_word in ['book', 'novel', 'story', 'journey', 'experience', 'learning', 'adventure']:
+                    for keyword in keywords:
+                        if keyword.lower() in ['bright', 'playful', 'creative', 'curious', 'adventure', 'journey', 'discovery'] and keyword.lower() not in keywords_used:
                             rewritten_words.append(keyword)
                             keywords_used.append(keyword.lower())
                             replaced = True
@@ -174,23 +194,24 @@ Original text: {original_text}"""
             
             if not replaced:
                 rewritten_words.append(word)
+            
+            i += 1
         
-        # Second pass: add keywords naturally if not used yet
+        # Second pass: add remaining keywords naturally if not used yet
         if len(keywords_used) < len(keywords):
-            # Add remaining keywords as adjectives or in descriptive phrases
             for keyword in keywords:
                 if keyword.lower() not in keywords_used:
                     keyword_lower = keyword.lower()
-                    # Add before nouns or at natural break points
-                    if keyword_lower in ['silver', 'gold', 'bronze', 'wind', 'rain', 'storm']:
-                        # Add as descriptive element
-                        if len(rewritten_words) > 0:
-                            # Find a good insertion point
-                            for i in range(len(rewritten_words) - 1, max(0, len(rewritten_words) - 5), -1):
-                                if rewritten_words[i].lower() in ['the', 'a', 'an', 'this', 'that']:
-                                    rewritten_words.insert(i + 1, keyword)
-                                    keywords_used.append(keyword_lower)
-                                    break
+                    
+                    # Add concrete nouns/adjectives in natural positions
+                    if keyword_lower in ['silver', 'gold', 'bronze', 'wind', 'rain', 'storm', 'mountain', 'valley', 'river']:
+                        # Find a good insertion point (before nouns or in descriptive phrases)
+                        for i in range(len(rewritten_words) - 1, max(0, len(rewritten_words) - 8), -1):
+                            word = rewritten_words[i].lower().strip('.,!?;:')
+                            if word in ['the', 'a', 'an', 'this', 'that', 'my', 'our', 'your', 'with', 'in', 'on']:
+                                rewritten_words.insert(i + 1, keyword)
+                                keywords_used.append(keyword_lower)
+                                break
         
         rewritten = ' '.join(rewritten_words)
         

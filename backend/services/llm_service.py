@@ -96,8 +96,15 @@ Original text: {original_text}"""
                         if len(relevant_keywords) >= 3:
                             break
         
-        if not relevant_keywords:
-            return original_text, []
+        # If no relevant keywords found, still try to use first few keywords
+        if not relevant_keywords and keywords:
+            # Use first 2-3 keywords that are single words
+            for keyword in keywords[:10]:
+                keyword_lower = keyword.lower().strip()
+                if len(keyword.split()) == 1 and len(keyword_lower) >= 3:
+                    relevant_keywords.append(keyword)
+                    if len(relevant_keywords) >= 2:
+                        break
         
         # Rewrite by paraphrasing and incorporating keywords naturally
         rewritten = self._paraphrase_with_keywords(original_text, relevant_keywords)

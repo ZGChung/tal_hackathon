@@ -54,14 +54,12 @@ const ContentFeed = () => {
         );
 
         if (isMounted) {
-          // Filter out posts that weren't actually modified
-          const modifiedPosts = rewrittenData.filter(
-            (item) => item && item.rewriteData && 
-            item.rewriteData.original_text !== item.rewriteData.rewritten_text &&
-            item.rewriteData.keywords_used && item.rewriteData.keywords_used.length > 0
+          // Filter out null items, but show all posts (even if not modified)
+          const validPosts = rewrittenData.filter(
+            (item) => item && item.rewriteData
           );
           
-          setRewrittenPosts(modifiedPosts);
+          setRewrittenPosts(validPosts);
         }
       } catch (err) {
         if (isMounted) {

@@ -11,6 +11,9 @@ from backend.utils.security import get_password_hash
 from pathlib import Path
 import os
 
+# Get project root directory (parent of backend directory)
+PROJECT_ROOT = Path(__file__).parent.parent.absolute()
+
 
 def seed_database():
     """Seed the database with initial data"""
@@ -41,11 +44,11 @@ def seed_database():
             ("social_studies_curriculum.md", "Social Studies Curriculum")
         ]
         
-        # Try to find curriculum files in multiple locations
+        # Try to find curriculum files in multiple locations (using absolute paths)
         possible_paths = [
-            Path("manual_test/curriculum"),
-            Path("frontend/public"),
-            Path("../manual_test/curriculum"),
+            PROJECT_ROOT / "manual_test" / "curriculum",
+            PROJECT_ROOT / "frontend" / "public",
+            PROJECT_ROOT / "backend" / "uploads" / "curriculum",  # In case files were already uploaded
         ]
         
         # Seed curricula for each admin user that doesn't have any
@@ -95,7 +98,7 @@ def seed_database():
                 keywords = parse_markdown_keywords(content)
                 
                 # Save file to uploads directory (with user-specific naming to avoid conflicts)
-                upload_dir = Path("backend/uploads/curriculum")
+                upload_dir = PROJECT_ROOT / "backend" / "uploads" / "curriculum"
                 upload_dir.mkdir(parents=True, exist_ok=True)
                 saved_filename = f"{admin_user.id}_{filename}"
                 saved_file_path = upload_dir / saved_filename

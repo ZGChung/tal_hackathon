@@ -11,6 +11,7 @@ const PreferencesForm = () => {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
   const [preferencesId, setPreferencesId] = useState(null);
+  const [loadingTemplate, setLoadingTemplate] = useState(false);
 
   useEffect(() => {
     fetchPreferences();
@@ -55,6 +56,34 @@ const PreferencesForm = () => {
       .split(',')
       .map((item) => item.trim())
       .filter((item) => item.length > 0);
+  };
+
+  const loadTemplate = async (templateName) => {
+    setLoadingTemplate(true);
+    setMessage('');
+    setMessageType('');
+    
+    try {
+      const response = await fetch(`/${templateName}.json`);
+      if (!response.ok) {
+        throw new Error('Failed to load template');
+      }
+      const data = await response.json();
+      
+      // Populate form fields with template data
+      setFocusAreas(data.focus_areas?.join(', ') || '');
+      setKeywords(data.keywords?.join(', ') || '');
+      setSubjectPreferences(data.subject_preferences?.join(', ') || '');
+      
+      setMessage(`Loaded ${templateName.replace('example_preferences_', 'template ')} successfully!`);
+      setMessageType('success');
+    } catch (error) {
+      setMessage('Failed to load template. Please try again.');
+      setMessageType('error');
+      console.error('Error loading template:', error);
+    } finally {
+      setLoadingTemplate(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -102,6 +131,70 @@ const PreferencesForm = () => {
   return (
     <div className="admin-section">
       <h2>Preferences</h2>
+      
+      {/* Template Buttons */}
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
+          Load Predefined Templates:
+        </label>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => loadTemplate('example_preferences_1')}
+            disabled={loadingTemplate}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: loadingTemplate ? 'not-allowed' : 'pointer',
+              opacity: loadingTemplate ? 0.6 : 1,
+              fontSize: '14px'
+            }}
+          >
+            {loadingTemplate ? 'Loading...' : 'STEM Template'}
+          </button>
+          <button
+            type="button"
+            onClick={() => loadTemplate('example_preferences_2')}
+            disabled={loadingTemplate}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: loadingTemplate ? 'not-allowed' : 'pointer',
+              opacity: loadingTemplate ? 0.6 : 1,
+              fontSize: '14px'
+            }}
+          >
+            {loadingTemplate ? 'Loading...' : 'Arts Template'}
+          </button>
+          <button
+            type="button"
+            onClick={() => loadTemplate('example_preferences_3')}
+            disabled={loadingTemplate}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: loadingTemplate ? 'not-allowed' : 'pointer',
+              opacity: loadingTemplate ? 0.6 : 1,
+              fontSize: '14px'
+            }}
+          >
+            {loadingTemplate ? 'Loading...' : 'Holistic Template'}
+          </button>
+        </div>
+        <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>
+          Click a template button to load predefined preferences. You can modify them before saving.
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="focus-areas">Focus Areas (comma-separated)</label>

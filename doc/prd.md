@@ -103,7 +103,7 @@ This application automatically rewrites and rerenders content from social media 
 ### 4.1 Content Rewriting Logic
 
 -   **AI/LLM Integration**: Use LLM (e.g., OpenAI API, local model, or open-source alternative) for text rewriting
--   **Core Approach**: 
+-   **Core Approach**:
     -   Extract curriculum keywords/concepts from markdown files
     -   Use LLM to rewrite posts, increasing frequency of curriculum-related terms
     -   Maintain original post structure, tone, and engagement
@@ -115,7 +115,7 @@ This application automatically rewrites and rerenders content from social media 
 -   **Authentication**: Simple local authentication (username/password)
     -   No OAuth for demo (keep it simple)
     -   JWT tokens or session-based auth
--   **Role-Based Access Control**: 
+-   **Role-Based Access Control**:
     -   Student: Read-only access to content feed
     -   Admin: Full access to all features
 
@@ -134,33 +134,38 @@ This application automatically rewrites and rerenders content from social media 
 ### 5.1 Core Components (Must Have)
 
 1. **Simple Authentication System**
-   - User registration/login (Student and Admin roles)
-   - Local authentication (no OAuth)
-   - Role-based access control
+
+    - User registration/login (Student and Admin roles)
+    - Local authentication (no OAuth)
+    - Role-based access control
 
 2. **Curriculum Upload & Parsing**
-   - Upload markdown (.md) files
-   - Parse and extract keywords/concepts
-   - Store curriculum data locally
+
+    - Upload markdown (.md) files
+    - Parse and extract keywords/concepts
+    - Store curriculum data locally
 
 3. **Admin Preference Interface**
-   - Simple form to set educational focus areas
-   - Store preferences locally
+
+    - Simple form to set educational focus areas
+    - Store preferences locally
 
 4. **Mock RedNote Feed**
-   - Build RedNote-like UI with sample posts
-   - Display original posts in feed format
-   - Architecture ready for real API swap
+
+    - Build RedNote-like UI with sample posts
+    - Display original posts in feed format
+    - Architecture ready for real API swap
 
 5. **Content Rewriting Engine**
-   - LLM integration for text rewriting
-   - Increase curriculum keyword frequency
-   - Return rewritten content
+
+    - LLM integration for text rewriting
+    - Increase curriculum keyword frequency
+    - Return rewritten content
 
 6. **Unified Content UI**
-   - Display rewritten content feed
-   - Show original vs rewritten comparison
-   - Clean, modern design
+    - Display rewritten content feed
+    - Show original vs rewritten comparison
+    - Clean, modern design
 
 ### 5.2 Out of Scope (Future)
 
@@ -176,16 +181,18 @@ This application automatically rewrites and rerenders content from social media 
 
 ### Decision: Mock Interface (Option B)
 
-**Rationale**: 
-- RedNote (小红书) API requires business registration, approval process, and developer partnership
-- Too time-consuming for hackathon timeline
-- Mock allows full control and reliable demo
+**Rationale**:
+
+-   RedNote (小红书) API requires business registration, approval process, and developer partnership
+-   Too time-consuming for hackathon timeline
+-   Mock allows full control and reliable demo
 
 **Implementation**:
-- Build mock RedNote-like interface with sample posts
-- Simulate content feed (text posts with images)
-- Design with abstraction layer to easily swap with real API later
-- Maintain visual similarity to real platform for demo impact
+
+-   Build mock RedNote-like interface with sample posts
+-   Simulate content feed (text posts with images)
+-   Design with abstraction layer to easily swap with real API later
+-   Maintain visual similarity to real platform for demo impact
 
 **Architecture**: Create `PlatformAdapter` interface that can switch between mock and real API
 
@@ -224,14 +231,16 @@ This application automatically rewrites and rerenders content from social media 
 ## 9. Development Priority & Scalability
 
 ### Priority Order (Core First)
+
 1. **Phase 1 - Foundation**: Authentication, basic UI structure
 2. **Phase 2 - Core Features**: Curriculum upload, admin preferences, mock RedNote
 3. **Phase 3 - Rewriting**: LLM integration, content rewriting engine
 4. **Phase 4 - Polish**: UI/UX improvements, comparison view, error handling
 
 ### Scalability Considerations
-- Modular architecture (easy to add features)
-- Abstract platform integration (easy to swap mock with real API)
-- Extensible storage layer (easy to migrate from local to cloud)
-- Component-based frontend (easy to add new features)
-- API-first backend design (easy to add endpoints)
+
+-   Modular architecture (easy to add features)
+-   Abstract platform integration (easy to swap mock with real API)
+-   Extensible storage layer (easy to migrate from local to cloud)
+-   Component-based frontend (easy to add new features)
+-   API-first backend design (easy to add endpoints)

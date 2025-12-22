@@ -35,22 +35,24 @@ Let both services deploy first (takes ~5-10 minutes). You'll see the URLs in the
 
 ### 4. Configure Environment Variables
 
-**IMPORTANT:** Set these in order:
+**After deployment completes, set these variables:**
 
-#### Step 1: Backend Service
+#### Step 1: Backend Service (Required)
 
 1. Go to your **tal-hackathon-backend** service
 2. Click **"Environment"** tab
-3. Set these variables:
+3. Set this **REQUIRED** variable:
     - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY-HERE`
-    - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (replace with your actual frontend URL from Render dashboard)
-4. Click **"Save Changes"**
+4. (Optional) For better security, also set:
+    - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (replace with your actual frontend URL)
+    - *Note: If not set, CORS will allow all origins (works for initial deployment)*
+5. Click **"Save Changes"**
 
-#### Step 2: Frontend Service
+#### Step 2: Frontend Service (Required)
 
 1. Go to your **tal-hackathon-frontend** service
 2. Click **"Environment"** tab
-3. Set this variable:
+3. Set this **REQUIRED** variable:
     - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (replace with your actual backend URL from Render dashboard)
 4. Click **"Save Changes"**
 

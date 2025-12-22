@@ -7,17 +7,21 @@ Copy these values into your Render dashboard after deployment:
 ### Backend Service Environment Variables
 
 1. Go to your **tal-hackathon-backend** service → **Environment** tab
-2. Add/Update these variables:
+2. Add this **REQUIRED** variable:
 
 ```
 DEEPSEEK_API_KEY=YOUR-DEEPSEEK-API-KEY-HERE
 ```
 
+3. (Optional) For better security, also add:
+
 ```
 ALLOWED_ORIGINS=https://tal-hackathon-frontend.onrender.com
 ```
 
-**Note:** Replace `tal-hackathon-frontend.onrender.com` with your actual frontend URL from Render dashboard.
+**Note:** 
+- Replace `tal-hackathon-frontend.onrender.com` with your actual frontend URL from Render dashboard
+- If `ALLOWED_ORIGINS` is not set, CORS will allow all origins (works for initial deployment, but less secure)
 
 ### Frontend Service Environment Variables
 

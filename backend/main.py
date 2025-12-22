@@ -12,15 +12,22 @@ from backend.models import preferences as preferences_model
 app = FastAPI(title="TAL Hackathon API", version="0.1.0")
 
 # Configure CORS - support both dev and production
-allowed_origins = os.getenv(
-    "ALLOWED_ORIGINS",
-    "http://localhost:3000"
-).split(",")
+# If ALLOWED_ORIGINS is not set, allow all origins (for initial deployment)
+# You should set ALLOWED_ORIGINS in production for security
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS")
+if allowed_origins_env:
+    allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
+    allow_all_origins = False
+else:
+    # Default: allow all origins if not set (for initial deployment)
+    # This allows the app to work immediately after deployment
+    allowed_origins = ["*"]
+    allow_all_origins = True
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=allowed_origins if not allow_all_origins else ["*"],
+    allow_credentials=not allow_all_origins,  # Can't use credentials with allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )

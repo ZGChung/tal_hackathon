@@ -3,10 +3,22 @@ import api from '../utils/api';
 /**
  * Get current user's preferences
  * @returns {Promise<Object>} The user's preferences
+ * @throws {Error} If preferences not found (404) or other error
  */
 export const getPreferences = async () => {
-  const response = await api.get('/api/preferences');
-  return response.data;
+  try {
+    const response = await api.get('/api/preferences');
+    return response.data;
+  } catch (error) {
+    // Re-throw with status code preserved for proper handling
+    if (error.response?.status === 404 || error.status === 404) {
+      const notFoundError = new Error('Preferences not found');
+      notFoundError.status = 404;
+      notFoundError.response = error.response;
+      throw notFoundError;
+    }
+    throw error;
+  }
 };
 
 /**

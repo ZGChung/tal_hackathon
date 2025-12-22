@@ -18,6 +18,8 @@ const PreferencesForm = () => {
 
   const fetchPreferences = async () => {
     setFetching(true);
+    setMessage(''); // Clear any previous messages
+    setMessageType('');
     try {
       const data = await getPreferences();
       setPreferencesId(data.id);
@@ -25,11 +27,24 @@ const PreferencesForm = () => {
       setKeywords(data.keywords?.join(', ') || '');
       setSubjectPreferences(data.subject_preferences?.join(', ') || '');
     } catch (error) {
-      if (error.response?.status !== 404) {
-        setMessage(error.response?.data?.detail || error.message || 'Failed to load preferences');
+      // 404 is expected if preferences don't exist yet - don't show error
+      // Only show error for other status codes (500, network errors, etc.)
+      const status = error.response?.status || error.status || error.data?.status;
+      const isNotFound = status === 404 || 
+                        error.message?.includes('not found') || 
+                        error.message?.includes('Preferences not found');
+      
+      if (!isNotFound) {
+        // Only show error for non-404 errors
+        const errorMsg = error.response?.data?.detail || 
+                       error.data?.detail || 
+                       error.message || 
+                       'Failed to load preferences';
+        setMessage(errorMsg);
         setMessageType('error');
       }
-      // 404 is expected if preferences don't exist yet
+      // For 404, just leave the form empty - no error message needed
+      // This is the normal state when preferences haven't been created yet
     } finally {
       setFetching(false);
     }

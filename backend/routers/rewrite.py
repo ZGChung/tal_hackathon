@@ -94,18 +94,15 @@ async def rewrite_text(
     
     # Rewrite text
     rewriter = RewriterService()
-    rewritten_text = rewriter.rewrite(
+    rewritten_text, keywords_used = rewriter.rewrite(
         original_text=request.text,
         curriculum_keywords=curriculum_keywords,
         preference_keywords=preference_keywords
     )
     
-    # Combine all keywords used
-    all_keywords = list(set(curriculum_keywords + preference_keywords))
-    
     return RewriteResponse(
         original_text=request.text,
         rewritten_text=rewritten_text,
-        keywords_used=all_keywords
+        keywords_used=keywords_used
     )
 

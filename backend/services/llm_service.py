@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Tuple
 from openai import OpenAI
 
 
@@ -15,7 +15,7 @@ class LLMService:
             # For testing/development without API key
             self.client = None
     
-    def rewrite_text(self, original_text: str, keywords: List[str]) -> str:
+    def rewrite_text(self, original_text: str, keywords: List[str]) -> Tuple[str, List[str]]:
         """
         Rewrite text to incorporate keywords more frequently
         
@@ -24,7 +24,7 @@ class LLMService:
             keywords: List of keywords to incorporate
             
         Returns:
-            Rewritten text with keywords incorporated
+            Tuple of (rewritten_text, keywords_used)
         """
         if not self.client:
             # Fallback for testing/development
@@ -50,12 +50,15 @@ Original text: {original_text}"""
                 max_tokens=1000
             )
             
-            return response.choices[0].message.content.strip()
+            rewritten = response.choices[0].message.content.strip()
+            # Extract keywords that were actually used (simple heuristic)
+            keywords_used = self._extract_used_keywords(rewritten, keywords)
+            return rewritten, keywords_used
         except Exception as e:
             # Fallback to mock if API call fails
             return self._mock_rewrite(original_text, keywords)
     
-    def _mock_rewrite(self, original_text: str, keywords: List[str]) -> str:
+    def _mock_rewrite(self, original_text: str, keywords: List[str]) -> Tuple[str, List[str]]:
         """
         Mock rewrite function for testing/development
         Naturally incorporates relevant keywords into the text
@@ -110,10 +113,12 @@ Original text: {original_text}"""
             
             if additions:
                 # Add naturally to the text
-                return f"{original_text} 通过这种方式，我们可以{additions[0]}。"
+                rewritten = f"{original_text} 通过这种方式，我们可以{additions[0]}。"
+                return rewritten, relevant_keywords
             else:
                 # Generic addition if no specific match
-                return f"{original_text} 这有助于我们更好地学习和成长。"
+                rewritten = f"{original_text} 这有助于我们更好地学习和成长。"
+                return rewritten, relevant_keywords[:1] if relevant_keywords else []
         else:
             # English text
             additions = []
@@ -129,9 +134,11 @@ Original text: {original_text}"""
                     additions.append("develop language skills")
             
             if additions:
-                return f"{original_text} This helps us {additions[0]}."
+                rewritten = f"{original_text} This helps us {additions[0]}."
+                return rewritten, relevant_keywords
             else:
-                return f"{original_text} This contributes to our learning and growth."
+                rewritten = f"{original_text} This contributes to our learning and growth."
+                return rewritten, relevant_keywords[:1] if relevant_keywords else []
     
     def _filter_relevant_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """
@@ -170,4 +177,35 @@ Original text: {original_text}"""
                 relevant.append(keyword)
         
         return relevant[:5]  # Limit to 5 most relevant
+    
+    def _extract_used_keywords(self, rewritten_text: str, all_keywords: List[str]) -> List[str]:
+        """
+        Extract keywords that were actually used in the rewritten text
+        
+        Args:
+            rewritten_text: The rewritten text
+            all_keywords: All available keywords
+            
+        Returns:
+            List of keywords that appear in the rewritten text
+        """
+        if not all_keywords:
+            return []
+        
+        rewritten_lower = rewritten_text.lower()
+        used_keywords = []
+        
+        for keyword in all_keywords:
+            keyword_lower = keyword.lower()
+            # Check if keyword or its variations appear in the text
+            if keyword_lower in rewritten_lower:
+                used_keywords.append(keyword)
+            else:
+                # Check for partial matches (for Chinese keywords)
+                for word in keyword_lower.split():
+                    if len(word) > 2 and word in rewritten_lower:
+                        used_keywords.append(keyword)
+                        break
+        
+        return used_keywords[:5]  # Limit to 5 most relevant
 

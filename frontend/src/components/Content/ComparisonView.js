@@ -1,8 +1,75 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ComparisonView.css';
 
+// Simple diff algorithm to highlight changes
+const computeDiff = (original, rewritten) => {
+  const result = [];
+  const originalWords = original.split(/(\s+|[，。！？、；：])/);
+  const rewrittenWords = rewritten.split(/(\s+|[，。！？、；：])/);
+  
+  let origIdx = 0;
+  let rewriteIdx = 0;
+  
+  while (origIdx < originalWords.length || rewriteIdx < rewrittenWords.length) {
+    if (origIdx >= originalWords.length) {
+      // Only in rewritten
+      result.push({ type: 'added', text: rewrittenWords[rewriteIdx] });
+      rewriteIdx++;
+    } else if (rewriteIdx >= rewrittenWords.length) {
+      // Only in original
+      result.push({ type: 'removed', text: originalWords[origIdx] });
+      origIdx++;
+    } else if (originalWords[origIdx] === rewrittenWords[rewriteIdx]) {
+      // Same word
+      result.push({ type: 'unchanged', text: originalWords[origIdx] });
+      origIdx++;
+      rewriteIdx++;
+    } else {
+      // Different - try to find next match
+      let foundMatch = false;
+      for (let lookAhead = 1; lookAhead <= 5 && origIdx + lookAhead < originalWords.length; lookAhead++) {
+        if (originalWords[origIdx + lookAhead] === rewrittenWords[rewriteIdx]) {
+          // Found match ahead, mark words as removed
+          for (let i = 0; i < lookAhead; i++) {
+            result.push({ type: 'removed', text: originalWords[origIdx + i] });
+          }
+          origIdx += lookAhead;
+          foundMatch = true;
+          break;
+        }
+      }
+      
+      if (!foundMatch) {
+        // Check if rewritten word appears later in original
+        let foundInOriginal = false;
+        for (let lookAhead = 1; lookAhead <= 5 && rewriteIdx + lookAhead < rewrittenWords.length; lookAhead++) {
+          if (rewrittenWords[rewriteIdx + lookAhead] === originalWords[origIdx]) {
+            // Found match ahead in rewritten, mark words as added
+            for (let i = 0; i < lookAhead; i++) {
+              result.push({ type: 'added', text: rewrittenWords[rewriteIdx + i] });
+            }
+            rewriteIdx += lookAhead;
+            foundInOriginal = true;
+            break;
+          }
+        }
+        
+        if (!foundInOriginal) {
+          // No match found, mark both as changed
+          result.push({ type: 'removed', text: originalWords[origIdx] });
+          result.push({ type: 'added', text: rewrittenWords[rewriteIdx] });
+          origIdx++;
+          rewriteIdx++;
+        }
+      }
+    }
+  }
+  
+  return result;
+};
+
 const ComparisonView = ({ post, rewriteData, onClose }) => {
-  const [viewMode, setViewMode] = useState('side-by-side'); // 'side-by-side' or 'toggle'
+  const diff = computeDiff(rewriteData.original_text, rewriteData.rewritten_text);
 
   return (
     <div className="comparison-view-overlay" data-testid="comparison-view">
@@ -14,46 +81,34 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
           </button>
         </div>
 
-        <div className="view-mode-toggle">
-          <button
-            className={viewMode === 'side-by-side' ? 'active' : ''}
-            onClick={() => setViewMode('side-by-side')}
-          >
-            并排对比
-          </button>
-          <button
-            className={viewMode === 'toggle' ? 'active' : ''}
-            onClick={() => setViewMode('toggle')}
-          >
-            切换查看
-          </button>
+        <div className="diff-view">
+          <div className="diff-content">
+            {diff.map((item, index) => {
+              if (item.type === 'removed') {
+                return (
+                  <span key={index} className="diff-removed">
+                    {item.text}
+                  </span>
+                );
+              } else if (item.type === 'added') {
+                return (
+                  <span key={index} className="diff-added">
+                    {item.text}
+                  </span>
+                );
+              } else {
+                return (
+                  <span key={index} className="diff-unchanged">
+                    {item.text}
+                  </span>
+                );
+              }
+            })}
+          </div>
         </div>
 
-        {viewMode === 'side-by-side' ? (
-          <div className="side-by-side-view">
-            <div className="comparison-panel original-panel">
-              <div className="panel-header">
-                <span className="panel-label">原文</span>
-              </div>
-              <div className="panel-content">
-                <p className="comparison-text">{rewriteData.original_text}</p>
-              </div>
-            </div>
-            <div className="comparison-panel rewritten-panel">
-              <div className="panel-header">
-                <span className="panel-label">改写后</span>
-              </div>
-              <div className="panel-content">
-                <p className="comparison-text">{rewriteData.rewritten_text}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <ToggleView originalText={rewriteData.original_text} rewrittenText={rewriteData.rewritten_text} />
-        )}
-
         <div className="keywords-section">
-          <h3>使用的关键词</h3>
+          <h3>改写此内容时使用的关键词</h3>
           <div className="keywords-list">
             {rewriteData.keywords_used && rewriteData.keywords_used.length > 0 ? (
               rewriteData.keywords_used.map((keyword, index) => (
@@ -66,34 +121,6 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
             )}
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const ToggleView = ({ originalText, rewrittenText }) => {
-  const [showOriginal, setShowOriginal] = useState(true);
-
-  return (
-    <div className="toggle-view">
-      <div className="toggle-controls">
-        <button
-          className={showOriginal ? 'active' : ''}
-          onClick={() => setShowOriginal(true)}
-        >
-          原文
-        </button>
-        <button
-          className={!showOriginal ? 'active' : ''}
-          onClick={() => setShowOriginal(false)}
-        >
-          改写后
-        </button>
-      </div>
-      <div className="toggle-content">
-        <p className="comparison-text">
-          {showOriginal ? originalText : rewrittenText}
-        </p>
       </div>
     </div>
   );

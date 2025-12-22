@@ -6,10 +6,12 @@ from sqlalchemy.orm import Session
 from backend.database import SessionLocal, engine, Base
 from backend.models.user import User, UserRole
 from backend.models.curriculum import Curriculum
+from backend.models.preferences import Preferences
 from backend.services.curriculum_parser import parse_markdown_keywords
 from backend.utils.security import get_password_hash
 from pathlib import Path
 import os
+import json
 
 # Get project root directory (parent of backend directory)
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
@@ -120,6 +122,65 @@ def seed_database():
             if curricula_added > 0:
                 db.commit()
                 print(f"Seeded {curricula_added} curricula for admin {admin_user.username}")
+        
+        # Seed default preferences for admin users who don't have any
+        default_preferences_files = [
+            ("default_preferences_business.json", "Business & Entrepreneurship"),
+            ("default_preferences_language.json", "Language Learning"),
+            ("default_preferences_early_childhood.json", "Early Childhood Education")
+        ]
+        
+        # Try to find preference files
+        preferences_paths = [
+            PROJECT_ROOT / "manual_test" / "preferences",
+        ]
+        
+        for admin_user in admin_users:
+            # Check if this admin already has preferences
+            existing_preferences = db.query(Preferences).filter(
+                Preferences.user_id == admin_user.id
+            ).first()
+            
+            if existing_preferences:
+                print(f"Admin {admin_user.username} already has preferences. Skipping.")
+                continue
+            
+            # Try to load the first available default preference file
+            preferences_data = None
+            selected_file = None
+            
+            for filename, display_name in default_preferences_files:
+                for base_path in preferences_paths:
+                    full_path = base_path / filename
+                    if full_path.exists():
+                        try:
+                            with open(full_path, 'r', encoding='utf-8') as f:
+                                preferences_data = json.load(f)
+                            selected_file = display_name
+                            break
+                        except Exception as e:
+                            print(f"Warning: Could not read {filename}: {e}")
+                            continue
+                
+                if preferences_data:
+                    break
+            
+            if not preferences_data:
+                print(f"Warning: Could not find any default preference files for {admin_user.username}")
+                continue
+            
+            # Create preferences record
+            new_preferences = Preferences(
+                user_id=admin_user.id,
+                focus_areas=preferences_data.get("focus_areas", []),
+                keywords=preferences_data.get("keywords", []),
+                subject_preferences=preferences_data.get("subject_preferences", [])
+            )
+            
+            db.add(new_preferences)
+            db.commit()
+            db.refresh(new_preferences)
+            print(f"Added default preferences ({selected_file}) for {admin_user.username}")
         
         print("Database seeding complete.")
         

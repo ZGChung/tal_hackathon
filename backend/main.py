@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import auth, curriculum, preferences
+from backend.routers import auth, curriculum, preferences, rednote
 from backend.database import init_db
 # Import models to ensure they're registered with Base
 from backend.models import user
@@ -22,6 +22,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(curriculum.router)
 app.include_router(preferences.router)
+app.include_router(rednote.router)
 
 # Initialize database on startup
 @app.on_event("startup")

@@ -54,8 +54,11 @@ def get_active_preferences(db: Session) -> Optional[Preferences]:
     Returns:
         Preferences object or None if not found
     """
-    # Get most recent preferences from any admin
-    return db.query(Preferences).order_by(Preferences.updated_at.desc()).first()
+    # Get most recent preferences from any admin (by updated_at, fallback to created_at)
+    from sqlalchemy import desc, func
+    return db.query(Preferences).order_by(
+        func.coalesce(Preferences.updated_at, Preferences.created_at).desc()
+    ).first()
 
 
 @router.post("", response_model=RewriteResponse, status_code=status.HTTP_200_OK)

@@ -18,16 +18,16 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     try:
         # Ensure password is bytes for bcrypt
         if isinstance(plain_password, str):
-            password_bytes = plain_password.encode('utf-8')
+            password_bytes = plain_password.encode("utf-8")
         else:
             password_bytes = plain_password
-        
+
         # Ensure hash is bytes
         if isinstance(hashed_password, str):
-            hash_bytes = hashed_password.encode('utf-8')
+            hash_bytes = hashed_password.encode("utf-8")
         else:
             hash_bytes = hashed_password
-        
+
         # Use bcrypt directly
         return bcrypt.checkpw(password_bytes, hash_bytes)
     except (ValueError, TypeError) as e:
@@ -41,30 +41,32 @@ def get_password_hash(password: str) -> str:
     try:
         # Ensure password is a string
         if isinstance(password, bytes):
-            password = password.decode('utf-8')
+            password = password.decode("utf-8")
         elif not isinstance(password, str):
             password = str(password)
-        
+
         # Strip whitespace
         password = password.strip()
-        
+
         # Convert to bytes for bcrypt
-        password_bytes = password.encode('utf-8')
-        
+        password_bytes = password.encode("utf-8")
+
         # Check password length (bcrypt limit is 72 bytes)
         if len(password_bytes) > 72:
             print(f"WARNING: Password is {len(password_bytes)} bytes, truncating to 72")
             password_bytes = password_bytes[:72]
-        
+
         # Generate salt and hash using bcrypt directly
         salt = bcrypt.gensalt(rounds=12)
         hashed = bcrypt.hashpw(password_bytes, salt)
-        
+
         # Return as string (bcrypt hash is always ASCII)
-        return hashed.decode('utf-8')
+        return hashed.decode("utf-8")
     except (ValueError, TypeError) as e:
         # Handle bcrypt errors with more detail
-        print(f"Password hashing error - password type: {type(password)}, length: {len(str(password)) if password else 0}")
+        print(
+            f"Password hashing error - password type: {type(password)}, length: {len(str(password)) if password else 0}"
+        )
         if isinstance(password, str):
             print(f"Password bytes length: {len(password.encode('utf-8'))}")
         raise ValueError(f"Password hashing error: {e}")
@@ -89,4 +91,3 @@ def decode_access_token(token: str) -> Optional[dict]:
         return payload
     except JWTError:
         return None
-

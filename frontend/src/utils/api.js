@@ -40,8 +40,9 @@ api.interceptors.response.use(
         });
       }
       if (error.message === 'Network Error') {
+        const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
         return Promise.reject({
-          message: 'Network error: Unable to connect to server. Please check your connection.',
+          message: `Network error: Unable to connect to server at ${baseURL}. Please ensure the backend is running on port 8000.`,
           originalError: error,
         });
       }

@@ -60,7 +60,15 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
         )
     
     # Verify password
-    if not verify_password(user_data.password, user.password_hash):
+    try:
+        if not verify_password(user_data.password, user.password_hash):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect username or password"
+            )
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Password verification exception: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password"

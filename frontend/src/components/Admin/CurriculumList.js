@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { listCurricula } from '../../services/curriculumService';
 import './Admin.css';
 
-const CurriculumList = () => {
+const CurriculumList = forwardRef((props, ref) => {
   const [curricula, setCurricula] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -19,6 +19,10 @@ const CurriculumList = () => {
       setLoading(false);
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    refresh: fetchCurricula,
+  }));
 
   useEffect(() => {
     fetchCurricula();
@@ -81,6 +85,8 @@ const CurriculumList = () => {
       )}
     </div>
   );
-};
+});
+
+CurriculumList.displayName = 'CurriculumList';
 
 export default CurriculumList;

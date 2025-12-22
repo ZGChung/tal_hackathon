@@ -20,13 +20,11 @@ const AdminDashboard = () => {
 
   const handleUploadSuccess = () => {
     // Refresh curriculum list when upload succeeds
+    if (curriculumListRef.current && curriculumListRef.current.refresh) {
+      curriculumListRef.current.refresh();
+    }
+    // Switch to list tab to show the updated list
     setActiveSection('list');
-    // Force re-render by toggling
-    setTimeout(() => {
-      if (curriculumListRef.current) {
-        window.location.reload();
-      }
-    }, 500);
   };
 
   return (

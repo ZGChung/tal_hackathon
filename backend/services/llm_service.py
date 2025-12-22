@@ -72,11 +72,11 @@ Original text: {original_text}"""
         
         # Priority keywords that match common curriculum topics
         priority_terms = {
-            'reading': ['reading', '阅读', 'literature', '文学', 'comprehension', '理解'],
-            'writing': ['writing', '写作', 'composition', 'composition'],
-            'vocabulary': ['vocabulary', '词汇', 'word', '单词'],
-            'language': ['language', '语言', 'linguistics', '语言学'],
-            'learning': ['learning', '学习', 'study', 'education', '教育']
+            'reading': ['reading', 'literature', 'comprehension', 'literary', 'text'],
+            'writing': ['writing', 'composition', 'essay', 'narrative', 'expository'],
+            'vocabulary': ['vocabulary', 'word', 'words', 'lexicon'],
+            'language': ['language', 'linguistics', 'communication', 'speaking', 'listening'],
+            'learning': ['learning', 'study', 'education', 'teaching', 'instruction']
         }
         
         # Find matching keywords

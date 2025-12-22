@@ -5,7 +5,7 @@
 }
 
 .feed-header {
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
   color: white;
   padding: 24px 20px;
   text-align: center;
@@ -51,7 +51,7 @@
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #4caf50;
+  border-top: 4px solid #ff6b9d;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -62,7 +62,7 @@
 }
 
 .retry-button {
-  background: #4caf50;
+  background: #ff6b9d;
   color: white;
   border: none;
   padding: 10px 24px;
@@ -73,13 +73,16 @@
 }
 
 .retry-button:hover {
-  background: #45a049;
+  background: #ff5a8a;
 }
 
 .rewritten-posts-list {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .post-list-empty {
@@ -104,7 +107,9 @@
   }
 
   .rewritten-posts-list {
+    grid-template-columns: 1fr;
     padding: 16px;
+    gap: 16px;
   }
 }
 

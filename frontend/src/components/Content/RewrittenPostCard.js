@@ -47,18 +47,24 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
       
       <div className="post-content">
         <p className="post-text">{rewriteData.rewritten_text}</p>
-        {post.image_url && (
-          <div className="post-image-container">
+        <div className="post-image-container">
+          {post.image_url ? (
             <img
               src={post.image_url}
               alt="Post"
               className="post-image"
               onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/400?text=Image';
+                e.target.src = `https://via.placeholder.com/400x300/ff6b9d/ffffff?text=${encodeURIComponent(post.author || 'Post')}`;
               }}
             />
-          </div>
-        )}
+          ) : (
+            <img
+              src={`https://via.placeholder.com/400x300/ff6b9d/ffffff?text=${encodeURIComponent(post.author || 'Post')}`}
+              alt="Post placeholder"
+              className="post-image"
+            />
+          )}
+        </div>
       </div>
       
       <div className="post-footer">

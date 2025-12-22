@@ -6,6 +6,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 30000, // 30 second timeout
 });
 
 // Request interceptor to add JWT token to headers
@@ -18,7 +19,11 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    // Request error (before request is sent)
+    return Promise.reject({
+      message: 'Network error: Failed to send request',
+      originalError: error,
+    });
   }
 );
 
@@ -26,7 +31,31 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Handle network errors (no response from server)
+    if (!error.response) {
+      if (error.code === 'ECONNABORTED') {
+        return Promise.reject({
+          message: 'Request timeout: Server took too long to respond',
+          originalError: error,
+        });
+      }
+      if (error.message === 'Network Error') {
+        return Promise.reject({
+          message: 'Network error: Unable to connect to server. Please check your connection.',
+          originalError: error,
+        });
+      }
+      return Promise.reject({
+        message: 'Network error: Unable to reach server',
+        originalError: error,
+      });
+    }
+
+    // Handle HTTP error responses
+    const status = error.response.status;
+    const data = error.response.data;
+
+    if (status === 401) {
       // Token expired or invalid, clear storage
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -34,8 +63,57 @@ api.interceptors.response.use(
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
+      return Promise.reject({
+        message: 'Authentication failed: Please log in again',
+        status,
+        data,
+        originalError: error,
+      });
     }
-    return Promise.reject(error);
+
+    if (status === 403) {
+      return Promise.reject({
+        message: data?.detail || 'Access forbidden: You do not have permission',
+        status,
+        data,
+        originalError: error,
+      });
+    }
+
+    if (status === 404) {
+      return Promise.reject({
+        message: data?.detail || 'Resource not found',
+        status,
+        data,
+        originalError: error,
+      });
+    }
+
+    if (status === 422) {
+      return Promise.reject({
+        message: data?.detail || 'Validation error: Please check your input',
+        status,
+        data,
+        originalError: error,
+      });
+    }
+
+    if (status >= 500) {
+      return Promise.reject({
+        message: data?.detail || 'Server error: Please try again later',
+        status,
+        data,
+        originalError: error,
+      });
+    }
+
+    // Generic error handling
+    return Promise.reject({
+      message: data?.detail || error.message || 'An unexpected error occurred',
+      status,
+      data,
+      originalError: error,
+    });
   }
 );
 

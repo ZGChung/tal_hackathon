@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getPreferences, createPreferences, updatePreferences } from '../../services/preferencesService';
 import './Admin.css';
 
-const PreferencesForm = () => {
+const PreferencesForm = ({ onSaveSuccess }) => {
   const [focusAreas, setFocusAreas] = useState('');
   const [keywords, setKeywords] = useState('');
   const [subjectPreferences, setSubjectPreferences] = useState('');
@@ -110,6 +110,11 @@ const PreferencesForm = () => {
         setMessage('Preferences saved successfully!');
       }
       setMessageType('success');
+      
+      // Notify parent component
+      if (onSaveSuccess) {
+        onSaveSuccess();
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.detail || error.message || 'Save failed';
       setMessage(errorMessage);

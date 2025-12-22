@@ -100,44 +100,7 @@ const PreferencesList = forwardRef((props, ref) => {
 
   return (
     <div className="admin-section">
-      <div className="preferences-list-header">
-        <h2>Preferences List</h2>
-        {preferences && (
-          <div className="preferences-actions">
-            {showConfirm ? (
-              <div className="delete-confirmation">
-                <span className="delete-confirm-text">Delete preferences?</span>
-                <button
-                  type="button"
-                  className="delete-confirm-btn"
-                  onClick={handleDelete}
-                  disabled={deleting}
-                >
-                  {deleting ? 'Deleting...' : 'Confirm'}
-                </button>
-                <button
-                  type="button"
-                  className="delete-cancel-btn"
-                  onClick={cancelDelete}
-                  disabled={deleting}
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                className="delete-btn"
-                onClick={handleDelete}
-                disabled={deleting}
-                title="Delete preferences"
-              >
-                🗑️ Delete Preferences
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+      <h2>Preferences List</h2>
       {error && (
         <div className="message error" style={{ marginBottom: '1rem' }}>
           {error}
@@ -206,6 +169,39 @@ const PreferencesList = forwardRef((props, ref) => {
 
         <div className="preferences-meta">
           <p className="preferences-id">Preferences ID: {preferences.id}</p>
+          <div className="preferences-actions">
+            {showConfirm ? (
+              <div className="delete-confirmation">
+                <span className="delete-confirm-text">Delete preferences?</span>
+                <button
+                  type="button"
+                  className="delete-confirm-btn"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? 'Deleting...' : 'Confirm'}
+                </button>
+                <button
+                  type="button"
+                  className="delete-cancel-btn"
+                  onClick={cancelDelete}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="delete-btn"
+                onClick={handleDelete}
+                disabled={deleting}
+                title="Delete preferences"
+              >
+                🗑️ Delete Preferences
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -378,6 +378,11 @@ button:disabled {
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .preferences-id {
@@ -385,13 +390,6 @@ button:disabled {
   color: #999;
   margin: 0;
   font-family: monospace;
-}
-
-.preferences-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
 }
 
 .preferences-actions {

@@ -9,8 +9,8 @@ import os
 pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto",
-    bcrypt__ident="2b",  # Use 2b identifier to avoid bug detection
-    bcrypt__rounds=12  # Set rounds explicitly to avoid initialization issues
+    # Don't set bcrypt__ident or bcrypt__rounds explicitly - let passlib handle it
+    # This avoids issues with bcrypt bug detection
 )
 
 # JWT settings
@@ -40,17 +40,30 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     """Hash a password"""
     try:
-        # Ensure password is a string and not too long
+        # Ensure password is a string
         if isinstance(password, bytes):
             password = password.decode('utf-8')
+        elif not isinstance(password, str):
+            password = str(password)
         
-        # Truncate if necessary (though this shouldn't happen with normal passwords)
-        if len(password.encode('utf-8')) > 72:
-            password = password[:72]
+        # Strip whitespace
+        password = password.strip()
         
+        # Check password length in bytes (bcrypt limit is 72 bytes)
+        password_bytes = password.encode('utf-8')
+        if len(password_bytes) > 72:
+            print(f"WARNING: Password is {len(password_bytes)} bytes, truncating to 72")
+            # Truncate the bytes, then decode back to string
+            password = password_bytes[:72].decode('utf-8', errors='ignore')
+        
+        # Use passlib's hash method directly with the password as a string
+        # Passlib will handle the encoding internally
         return pwd_context.hash(password)
     except (ValueError, TypeError) as e:
-        # Handle bcrypt errors
+        # Handle bcrypt errors with more detail
+        print(f"Password hashing error - password type: {type(password)}, length: {len(str(password)) if password else 0}")
+        if isinstance(password, str):
+            print(f"Password bytes length: {len(password.encode('utf-8'))}")
         raise ValueError(f"Password hashing error: {e}")
 
 

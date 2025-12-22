@@ -33,9 +33,17 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
         
         # Create new user
         try:
+            # Debug: Check what we're receiving
+            print(f"Registration attempt - Username: {user_data.username}, Password type: {type(user_data.password)}, Password length: {len(user_data.password) if user_data.password else 0}")
+            if user_data.password:
+                password_bytes = user_data.password.encode('utf-8')
+                print(f"Password bytes length: {len(password_bytes)}")
+            
             hashed_password = get_password_hash(user_data.password)
         except Exception as e:
             print(f"Password hashing error: {e}")
+            import traceback
+            traceback.print_exc()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Error processing password: {str(e)}"

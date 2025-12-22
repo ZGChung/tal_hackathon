@@ -14,6 +14,8 @@ const ContentFeed = () => {
   const [comparingRewriteData, setComparingRewriteData] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchAndRewrite = async () => {
       try {
         setLoading(true);
@@ -21,6 +23,8 @@ const ContentFeed = () => {
 
         // Fetch posts from RedNote feed
         const feedData = await getFeed();
+        if (!isMounted) return;
+        
         setPosts(feedData);
 
         // Rewrite each post
@@ -28,12 +32,14 @@ const ContentFeed = () => {
           feedData.map(async (post) => {
             try {
               const rewriteData = await rewriteText(post.text);
+              if (!isMounted) return null;
               return {
                 post,
                 rewriteData,
               };
             } catch (err) {
               console.error(`Failed to rewrite post ${post.id}:`, err);
+              if (!isMounted) return null;
               // Return original post if rewrite fails
               return {
                 post,
@@ -47,15 +53,32 @@ const ContentFeed = () => {
           })
         );
 
-        setRewrittenPosts(rewrittenData);
+        if (isMounted) {
+          // Filter out posts that weren't actually modified
+          const modifiedPosts = rewrittenData.filter(
+            (item) => item && item.rewriteData && 
+            item.rewriteData.original_text !== item.rewriteData.rewritten_text &&
+            item.rewriteData.keywords_used && item.rewriteData.keywords_used.length > 0
+          );
+          
+          setRewrittenPosts(modifiedPosts);
+        }
       } catch (err) {
-        setError(err.message || 'Failed to load feed');
+        if (isMounted) {
+          setError(err.message || 'Failed to load feed');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchAndRewrite();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleCompare = (post, rewriteData) => {

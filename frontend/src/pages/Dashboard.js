@@ -1,21 +1,69 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import ProtectedRoute from '../components/ProtectedRoute';
+import AppSelection from './AppSelection';
 import ContentFeed from './ContentFeed';
 
 const Dashboard = () => {
   const { user, logout, isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showAppSelection, setShowAppSelection] = useState(true);
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  useEffect(() => {
+    // Check if app was selected from URL or state
+    const appFromState = location.state?.selectedApp;
+    const appFromStorage = localStorage.getItem('selectedApp');
+    
+    if (appFromState || appFromStorage === 'rednote') {
+      setSelectedApp(appFromState || appFromStorage);
+      setShowAppSelection(false);
+    }
+  }, [location]);
+
+  const handleAppSelect = (appId) => {
+    setSelectedApp(appId);
+    localStorage.setItem('selectedApp', appId);
+    setShowAppSelection(false);
+  };
+
+  const handleBackToApps = () => {
+    setShowAppSelection(true);
+    setSelectedApp(null);
+    localStorage.removeItem('selectedApp');
+  };
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  // For students, show the ContentFeed (rewriting view)
   // For admins, they should be redirected to /admin/dashboard (handled in Login.js)
+  if (isAdmin) {
+    return (
+      <ProtectedRoute>
+        <div style={{ padding: '20px' }}>
+          <h1>Dashboard</h1>
+          <p>Welcome, {user?.username}!</p>
+          <p>Role: {user?.role}</p>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </ProtectedRoute>
+    );
+  }
+
+  // For students, show app selection or content feed
   if (!isAdmin && user?.role === 'Student') {
+    if (showAppSelection) {
+      return (
+        <ProtectedRoute>
+          <AppSelection onAppSelect={handleAppSelect} />
+        </ProtectedRoute>
+      );
+    }
+
     return (
       <ProtectedRoute>
         <div style={{ position: 'relative' }}>
@@ -28,9 +76,20 @@ const Dashboard = () => {
             gap: '10px',
             alignItems: 'center'
           }}>
-            <span style={{ color: '#666', fontSize: '0.9rem' }}>
-              Welcome, {user?.username}!
-            </span>
+            <button 
+              onClick={handleBackToApps}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#667eea',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.9rem'
+              }}
+            >
+              ← Back to Apps
+            </button>
             <button 
               onClick={handleLogout}
               style={{

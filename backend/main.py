@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routers import auth, curriculum, preferences, rednote, rewrite, seed
 from backend.database import init_db
+import os
 
 # Import models to ensure they're registered with Base
 from backend.models import user
@@ -10,10 +11,15 @@ from backend.models import preferences as preferences_model
 
 app = FastAPI(title="TAL Hackathon API", version="0.1.0")
 
-# Configure CORS
+# Configure CORS - support both dev and production
+allowed_origins = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:3000"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

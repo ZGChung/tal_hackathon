@@ -71,6 +71,7 @@
   color: #333;
   white-space: pre-wrap;
   word-wrap: break-word;
+  text-align: left;
 }
 
 .diff-removed {

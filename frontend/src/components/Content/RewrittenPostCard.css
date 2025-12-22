@@ -86,6 +86,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   letter-spacing: 0.2px;
+  text-align: left;
 }
 
 .post-image-container {

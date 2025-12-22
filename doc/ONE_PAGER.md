@@ -1,8 +1,8 @@
-# EduWeave: Transforming Social Media into Learning Opportunities
+# LearnFlow: Learning Without Effort, Injected Into Every Scroll
 
 ## The Vision
 
-**EduWeave** is an AI-powered platform that transforms social media content into curriculum-aligned educational material. Instead of blocking distracting content, we intelligently rewrite it to embed learning while maintaining the engagement that keeps students interested.
+**LearnFlow** is an AI-powered platform that injects curriculum-aligned learning directly into the social media feeds kids already love. Students scroll naturally—we seamlessly embed educational content into every post, making learning happen effortlessly without them even realizing it.
 
 ---
 
@@ -12,7 +12,7 @@ Students spend hours on social media platforms like RedNote (小红书), consumi
 - **Block access** (frustrating for students, creates resistance)
 - **Ignore the problem** (wasted learning opportunities)
 
-**EduWeave takes a revolutionary third path**: We transform the content itself, making every scroll a learning opportunity without sacrificing engagement.
+**LearnFlow takes a revolutionary third path**: We inject learning directly into their feeds. Kids keep scrolling—we make sure they learn while they do.
 
 ---
 
@@ -30,12 +30,12 @@ Administrators (teachers and parents) set educational preferences:
 ### Step 3: Content Discovery
 The platform connects to social media feeds (in our demo: RedNote/小红书). Students see familiar, engaging content from platforms they already love—but with a twist.
 
-### Step 4: AI-Powered Transformation
-Here's where the magic happens: Our Large Language Model (LLM) system intelligently rewrites each social media post to:
-- **Naturally incorporate curriculum keywords** (e.g., if students are learning about "ancient civilizations," posts about travel get rewritten to include historical context)
-- **Maintain the original tone and style** (students don't feel like they're reading a textbook)
-- **Preserve engagement** (the content remains fun, relatable, and visually appealing)
-- **Embed learning seamlessly** (educational concepts appear organically, not forced)
+### Step 4: AI-Powered Injection
+Here's where the magic happens: Our Large Language Model (LLM) system intelligently injects learning into each social media post:
+- **Seamlessly incorporate curriculum keywords** (e.g., if students are learning about "ancient civilizations," posts about travel get rewritten to include historical context)
+- **Maintain the original tone and style** (students don't feel like they're reading a textbook—they don't even notice the learning)
+- **Preserve engagement** (the content remains fun, relatable, and visually appealing—kids keep scrolling)
+- **Zero effort required** (educational concepts appear organically—learning happens automatically while they do what they want)
 
 ### Step 5: Unified Learning Feed
 Students browse a beautiful, familiar interface (similar to their favorite social media apps) where every post has been intelligently enhanced with educational value. They can toggle between original and rewritten versions to see the transformation.
@@ -76,9 +76,9 @@ Yet this personalization happens automatically—no manual curation required.
 ## Real-World Impact
 
 ### For Students
-- **Learn without realizing it**: Educational concepts appear naturally in content they already enjoy
-- **No resistance**: Unlike blocked apps, students actively engage with the platform
-- **Contextual learning**: Concepts appear in real-world contexts, improving retention
+- **Learn without effort**: Educational concepts are injected into content they're already scrolling—no extra work required
+- **No resistance**: They keep doing what they love (scrolling social media), learning just happens automatically
+- **Invisible learning**: They don't even realize they're learning—it feels like normal social media, but with educational value embedded
 
 ### For Teachers
 - **Extend learning beyond the classroom**: Every social media scroll becomes a teaching moment
@@ -141,7 +141,7 @@ We're not just building an app—we're reimagining how education intersects with
 - Traditional learning methods struggle to compete with social media engagement
 - AI capabilities are advancing at unprecedented rates
 
-**EduWeave represents a paradigm shift**: Instead of fighting against technology, we harness it. Instead of blocking distractions, we transform them into opportunities. Instead of forcing learning, we make it invisible and enjoyable.
+**LearnFlow represents a paradigm shift**: Instead of fighting against kids' natural behavior, we work with it. Instead of blocking their scrolling, we inject learning into it. Instead of requiring effort, we make learning effortless—happening automatically while they do what they want.
 
 This is the future of education: **intelligent, personalized, and seamlessly integrated into students' digital lives**.
 
@@ -170,7 +170,9 @@ We're not just using AI—we're pushing its boundaries in both application and m
 
 ---
 
-**EduWeave**: Where Social Media Meets Education, Powered by AI Intelligence
+**LearnFlow**: Learning Without Effort—Injected Into Every Scroll
+
+*Where kids scroll naturally, learning flows automatically*
 
 *Built for the TAL Hackathon - Exploring AI + Education*
 

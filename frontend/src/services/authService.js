@@ -36,9 +36,25 @@ export const login = async (username, password) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.detail || 'Invalid credentials. Please try again.'
-    );
+    // The api interceptor returns an object with a 'message' property
+    // Extract the message from the error object
+    let errorMessage = 'Invalid credentials. Please try again.';
+    
+    if (error.message) {
+      errorMessage = error.message;
+    } else if (error.response?.data?.detail) {
+      errorMessage = error.response.data.detail;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+    
+    // If the message suggests the user doesn't exist, provide helpful guidance
+    if (errorMessage.toLowerCase().includes('incorrect username') || 
+        errorMessage.toLowerCase().includes('invalid credentials')) {
+      errorMessage = 'Invalid username or password. If you haven\'t registered yet, please register first.';
+    }
+    
+    throw new Error(errorMessage);
   }
 };
 

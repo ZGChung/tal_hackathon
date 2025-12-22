@@ -57,7 +57,10 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (error) {
-      setErrorMessage(error.message || 'Invalid credentials');
+      // Extract error message from Error object or error object
+      const errorMsg = error?.message || error?.response?.data?.detail || 'Invalid credentials. Please check your username and password.';
+      setErrorMessage(errorMsg);
+      console.error('Login error:', error); // Debug log
     } finally {
       setLoading(false);
     }

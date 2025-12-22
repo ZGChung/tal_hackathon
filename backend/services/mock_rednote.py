@@ -16,106 +16,106 @@ class MockRedNoteAdapter(PlatformAdapter):
         base_time = datetime.now()
         
         posts = [
-            # Education-related posts in English that will be modified
+            # RedNote-style lifestyle posts with educational themes (will be rewritten with curriculum keywords)
             Post(
                 id="post_001",
-                author="Learning Enthusiast",
-                text="Just finished reading an amazing book today! Learned so much new knowledge. Reading really broadens your horizons and improves your cognitive abilities. Highly recommend reading more books!",
-                image_url="https://via.placeholder.com/400?text=Reading+Learning",
-                likes=2345,
-                timestamp=base_time - timedelta(hours=2),
-                comments=89,
-                shares=45
+                author="BookwormDaily",
+                text="📚 Just finished this amazing novel! The writing style is so beautiful and the vocabulary used is incredible. Reading really helps expand your language skills and comprehension. Anyone else love getting lost in a good book?",
+                image_url="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop",
+                likes=3456,
+                timestamp=base_time - timedelta(hours=1),
+                comments=234,
+                shares=89
             ),
             Post(
                 id="post_002",
-                author="Education Tips",
-                text="Learning with kids is so much fun! Through interactive methods, children can better understand knowledge and develop their interest in learning. It's all about making education engaging!",
-                image_url="https://via.placeholder.com/400?text=Education",
-                likes=3456,
-                timestamp=base_time - timedelta(hours=5),
-                comments=123,
-                shares=67
+                author="StudyWithMe",
+                text="✨ My daily writing practice routine! Writing every morning has improved my expression so much. It's like a form of meditation that helps organize thoughts. The key is consistency - even just 10 minutes a day makes a difference!",
+                image_url="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=300&fit=crop",
+                likes=5678,
+                timestamp=base_time - timedelta(hours=3),
+                comments=456,
+                shares=123
             ),
             Post(
                 id="post_003",
-                author="Writing Journey",
-                text="Started practicing writing recently. Writing a little bit every day, and slowly noticing my expression skills improving. Writing is such a great way to think and reflect.",
-                image_url="https://via.placeholder.com/400?text=Writing",
-                likes=1890,
-                timestamp=base_time - timedelta(hours=8),
-                comments=56,
-                shares=28
+                author="LanguageLover",
+                text="🌟 Learning a new language has been such a journey! Building vocabulary through daily practice and reading. The key is immersion - listening, speaking, and reading every day. My comprehension has improved so much!",
+                image_url="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=300&fit=crop",
+                likes=4321,
+                timestamp=base_time - timedelta(hours=5),
+                comments=189,
+                shares=67
             ),
             Post(
                 id="post_004",
-                author="Language Learner",
-                text="The most important thing in learning English is practicing speaking and listening. Practicing daily, and my vocabulary is gradually increasing. Language learning requires persistence and dedication.",
-                image_url="https://via.placeholder.com/400?text=Language+Learning",
-                likes=2789,
-                timestamp=base_time - timedelta(hours=12),
-                comments=78,
-                shares=34
+                author="ReadingCorner",
+                text="💫 This historical fiction book taught me so much! Reading about the past helps understand the present better. The author's writing style and use of language really brought history to life. Highly recommend for anyone interested in learning!",
+                image_url="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+                likes=2890,
+                timestamp=base_time - timedelta(hours=7),
+                comments=145,
+                shares=56
             ),
             Post(
                 id="post_005",
-                author="Book Lover",
-                text="Just finished reading a book about history. Gained deeper understanding of the past. Reading history helps us better understand the present and learn from previous experiences.",
-                image_url="https://via.placeholder.com/400?text=History+Books",
-                likes=1567,
-                timestamp=base_time - timedelta(hours=15),
-                comments=45,
-                shares=23
+                author="StudyTips",
+                text="📖 Found my perfect study method! Morning reading sessions work best for me. The quiet time helps with comprehension and retention. Plus, building a daily reading habit has expanded my vocabulary naturally!",
+                image_url="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop",
+                likes=4123,
+                timestamp=base_time - timedelta(hours=9),
+                comments=278,
+                shares=98
             ),
             Post(
                 id="post_006",
-                author="Study Methods",
-                text="Finding the right study method for yourself is crucial. Some people work better in the morning, others are more efficient at night. The key is finding your own rhythm and sticking to it.",
-                image_url="https://via.placeholder.com/400?text=Study+Methods",
-                likes=4123,
-                timestamp=base_time - timedelta(days=1),
-                comments=189,
+                author="LearnEveryday",
+                text="🔬 Fascinated by this science book I'm reading! Learning new concepts through reading is so engaging. The way complex ideas are explained through clear writing really helps with understanding. Education doesn't have to be boring!",
+                image_url="https://images.unsplash.com/photo-1532619675605-1ede6c9ed2d7?w=400&h=300&fit=crop",
+                likes=3567,
+                timestamp=base_time - timedelta(hours=11),
+                comments=201,
                 shares=78
             ),
             Post(
                 id="post_007",
-                author="Science Explorer",
-                text="Learned something really interesting about science today. The world is so fascinating! Keeping curiosity alive and constantly learning new things makes life so much more interesting.",
-                image_url="https://via.placeholder.com/400?text=Science",
-                likes=2234,
-                timestamp=base_time - timedelta(days=1, hours=3),
-                comments=67,
-                shares=29
+                author="BookishVibes",
+                text="📚 Literary analysis is becoming my new hobby! Reading poetry and analyzing the language, vocabulary choices, and writing techniques. It's amazing how much you can learn about communication through literature!",
+                image_url="https://images.unsplash.com/photo-1512820790803-83ca750da815?w=400&h=300&fit=crop",
+                likes=5234,
+                timestamp=base_time - timedelta(hours=13),
+                comments=312,
+                shares=134
             ),
             Post(
                 id="post_008",
-                author="Culture Explorer",
-                text="Learning about different cultures is really fascinating. Through reading and traveling, we can better understand the diversity of our world and appreciate different perspectives.",
-                image_url="https://via.placeholder.com/400?text=Culture",
-                likes=1890,
-                timestamp=base_time - timedelta(days=1, hours=6),
-                comments=56,
-                shares=34
+                author="StudyGram",
+                text="✨ My reading comprehension has improved so much! Practicing with different texts and focusing on vocabulary building. The key is consistent practice and paying attention to how language is used. Learning is a journey!",
+                image_url="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=300&fit=crop",
+                likes=3890,
+                timestamp=base_time - timedelta(hours=15),
+                comments=167,
+                shares=89
             ),
             Post(
                 id="post_009",
-                author="Critical Thinker",
-                text="Been practicing logical thinking recently. Noticed my analytical skills improving. More thinking and analysis helps us solve problems better and make informed decisions.",
-                image_url="https://via.placeholder.com/400?text=Thinking",
-                likes=2789,
-                timestamp=base_time - timedelta(days=2),
-                comments=78,
-                shares=45
+                author="BookClub",
+                text="💭 Critical thinking through reading! Analyzing texts, understanding different perspectives, and building vocabulary. Reading widely has expanded my knowledge and improved my communication skills. Books are the best teachers!",
+                image_url="https://images.unsplash.com/photo-1506880018603-83d9b7b8c3b1?w=400&h=300&fit=crop",
+                likes=4456,
+                timestamp=base_time - timedelta(hours=17),
+                comments=289,
+                shares=112
             ),
             Post(
                 id="post_010",
-                author="Literature Lover",
-                text="Reading poetry is such a joy. Beautiful words can touch the heart and make you appreciate the beauty of language. Highly recommend reading more literary works!",
-                image_url="https://via.placeholder.com/400?text=Literature",
-                likes=3456,
-                timestamp=base_time - timedelta(days=2, hours=4),
-                comments=123,
-                shares=67
+                author="LearningJourney",
+                text="🌟 Writing practice update! My expression and vocabulary have improved so much. Writing regularly helps organize thoughts and communicate ideas clearly. It's like a workout for your brain!",
+                image_url="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop",
+                likes=3789,
+                timestamp=base_time - timedelta(hours=19),
+                comments=198,
+                shares=76
             ),
         ]
         

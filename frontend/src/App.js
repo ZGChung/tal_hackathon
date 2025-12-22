@@ -5,6 +5,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import RedNoteFeed from './pages/RedNoteFeed';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -29,6 +30,14 @@ function App() {
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                <ProtectedRoute>
+                  <RedNoteFeed />
                 </ProtectedRoute>
               }
             />

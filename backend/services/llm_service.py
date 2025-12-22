@@ -1,4 +1,5 @@
 import os
+import re
 from typing import List, Tuple
 from openai import OpenAI
 
@@ -251,7 +252,6 @@ Original text: {original_text}"""
                 for pattern, replacement in insertion_points:
                     if pattern in rewritten.lower() and kw_lower not in keywords_used:
                         # Case-insensitive replace
-                        import re
                         rewritten = re.sub(re.escape(pattern), replacement, rewritten, flags=re.IGNORECASE, count=1)
                         keywords_used.append(kw_lower)
                         break

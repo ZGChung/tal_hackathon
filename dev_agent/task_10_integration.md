@@ -61,8 +61,8 @@ Copy this entire section to initialize a new agent:
 **Environment Setup**:
 ```bash
 conda activate rl
-# Backend running: cd backend && uvicorn main:app --reload
-# Frontend running: cd frontend && npm start
+# Backend: cd backend && pip install -r requirements.txt && cd .. && uvicorn backend.main:app --reload
+# Frontend: cd frontend && npm start
 ```
 
 ---

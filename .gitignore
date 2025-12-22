@@ -45,3 +45,9 @@ htmlcov/
 # Conda
 .conda/
 
+# Database
+*.db
+*.sqlite
+*.sqlite3
+test.db
+

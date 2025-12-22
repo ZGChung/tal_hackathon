@@ -133,3 +133,15 @@ This social studies curriculum explores human society, history, geography, econo
 - Multimedia resources
 - Field trips and guest speakers
 
+### Specific Vocabulary Words
+- Mountain, Valley, River
+- Ancient, Modern, Historic
+- Freedom, Justice, Equality
+- Community, Society, Culture
+- Trade, Commerce, Market
+- Explore, Discover, Journey
+- Brave, Strong, Wise
+- Peace, Harmony, Unity
+- Rich, Poor, Wealthy
+- Fast, Slow, Steady
+

@@ -1,0 +1,263 @@
+.comparison-view-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.comparison-view-container {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.comparison-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.close-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.view-mode-toggle {
+  display: flex;
+  gap: 8px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.view-mode-toggle button {
+  background: #f5f5f5;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+}
+
+.view-mode-toggle button.active {
+  background: #4caf50;
+  color: white;
+}
+
+.view-mode-toggle button:hover:not(.active) {
+  background: #e0e0e0;
+}
+
+.side-by-side-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.comparison-panel {
+  padding: 24px;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.comparison-panel:last-child {
+  border-right: none;
+}
+
+.panel-header {
+  margin-bottom: 16px;
+}
+
+.panel-label {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.original-panel .panel-label {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.rewritten-panel .panel-label {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.panel-content {
+  flex: 1;
+}
+
+.comparison-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.toggle-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.toggle-controls {
+  display: flex;
+  gap: 8px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.toggle-controls button {
+  background: #f5f5f5;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+  font-weight: 500;
+}
+
+.toggle-controls button.active {
+  background: #4caf50;
+  color: white;
+}
+
+.toggle-controls button:hover:not(.active) {
+  background: #e0e0e0;
+}
+
+.toggle-content {
+  padding: 24px;
+  flex: 1;
+}
+
+.keywords-section {
+  padding: 20px 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #f9f9f9;
+}
+
+.keywords-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.keywords-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.keyword-tag {
+  background: #4caf50;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.no-keywords {
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .comparison-view-overlay {
+    padding: 0;
+  }
+
+  .comparison-view-container {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .side-by-side-view {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-panel {
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .comparison-panel:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-header {
+    padding: 16px;
+  }
+
+  .comparison-header h2 {
+    font-size: 20px;
+  }
+
+  .view-mode-toggle,
+  .toggle-controls {
+    padding: 12px 16px;
+  }
+
+  .comparison-panel,
+  .toggle-content {
+    padding: 16px;
+  }
+
+  .keywords-section {
+    padding: 16px;
+  }
+}
+

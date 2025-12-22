@@ -34,6 +34,7 @@ async def startup_event():
     # Seed database with initial data for demo
     try:
         from backend.database_seed import seed_database
+
         seed_database()
     except Exception as e:
         # Don't fail startup if seeding fails

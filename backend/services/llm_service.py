@@ -31,15 +31,9 @@ class LLMService:
             # In production, this should raise an error or use a fallback
             return self._mock_rewrite(original_text, keywords)
         
-        # Filter keywords to only those relevant to the content
-        relevant_keywords = self._filter_relevant_keywords(original_text, keywords)
-        
-        if not relevant_keywords:
-            # No relevant keywords, return original text
-            return original_text
-        
+        # Use all keywords (mock posts are already education-related)
         # Create prompt
-        keywords_str = ", ".join(relevant_keywords[:5])  # Limit to 5 most relevant
+        keywords_str = ", ".join(keywords[:10])  # Use up to 10 keywords
         prompt = f"""Rewrite the following text to naturally incorporate ONLY the relevant educational keywords: {keywords_str}
 IMPORTANT: Only use keywords that are actually relevant to the content. Do not force unrelated keywords.
 Maintain the original tone, style, and meaning. The rewritten text should feel natural and authentic.
@@ -49,7 +43,7 @@ Original text: {original_text}"""
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant that rewrites text to incorporate ONLY relevant educational keywords naturally. If keywords are not relevant to the content, do not use them. Always preserve the original tone, style, and meaning."},
+                    {"role": "system", "content": "You are a helpful assistant that rewrites educational content to naturally incorporate relevant keywords. Only use keywords that make sense in context. Always preserve the original tone, style, and meaning."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.7,
@@ -64,92 +58,80 @@ Original text: {original_text}"""
     def _mock_rewrite(self, original_text: str, keywords: List[str]) -> str:
         """
         Mock rewrite function for testing/development
-        Intelligently selects and incorporates relevant keywords
+        Naturally incorporates relevant keywords into the text
         """
         if not keywords:
             return original_text
         
-        # Find relevant keywords that match the content theme
-        text_lower = original_text.lower()
+        # Select 2-3 most relevant keywords (prioritize education-related ones)
         relevant_keywords = []
+        text_lower = original_text.lower()
         
-        # Education/learning related keywords
-        education_terms = ['reading', 'writing', 'learning', 'education', 'study', 'teach', 
-                          'learn', 'book', 'literature', 'language', 'vocabulary', 'comprehension',
-                          '阅读', '写作', '学习', '教育', '读书', '文学', '语言', '词汇']
+        # Priority keywords that match common curriculum topics
+        priority_terms = {
+            'reading': ['reading', '阅读', 'literature', '文学', 'comprehension', '理解'],
+            'writing': ['writing', '写作', 'composition', 'composition'],
+            'vocabulary': ['vocabulary', '词汇', 'word', '单词'],
+            'language': ['language', '语言', 'linguistics', '语言学'],
+            'learning': ['learning', '学习', 'study', 'education', '教育']
+        }
         
-        # Check if text is education-related
-        is_education_related = any(term in text_lower for term in education_terms)
-        
-        if not is_education_related:
-            # If content is not education-related, don't force keywords
-            return original_text
-        
-        # Select keywords that are relevant to the content
-        for keyword in keywords:
+        # Find matching keywords
+        for keyword in keywords[:10]:  # Check first 10 keywords
             keyword_lower = keyword.lower()
-            # Match if keyword is mentioned or related to education/learning themes
-            if any(term in keyword_lower for term in ['reading', 'writing', 'literature', 'language', 
-                    'vocabulary', 'comprehension', 'learning', 'education', 'study',
-                    '阅读', '写作', '文学', '语言', '学习', '教育']):
-                if keyword not in relevant_keywords:
-                    relevant_keywords.append(keyword)
-                    if len(relevant_keywords) >= 2:  # Limit to 2 most relevant
+            for category, terms in priority_terms.items():
+                if any(term in keyword_lower for term in terms):
+                    if keyword not in relevant_keywords:
+                        relevant_keywords.append(keyword)
                         break
+            if len(relevant_keywords) >= 2:
+                break
         
-        # If no relevant keywords found, try to use general education keywords
-        if not relevant_keywords:
-            for keyword in keywords:
-                if any(term in keyword.lower() for term in ['curriculum', 'grade', 'level', 'skill', 
-                        '课程', '年级', '技能']):
-                    relevant_keywords.append(keyword)
-                    if len(relevant_keywords) >= 2:
-                        break
+        # If no priority matches, use first 2 keywords
+        if not relevant_keywords and keywords:
+            relevant_keywords = keywords[:2]
         
-        # If still no relevant keywords, don't modify
-        if not relevant_keywords:
-            return original_text
-        
-        # Naturally incorporate keywords into the text
-        # For Chinese text, add keywords in a natural way
+        # Naturally incorporate keywords into Chinese text
         if any('\u4e00' <= char <= '\u9fff' for char in original_text):
-            # Chinese text - incorporate keywords naturally
-            keyword_phrases = []
+            # Map keywords to natural Chinese phrases
+            additions = []
             for kw in relevant_keywords[:2]:
-                if 'reading' in kw.lower() or '阅读' in kw:
-                    keyword_phrases.append("提升阅读能力")
-                elif 'writing' in kw.lower() or '写作' in kw:
-                    keyword_phrases.append("加强写作技巧")
-                elif 'vocabulary' in kw.lower() or '词汇' in kw:
-                    keyword_phrases.append("扩展词汇量")
-                elif 'literature' in kw.lower() or '文学' in kw:
-                    keyword_phrases.append("文学素养")
-                elif 'language' in kw.lower() or '语言' in kw:
-                    keyword_phrases.append("语言能力")
+                kw_lower = kw.lower()
+                if 'reading' in kw_lower or '阅读' in kw_lower or 'literature' in kw_lower or '文学' in kw_lower:
+                    additions.append("提升阅读能力和文学素养")
+                elif 'writing' in kw_lower or '写作' in kw_lower:
+                    additions.append("加强写作技巧")
+                elif 'vocabulary' in kw_lower or '词汇' in kw_lower:
+                    additions.append("扩展词汇量")
+                elif 'language' in kw_lower or '语言' in kw_lower:
+                    additions.append("提高语言表达能力")
+                elif 'learning' in kw_lower or '学习' in kw_lower or 'education' in kw_lower or '教育' in kw_lower:
+                    additions.append("促进学习效果")
             
-            if keyword_phrases:
-                # Add naturally at the end
-                addition = f" 通过这种方式，我们可以更好地{keyword_phrases[0]}。"
-                return original_text + addition
+            if additions:
+                # Add naturally to the text
+                return f"{original_text} 通过这种方式，我们可以{additions[0]}。"
+            else:
+                # Generic addition if no specific match
+                return f"{original_text} 这有助于我们更好地学习和成长。"
         else:
-            # English text - incorporate keywords naturally
-            keyword_phrases = []
+            # English text
+            additions = []
             for kw in relevant_keywords[:2]:
-                if 'reading' in kw.lower():
-                    keyword_phrases.append("improve reading skills")
-                elif 'writing' in kw.lower():
-                    keyword_phrases.append("enhance writing abilities")
-                elif 'vocabulary' in kw.lower():
-                    keyword_phrases.append("expand vocabulary")
-                elif 'literature' in kw.lower():
-                    keyword_phrases.append("literary appreciation")
+                kw_lower = kw.lower()
+                if 'reading' in kw_lower or 'literature' in kw_lower:
+                    additions.append("improve reading skills and literary appreciation")
+                elif 'writing' in kw_lower:
+                    additions.append("enhance writing abilities")
+                elif 'vocabulary' in kw_lower:
+                    additions.append("expand vocabulary")
+                elif 'language' in kw_lower:
+                    additions.append("develop language skills")
             
-            if keyword_phrases:
-                addition = f" This helps us {keyword_phrases[0]}."
-                return original_text + addition
-        
-        # Fallback: return original if no good match
-        return original_text
+            if additions:
+                return f"{original_text} This helps us {additions[0]}."
+            else:
+                return f"{original_text} This contributes to our learning and growth."
     
     def _filter_relevant_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """

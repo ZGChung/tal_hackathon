@@ -223,10 +223,6 @@ describe('CurriculumList Component', () => {
     curriculumService.listCurricula.mockResolvedValue(mockCurricula);
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the list tab
-    const listTab = screen.getByText(/curriculum list/i);
-    fireEvent.click(listTab);
 
     await waitFor(() => {
       expect(screen.getByText('curriculum1.md')).toBeInTheDocument();
@@ -240,10 +236,6 @@ describe('CurriculumList Component', () => {
     curriculumService.listCurricula.mockResolvedValue([]);
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the list tab
-    const listTab = screen.getByText(/curriculum list/i);
-    fireEvent.click(listTab);
 
     await waitFor(() => {
       expect(screen.getByText(/no curricula uploaded yet/i)).toBeInTheDocument();
@@ -282,21 +274,15 @@ describe('PreferencesForm Component', () => {
     jest.clearAllMocks();
   });
 
-  test('renders preferences form with all fields', async () => {
+  test('renders preferences form with all fields', () => {
     preferencesService.getPreferences.mockRejectedValue({ response: { status: 404 } });
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the preferences tab
-    const preferencesTab = screen.getByText(/preferences/i);
-    fireEvent.click(preferencesTab);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText(/focus areas.*comma/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/keywords.*comma/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/subject preferences.*comma/i)).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /save preferences/i })).toBeInTheDocument();
-    });
+    expect(screen.getByLabelText(/focus areas/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/keywords/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/subject preferences/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /save preferences/i })).toBeInTheDocument();
   });
 
   test('displays existing preferences when available', async () => {
@@ -311,10 +297,6 @@ describe('PreferencesForm Component', () => {
     preferencesService.getPreferences.mockResolvedValue(mockPreferences);
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the preferences tab
-    const preferencesTab = screen.getByText(/preferences/i);
-    fireEvent.click(preferencesTab);
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('STEM, Arts')).toBeInTheDocument();
@@ -335,23 +317,19 @@ describe('PreferencesForm Component', () => {
     preferencesService.createPreferences.mockResolvedValue(mockResponse);
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the preferences tab
-    const preferencesTab = screen.getByText(/preferences/i);
-    fireEvent.click(preferencesTab);
 
-    await waitFor(async () => {
+    await waitFor(() => {
       const focusAreasInput = screen.getByLabelText(/focus areas.*comma/i);
       const keywordsInput = screen.getByLabelText(/keywords.*comma/i);
       const subjectPreferencesInput = screen.getByLabelText(/subject preferences.*comma/i);
       const saveButton = screen.getByRole('button', { name: /save preferences/i });
 
-      await userEvent.clear(focusAreasInput);
-      await userEvent.type(focusAreasInput, 'STEM');
-      await userEvent.clear(keywordsInput);
-      await userEvent.type(keywordsInput, 'innovation');
-      await userEvent.clear(subjectPreferencesInput);
-      await userEvent.type(subjectPreferencesInput, 'Math');
+      userEvent.clear(focusAreasInput);
+      userEvent.type(focusAreasInput, 'STEM');
+      userEvent.clear(keywordsInput);
+      userEvent.type(keywordsInput, 'innovation');
+      userEvent.clear(subjectPreferencesInput);
+      userEvent.type(subjectPreferencesInput, 'Math');
       fireEvent.click(saveButton);
     });
 
@@ -383,17 +361,13 @@ describe('PreferencesForm Component', () => {
     preferencesService.updatePreferences.mockResolvedValue(mockUpdateResponse);
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the preferences tab
-    const preferencesTab = screen.getByText(/preferences/i);
-    fireEvent.click(preferencesTab);
 
-    await waitFor(async () => {
+    await waitFor(() => {
       const focusAreasInput = screen.getByLabelText(/focus areas.*comma/i);
       const saveButton = screen.getByRole('button', { name: /save preferences/i });
 
-      await userEvent.clear(focusAreasInput);
-      await userEvent.type(focusAreasInput, 'STEM, Arts');
+      userEvent.clear(focusAreasInput);
+      userEvent.type(focusAreasInput, 'STEM, Arts');
       fireEvent.click(saveButton);
     });
 
@@ -408,15 +382,9 @@ describe('PreferencesForm Component', () => {
     preferencesService.createPreferences.mockRejectedValue(new Error('Save failed'));
 
     renderWithRouter(<AdminDashboard />);
-    
-    // Click on the preferences tab
-    const preferencesTab = screen.getByText(/preferences/i);
-    fireEvent.click(preferencesTab);
 
-    await waitFor(() => {
-      const saveButton = screen.getByRole('button', { name: /save preferences/i });
-      fireEvent.click(saveButton);
-    });
+    const saveButton = screen.getByRole('button', { name: /save preferences/i });
+    fireEvent.click(saveButton);
 
     await waitFor(() => {
       expect(screen.getByText(/save failed/i)).toBeInTheDocument();

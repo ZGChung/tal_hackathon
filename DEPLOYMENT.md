@@ -22,19 +22,16 @@ Render is the quickest solution for deploying your full-stack app. It has a free
    - Connect your GitHub repository
    - Render will automatically detect `render.yaml` and deploy both services
 
-4. **Set Environment Variables**:
-   - Go to your backend service settings
-   - Add `OPENAI_API_KEY` (your OpenAI API key)
-   - The `SECRET_KEY` is auto-generated, but you can set a custom one if needed
-   - Update `ALLOWED_ORIGINS` to include your frontend URL (comma-separated):
-     ```
-     http://localhost:3000,https://your-frontend-url.onrender.com
-     ```
-
-5. **Update Frontend API URL**:
-   - After backend deploys, copy its URL
-   - Go to frontend service settings
-   - Update `REACT_APP_API_URL` to your backend URL (e.g., `https://tal-hackathon-backend.onrender.com`)
+4. **Set Environment Variables** (after services deploy):
+   
+   **Backend Service:**
+   - `DEEPSEEK_API_KEY` = Your DeepSeek API key (get from https://platform.deepseek.com)
+   - `ALLOWED_ORIGINS` = Your frontend URL (e.g., `https://tal-hackathon-frontend.onrender.com`)
+   - `LLM_API_BASE_URL` = `https://api.deepseek.com` (already set)
+   - `LLM_MODEL` = `deepseek-chat` (already set)
+   
+   **Frontend Service:**
+   - `REACT_APP_API_URL` = Your backend URL (e.g., `https://tal-hackathon-backend.onrender.com`)
 
 6. **Access your app**:
    - Frontend: `https://tal-hackathon-frontend.onrender.com`
@@ -84,9 +81,11 @@ Follow Option 1 or 2 above for backend only.
 
 ### Backend:
 - `SECRET_KEY`: JWT secret (auto-generated on Render, or set manually)
-- `OPENAI_API_KEY`: Your OpenAI API key (required for rewriting features)
+- `DEEPSEEK_API_KEY`: Your DeepSeek API key (required for rewriting features)
+- `LLM_API_BASE_URL`: DeepSeek API endpoint (default: `https://api.deepseek.com`)
+- `LLM_MODEL`: Model name (default: `deepseek-chat`)
 - `DATABASE_URL`: Database connection (defaults to SQLite)
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed frontend URLs
+- `ALLOWED_ORIGINS`: Frontend URL (e.g., `https://your-frontend.onrender.com`)
 
 ### Frontend:
 - `REACT_APP_API_URL`: Backend API URL (e.g., `https://your-backend.onrender.com`)

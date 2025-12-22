@@ -5,13 +5,15 @@ from openai import OpenAI
 
 
 class LLMService:
-    """Service for interacting with LLM (OpenAI) for text rewriting"""
+    """Service for interacting with LLM (OpenAI/DeepSeek) for text rewriting"""
     
     def __init__(self):
         """Initialize LLM service with API key from environment"""
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("DEEPSEEK_API_KEY") or os.getenv("OPENAI_API_KEY")
         if api_key:
-            self.client = OpenAI(api_key=api_key)
+            # DeepSeek uses OpenAI-compatible API with custom base_url
+            base_url = os.getenv("LLM_API_BASE_URL", "https://api.deepseek.com")
+            self.client = OpenAI(api_key=api_key, base_url=base_url)
         else:
             # For testing/development without API key
             self.client = None
@@ -41,8 +43,10 @@ Maintain the original tone, style, and meaning. The rewritten text should feel n
 Original text: {original_text}"""
         
         try:
+            # Use DeepSeek model if DEEPSEEK_API_KEY is set, otherwise use OpenAI model
+            model = os.getenv("LLM_MODEL", "deepseek-chat" if os.getenv("DEEPSEEK_API_KEY") else "gpt-3.5-turbo")
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=model,
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant that rewrites educational content to naturally incorporate relevant keywords. Only use keywords that make sense in context. Always preserve the original tone, style, and meaning."},
                     {"role": "user", "content": prompt}

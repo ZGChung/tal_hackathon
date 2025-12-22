@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.main import app
 from backend.database import get_db, Base
-from backend.models.user import User
+from backend.models.user import User  # Import model to register it with Base
 
 
 # Create test database

@@ -82,6 +82,18 @@ This comprehensive language arts curriculum focuses on developing reading, writi
 - Academic vocabulary
 - Domain-specific terms
 
+### Specific Vocabulary Words
+- Silver, Gold, Bronze
+- Wind, Rain, Storm
+- Playful, Creative, Curious
+- Adventure, Journey, Discovery
+- Harmony, Rhythm, Melody
+- Courage, Wisdom, Strength
+- Explore, Discover, Learn
+- Bright, Shiny, Glowing
+- Gentle, Kind, Warm
+- Swift, Quick, Rapid
+
 ## Key Concepts
 
 ### Communication

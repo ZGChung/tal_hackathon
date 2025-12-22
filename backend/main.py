@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import auth
+from backend.routers import auth, preferences
 from backend.database import init_db
+# Import models to ensure they're registered with Base
+from backend.models import user
+from backend.models import preferences as preferences_model
 
 app = FastAPI(title="TAL Hackathon API", version="0.1.0")
 
@@ -16,6 +19,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(auth.router)
+app.include_router(preferences.router)
 
 # Initialize database on startup
 @app.on_event("startup")

@@ -128,8 +128,11 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
         user=user_response,
     )
     
-    # Debug logging
+    # Debug logging - verify the response structure
+    response_dict = token_response.model_dump() if hasattr(token_response, 'model_dump') else token_response.dict()
     print(f"Login successful for user: {user.username} (id: {user.id}), role: {role_value}")
+    print(f"Token response structure: {response_dict}")
+    print(f"User in response: {response_dict.get('user')}")
     
     return token_response
 

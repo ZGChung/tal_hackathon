@@ -82,7 +82,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
         )
 
 
-@router.post("/login", response_model=Token)
+@router.post("/login")  # Removed response_model to avoid serialization issues
 async def login(user_data: UserLogin, db: Session = Depends(get_db)):
     """Login and get JWT token"""
     # Find user

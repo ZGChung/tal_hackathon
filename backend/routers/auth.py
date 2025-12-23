@@ -121,20 +121,34 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
         role=role_value
     )
     
-    # Create token response
-    token_response = Token(
-        access_token=access_token,
-        token_type="bearer",
-        user=user_response,
-    )
-    
-    # Debug logging - verify the response structure
-    response_dict = token_response.model_dump() if hasattr(token_response, 'model_dump') else token_response.dict()
-    print(f"Login successful for user: {user.username} (id: {user.id}), role: {role_value}")
-    print(f"Token response structure: {response_dict}")
-    print(f"User in response: {response_dict.get('user')}")
-    
-    return token_response
+    # Create token response as dict to ensure proper serialization
+    try:
+        user_response_dict = {
+            "id": user.id,
+            "username": user.username,
+            "role": role_value
+        }
+        
+        token_response_dict = {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": user_response_dict
+        }
+        
+        # Debug logging
+        print(f"Login successful for user: {user.username} (id: {user.id}), role: {role_value}")
+        print(f"Token response dict: {token_response_dict}")
+        
+        # Return as dict - FastAPI will serialize it properly
+        return token_response_dict
+    except Exception as e:
+        print(f"Error creating login response: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error creating login response: {str(e)}"
+        )
 
 
 @router.get("/me", response_model=UserResponse)

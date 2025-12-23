@@ -67,12 +67,18 @@ git push origin main  # or your branch name
 
 ### 4. Update Frontend with Backend URL
 
+**⚠️ IMPORTANT:** React needs environment variables at BUILD time. You MUST rebuild after setting the variable!
+
 1. Go to your **tal-hackathon-frontend** service in Render
 2. Click **"Environment"** tab
 3. Add:
-    - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (paste your backend URL from Step 3b)
+   - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (paste your backend URL from Step 3b)
+   - **Make sure there's NO trailing slash** (e.g., `https://backend.onrender.com` not `https://backend.onrender.com/`)
 4. Click **"Save Changes"**
-5. Click **"Manual Deploy"** → **"Deploy latest commit"** to rebuild with the new environment variable
+5. **CRITICAL:** Click **"Manual Deploy"** → **"Deploy latest commit"** to rebuild with the new environment variable
+   - This rebuild is required! The frontend won't work until you rebuild.
+
+**Note:** If you see errors about `localhost:8000`, it means the frontend was built before setting `REACT_APP_API_URL`. Just rebuild after setting the variable.
 
 ### 5. Access Your App
 

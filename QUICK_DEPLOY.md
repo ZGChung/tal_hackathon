@@ -52,7 +52,7 @@ git push origin main  # or your branch name
     - **Build Command**: `pip install -r backend/requirements.txt`
     - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
 4. **Before clicking "Create Web Service"**, scroll to **"Environment Variables"** section and add:
-    - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY` (get from https://platform.deepseek.com)
+   - `DEEPSEEK_API_KEY` = Get your key by running `./copy_api_key.sh` or check `.env.local`
     - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (paste your frontend URL from Step 2b)
     - `LLM_API_BASE_URL` = `https://api.deepseek.com`
     - `LLM_MODEL` = `deepseek-chat`
@@ -136,4 +136,6 @@ If you prefer to deploy both services at once (simpler but requires manual URL s
 
 ## Quick Reference
 
-See `RENDER_ENV_SETUP.md` for copy-paste ready environment variable values.
+- **Get your API key**: Run `./copy_api_key.sh` or check `.env.local`
+- **See `RENDER_ENV_SETUP.md`** for copy-paste ready environment variable values
+- **See `DEPLOYMENT_WORKFLOW.md`** for detailed secure deployment workflow

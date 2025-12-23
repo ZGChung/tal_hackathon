@@ -50,7 +50,7 @@ git push origin main  # or your branch name
     - **Root Directory**: Leave empty
     - **Environment**: `Python 3`
     - **Build Command**: `pip install -r backend/requirements.txt`
-    - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+    - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
 4. **Before clicking "Create Web Service"**, scroll to **"Environment Variables"** section and add:
     - `DEEPSEEK_API_KEY` = Get your key by running `./copy_api_key.sh` or check `.env.local`
     - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (paste your frontend URL from Step 2b)

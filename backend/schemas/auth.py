@@ -16,13 +16,6 @@ class UserLogin(BaseModel):
     password: str
 
 
-class Token(BaseModel):
-    """Schema for JWT token response"""
-    access_token: str
-    token_type: str = "bearer"
-    user: "UserResponse"
-
-
 class UserResponse(BaseModel):
     """Schema for user response"""
     id: int
@@ -33,12 +26,15 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
+class Token(BaseModel):
+    """Schema for JWT token response"""
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse  # Use actual type instead of forward reference
+
+
 class RegisterResponse(BaseModel):
     """Schema for registration response"""
     message: str
     user_id: int
-
-
-# Update forward references
-Token.model_rebuild()
 

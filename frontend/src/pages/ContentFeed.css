@@ -6,8 +6,8 @@
   flex-direction: column;
   max-width: 100%;
   margin: 0 auto;
-  border-left: 3px solid #ff6b9d;
-  border-right: 3px solid #ff6b9d;
+  border-left: 3px solid #ff2442;
+  border-right: 3px solid #ff2442;
   position: relative;
   overflow-x: hidden;
 }
@@ -59,11 +59,11 @@
 }
 
 .nav-tab:hover {
-  color: #ff6b9d;
+  color: #ff2442;
 }
 
 .nav-tab.active {
-  color: #ff6b9d;
+  color: #ff2442;
   font-weight: 600;
 }
 
@@ -74,7 +74,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: #ff6b9d;
+  background: #ff2442;
   border-radius: 2px 2px 0 0;
 }
 
@@ -121,12 +121,12 @@
 }
 
 .category-tab:hover {
-  background: #fff5f7;
-  color: #ff6b9d;
+  background: #fff0f0;
+  color: #ff2442;
 }
 
 .category-tab.active {
-  background: #ff6b9d;
+  background: #ff2442;
   color: #ffffff;
   font-weight: 600;
 }
@@ -183,7 +183,7 @@
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #ff6b9d;
+  border-top: 4px solid #ff2442;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -194,7 +194,7 @@
 }
 
 .retry-button {
-  background: #ff6b9d;
+  background: #ff2442;
   color: white;
   border: none;
   padding: 10px 24px;
@@ -205,7 +205,7 @@
 }
 
 .retry-button:hover {
-  background: #ff5a8a;
+  background: #e60000;
 }
 
 .post-list-empty {
@@ -248,7 +248,7 @@
 }
 
 .bottom-nav-item.active {
-  color: #ff6b9d;
+  color: #ff2442;
 }
 
 .nav-icon {
@@ -262,13 +262,13 @@
 }
 
 .create-button {
-  background: #ff6b9d;
+  background: #ff2442;
   border-radius: 50%;
   width: 56px;
   height: 56px;
   padding: 0;
   margin: -8px 0;
-  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 36, 66, 0.3);
   color: white;
 }
 
@@ -294,8 +294,8 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .rednote-app {
-    border-left: 2px solid #ff6b9d;
-    border-right: 2px solid #ff6b9d;
+    border-left: 2px solid #ff2442;
+    border-right: 2px solid #ff2442;
   }
 
   .rewritten-posts-list {

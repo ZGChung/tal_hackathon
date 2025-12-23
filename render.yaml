@@ -17,8 +17,7 @@ services:
         value: https://api.deepseek.com
       - key: LLM_MODEL
         value: deepseek-chat
-      - key: PYTHON_VERSION
-        value: 3.11.0
+      # Python version is specified in backend/runtime.txt
       # OPTIONAL: Set after frontend deploys for better security
       # If not set, CORS will allow all origins (works for initial deployment)
       # Format: https://tal-hackathon-frontend.onrender.com (replace with your actual URL)

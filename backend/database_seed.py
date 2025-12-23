@@ -27,7 +27,24 @@ def seed_database():
         # Get all admin users
         admin_users = db.query(User).filter(User.role == UserRole.ADMIN).all()
         
-        # Create default admin user if no admins exist
+        # Create default test accounts
+        test_accounts = [
+            ("admin_test", "admin123", UserRole.ADMIN),
+            ("user_test", "user123", UserRole.STUDENT),
+        ]
+        
+        for username, password, role in test_accounts:
+            existing = db.query(User).filter(User.username == username).first()
+            if not existing:
+                test_user = User(
+                    username=username,
+                    password_hash=get_password_hash(password),
+                    role=role
+                )
+                db.add(test_user)
+                print(f"Created test account: {username} / {password} (Role: {role.value})")
+        
+        # Create default admin user if no admins exist (for backward compatibility)
         if not admin_users:
             default_admin = User(
                 username="demo_admin",
@@ -35,10 +52,13 @@ def seed_database():
                 role=UserRole.ADMIN
             )
             db.add(default_admin)
-            db.commit()
-            db.refresh(default_admin)
-            admin_users = [default_admin]
             print("Created default admin user: demo_admin / demo123")
+        
+        # Commit all new users
+        db.commit()
+        
+        # Refresh admin_users list after commit
+        admin_users = db.query(User).filter(User.role == UserRole.ADMIN).all()
         
         # Read and seed curriculum files
         curriculum_files = [

@@ -128,9 +128,10 @@ If you prefer to deploy both services at once (simpler but requires manual URL s
 ## Quick Test
 
 1. Visit your frontend URL
-2. Login with:
-    - Username: `admin`
-    - Password: `admin123` (or check your seed data)
+2. Login with test accounts (created automatically on first deployment):
+    - **Admin**: Username `admin_test`, Password `admin123`
+    - **Student**: Username `user_test`, Password `user123`
+    - Or register a new account
 3. Navigate to RedNote Feed
 4. Try rewriting a post to test DeepSeek integration
 

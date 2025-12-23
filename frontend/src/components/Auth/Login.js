@@ -56,6 +56,12 @@ const Login = () => {
 
     try {
       const response = await authService.login(username, password);
+      
+      // Ensure user object exists and has required fields
+      if (!response.user) {
+        throw new Error('Invalid response from server: missing user data');
+      }
+      
       contextLogin(response.access_token, response.user);
 
       // Redirect based on role

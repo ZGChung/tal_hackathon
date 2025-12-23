@@ -62,6 +62,19 @@ export const login = async (username, password) => {
       username,
       password,
     });
+    
+    // Ensure response has the expected structure
+    if (!response.data || !response.data.user) {
+      console.error('Invalid login response:', response.data);
+      throw new Error('Invalid response from server: missing user data');
+    }
+    
+    // Ensure user object has role
+    if (!response.data.user.role) {
+      console.error('User object missing role:', response.data.user);
+      throw new Error('Invalid user data: missing role');
+    }
+    
     return response.data;
   } catch (error) {
     // The api interceptor returns an object with a 'message' property

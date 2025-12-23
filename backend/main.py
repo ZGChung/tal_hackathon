@@ -45,17 +45,27 @@ app.include_router(seed.router)
 @app.on_event("startup")
 async def startup_event():
     init_db()
-    # Seed database with initial data for demo
+    # Seed database with initial data for demo (only if database is empty)
     try:
+        from backend.database import SessionLocal
+        from backend.models.user import User
         from backend.database_seed import seed_database
-        import traceback
-
-        seed_database()
+        
+        db = SessionLocal()
+        try:
+            user_count = db.query(User).count()
+            # Only seed if database is empty (faster startup on subsequent deploys)
+            if user_count == 0:
+                print("Database is empty, seeding initial data...")
+                seed_database()
+            else:
+                print(f"Database already has {user_count} users, skipping seed.")
+        finally:
+            db.close()
     except Exception as e:
         # Don't fail startup if seeding fails, but print full error for debugging
         print(f"Warning: Database seeding failed: {e}")
         import traceback
-
         traceback.print_exc()
 
 

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models.user import User, UserRole
@@ -82,72 +83,73 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
         )
 
 
-@router.post("/login")  # Removed response_model to avoid serialization issues
+@router.post("/login")
 async def login(user_data: UserLogin, db: Session = Depends(get_db)):
-    """Login and get JWT token"""
-    # Find user
-    user = db.query(User).filter(User.username == user_data.username).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
-
-    # Verify password
+    """Login and get JWT token - returns JSONResponse directly"""
+    print(f"=== LOGIN REQUEST START === Username: {user_data.username}")
+    
     try:
-        if not verify_password(user_data.password, user.password_hash):
+        # Find user
+        user = db.query(User).filter(User.username == user_data.username).first()
+        if not user:
+            print(f"Login failed: User {user_data.username} not found")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
             )
-    except Exception as e:
-        # Log the error for debugging
-        print(f"Password verification exception: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
 
-    # Create access token
-    access_token = create_access_token(data={"sub": user.username})
+        # Verify password
+        try:
+            if not verify_password(user_data.password, user.password_hash):
+                print(f"Login failed: Invalid password for {user_data.username}")
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Incorrect username or password",
+                )
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(f"Password verification exception: {e}")
+            import traceback
+            traceback.print_exc()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect username or password",
+            )
 
-    # Ensure role is a string value (UserRole enum has .value attribute)
-    role_value = user.role.value
-    
-    # Create user response
-    user_response = UserResponse(
-        id=user.id,
-        username=user.username,
-        role=role_value
-    )
-    
-    # Create token response as dict to ensure proper serialization
-    try:
-        user_response_dict = {
-            "id": user.id,
-            "username": user.username,
-            "role": role_value
-        }
+        # Create access token
+        access_token = create_access_token(data={"sub": user.username})
+
+        # Ensure role is a string value (UserRole enum has .value attribute)
+        role_value = user.role.value if hasattr(user.role, 'value') else str(user.role)
         
-        token_response_dict = {
+        # Create response dict
+        response_data = {
             "access_token": access_token,
             "token_type": "bearer",
-            "user": user_response_dict
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "role": role_value
+            }
         }
         
-        # Debug logging
-        print(f"Login successful for user: {user.username} (id: {user.id}), role: {role_value}")
-        print(f"Token response dict: {token_response_dict}")
+        print(f"Login successful for {user.username} (id: {user.id}), role: {role_value}")
+        print(f"Response data: {response_data}")
+        print("=== LOGIN REQUEST END ===")
         
-        # Return as dict - FastAPI will serialize it properly
-        return token_response_dict
+        # Return JSONResponse directly to ensure proper serialization
+        return JSONResponse(content=response_data, status_code=200)
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"Error creating login response: {e}")
+        print(f"Unexpected error in login: {e}")
         import traceback
         traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error creating login response: {str(e)}"
+            detail=f"Login failed: {str(e)}"
         )
 
 

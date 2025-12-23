@@ -1,14 +1,15 @@
 .rewritten-post-card {
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   padding: 0;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
 }
 
 .rewritten-post-card:hover {
@@ -19,7 +20,7 @@
 .rewritten-post-card .post-header {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 12px;
   position: relative;
   background: #fff;
 }
@@ -76,17 +77,18 @@
 }
 
 .post-text {
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.6;
   color: #333;
-  padding: 12px 16px;
+  padding: 8px 12px;
   word-wrap: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
   text-align: left;
+  margin: 0;
 }
 
 .post-image-container {
@@ -135,10 +137,11 @@
 .post-footer {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 10px 16px;
+  gap: 12px;
+  padding: 8px 12px;
   border-top: 1px solid #f0f0f0;
   background: #ffffff;
+  flex-wrap: wrap;
 }
 
 .post-stat {
@@ -167,14 +170,15 @@
   background: linear-gradient(135deg, #ff2442 0%, #ff6b9d 100%);
   color: white;
   border: none;
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 14px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-left: auto;
-  box-shadow: 0 2px 8px rgba(255, 36, 66, 0.2);
+  box-shadow: 0 2px 6px rgba(255, 36, 66, 0.2);
+  white-space: nowrap;
 }
 
 .compare-button:hover {

@@ -25,7 +25,7 @@ echo "2. Note your backend URL from Render dashboard"
 echo "3. Note your frontend URL from Render dashboard"
 echo "4. Set ALLOWED_ORIGINS = your frontend URL"
 echo "5. Set REACT_APP_API_URL = your backend URL"
-echo "6. Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY-HERE"
+echo "6. Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY (get from https://platform.deepseek.com)"
 echo "7. Redeploy both services"
 echo ""
 

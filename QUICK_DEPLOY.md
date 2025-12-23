@@ -5,7 +5,7 @@ This guide will get your app deployed in ~10 minutes using a sequential deployme
 ## Prerequisites
 
 -   GitHub account
--   DeepSeek API key: `YOUR-DEEPSEEK-API-KEY-HERE`
+-   DeepSeek API key (get it from https://platform.deepseek.com)
 -   Render account (free tier works)
 
 ## Step-by-Step Deployment (Sequential)
@@ -26,10 +26,10 @@ git push origin main  # or your branch name
 2. Click **"New +"** → **"Static Site"**
 3. Connect your GitHub repository
 4. Configure:
-   - **Name**: `tal-hackathon-frontend`
-   - **Root Directory**: Leave empty (or `frontend` if needed)
-   - **Build Command**: `cd frontend && npm install && npm run build`
-   - **Publish Directory**: `frontend/build`
+    - **Name**: `tal-hackathon-frontend`
+    - **Root Directory**: Leave empty (or `frontend` if needed)
+    - **Build Command**: `cd frontend && npm install && npm run build`
+    - **Publish Directory**: `frontend/build`
 5. Click **"Create Static Site"**
 6. Wait for deployment (~3-5 minutes)
 
@@ -46,16 +46,16 @@ git push origin main  # or your branch name
 1. In Render dashboard, click **"New +"** → **"Web Service"**
 2. Connect your GitHub repository (same repo)
 3. Configure:
-   - **Name**: `tal-hackathon-backend`
-   - **Root Directory**: Leave empty
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r backend/requirements.txt`
-   - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+    - **Name**: `tal-hackathon-backend`
+    - **Root Directory**: Leave empty
+    - **Environment**: `Python 3`
+    - **Build Command**: `pip install -r backend/requirements.txt`
+    - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
 4. **Before clicking "Create Web Service"**, scroll to **"Environment Variables"** section and add:
-   - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY-HERE`
-   - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (paste your frontend URL from Step 2b)
-   - `LLM_API_BASE_URL` = `https://api.deepseek.com`
-   - `LLM_MODEL` = `deepseek-chat`
+    - `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY` (get from https://platform.deepseek.com)
+    - `ALLOWED_ORIGINS` = `https://YOUR-FRONTEND-URL.onrender.com` (paste your frontend URL from Step 2b)
+    - `LLM_API_BASE_URL` = `https://api.deepseek.com`
+    - `LLM_MODEL` = `deepseek-chat`
 5. Click **"Create Web Service"**
 6. Wait for deployment (~5-10 minutes)
 
@@ -70,7 +70,7 @@ git push origin main  # or your branch name
 1. Go to your **tal-hackathon-frontend** service in Render
 2. Click **"Environment"** tab
 3. Add:
-   - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (paste your backend URL from Step 3b)
+    - `REACT_APP_API_URL` = `https://YOUR-BACKEND-URL.onrender.com` (paste your backend URL from Step 3b)
 4. Click **"Save Changes"**
 5. Click **"Manual Deploy"** → **"Deploy latest commit"** to rebuild with the new environment variable
 
@@ -90,8 +90,8 @@ If you prefer to deploy both services at once (simpler but requires manual URL s
 4. Render will auto-detect `render.yaml` and show both services
 5. Click **"Apply"** to deploy both
 6. After deployment, get both URLs and set environment variables:
-   - Backend: `DEEPSEEK_API_KEY` and `ALLOWED_ORIGINS` (with frontend URL)
-   - Frontend: `REACT_APP_API_URL` (with backend URL)
+    - Backend: `DEEPSEEK_API_KEY` and `ALLOWED_ORIGINS` (with frontend URL)
+    - Frontend: `REACT_APP_API_URL` (with backend URL)
 7. Redeploy both services
 
 ## Troubleshooting

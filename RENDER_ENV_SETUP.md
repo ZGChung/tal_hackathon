@@ -41,6 +41,6 @@ REACT_APP_API_URL=https://tal-hackathon-backend.onrender.com
 3. Copy your frontend URL (e.g., `https://tal-hackathon-frontend-abc.onrender.com`)
 4. Set backend `ALLOWED_ORIGINS` = your frontend URL
 5. Set frontend `REACT_APP_API_URL` = your backend URL
-6. Set backend `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY-HERE`
+6. Set backend `DEEPSEEK_API_KEY` = `YOUR-DEEPSEEK-API-KEY` (get from https://platform.deepseek.com)
 7. Redeploy both services
 

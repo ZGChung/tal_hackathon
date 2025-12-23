@@ -23,7 +23,7 @@ STEPS:
 1. Deploy services on Render (you can deploy without env vars!)
 2. Get your backend URL (e.g., tal-hackathon-backend-xyz.onrender.com)
 3. Get your frontend URL (e.g., tal-hackathon-frontend-abc.onrender.com)
-4. Backend: Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY-HERE (REQUIRED)
+4. Backend: Set DEEPSEEK_API_KEY = YOUR-DEEPSEEK-API-KEY (REQUIRED)
 5. Backend: Set ALLOWED_ORIGINS = your frontend URL (OPTIONAL, for security)
 6. Frontend: Set REACT_APP_API_URL = your backend URL (REQUIRED)
 7. Redeploy both services

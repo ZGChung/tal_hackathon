@@ -15,7 +15,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DEEPSEEK_API_KEY
-        sync: false  # Set this manually: YOUR-DEEPSEEK-API-KEY-HERE
+        sync: false  # Set this manually with your DeepSeek API key
       - key: LLM_API_BASE_URL
         value: https://api.deepseek.com
       - key: LLM_MODEL

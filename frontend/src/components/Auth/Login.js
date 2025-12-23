@@ -57,9 +57,20 @@ const Login = () => {
     try {
       const response = await authService.login(username, password);
       
+      // Response from authService.login is already response.data from axios
+      // So response should have: { access_token, token_type, user }
+      console.log('Login response received:', response);
+      
       // Ensure user object exists and has required fields
-      if (!response.user) {
+      if (!response || !response.user) {
+        console.error('Invalid response structure:', response);
         throw new Error('Invalid response from server: missing user data');
+      }
+      
+      // Ensure user has role
+      if (!response.user.role) {
+        console.error('User object missing role:', response.user);
+        throw new Error('Invalid user data: missing role');
       }
       
       contextLogin(response.access_token, response.user);

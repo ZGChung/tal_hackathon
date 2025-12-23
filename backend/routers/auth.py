@@ -111,11 +111,27 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
     # Create access token
     access_token = create_access_token(data={"sub": user.username})
 
-    return Token(
+    # Ensure role is a string value (UserRole enum has .value attribute)
+    role_value = user.role.value
+    
+    # Create user response
+    user_response = UserResponse(
+        id=user.id,
+        username=user.username,
+        role=role_value
+    )
+    
+    # Create token response
+    token_response = Token(
         access_token=access_token,
         token_type="bearer",
-        user=UserResponse(id=user.id, username=user.username, role=user.role.value),
+        user=user_response,
     )
+    
+    # Debug logging
+    print(f"Login successful for user: {user.username} (id: {user.id}), role: {role_value}")
+    
+    return token_response
 
 
 @router.get("/me", response_model=UserResponse)

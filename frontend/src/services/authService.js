@@ -63,36 +63,65 @@ export const login = async (username, password) => {
       password,
     });
     
+    // Check if response exists and has data
+    if (!response || !response.data) {
+      console.error('No response data received:', response);
+      throw new Error('No response from server');
+    }
+    
+    const data = response.data;
+    
+    // Check if this is actually an error response (shouldn't happen but be defensive)
+    if (data.detail || data.error) {
+      throw new Error(data.detail || data.error || 'Login failed');
+    }
+    
     // Ensure response has the expected structure
-    if (!response.data || !response.data.user) {
-      console.error('Invalid login response:', response.data);
+    if (!data.user) {
+      console.error('Invalid login response - missing user field:', {
+        hasAccessToken: !!data.access_token,
+        hasTokenType: !!data.token_type,
+        hasUser: !!data.user,
+        fullData: data
+      });
       throw new Error('Invalid response from server: missing user data');
     }
     
-    // Ensure user object has role
-    if (!response.data.user.role) {
-      console.error('User object missing role:', response.data.user);
+    // Ensure user object has required fields
+    if (!data.user.role) {
+      console.error('User object missing role:', data.user);
       throw new Error('Invalid user data: missing role');
     }
     
-    return response.data;
+    // Return the data (which should be { access_token, token_type, user })
+    return data;
   } catch (error) {
-    // The api interceptor returns an object with a 'message' property
-    // Extract the message from the error object
+    // The api interceptor transforms errors, so check multiple sources
     let errorMessage = 'Invalid credentials. Please try again.';
     
+    // Check error message first (from our validation or interceptor)
     if (error.message) {
+      // Don't override our specific error messages
+      if (error.message.includes('Invalid response from server') || 
+          error.message.includes('Invalid user data')) {
+        throw error; // Re-throw our validation errors as-is
+      }
       errorMessage = error.message;
-    } else if (error.response?.data?.detail) {
+    } 
+    // Check response data
+    else if (error.response?.data?.detail) {
       errorMessage = error.response.data.detail;
-    } else if (typeof error === 'string') {
-      errorMessage = error;
+    } 
+    // Check transformed error data
+    else if (error.data?.detail) {
+      errorMessage = error.data.detail;
     }
     
-    // If the message suggests the user doesn't exist, provide helpful guidance
+    // Provide helpful guidance for credential errors
     if (errorMessage.toLowerCase().includes('incorrect username') || 
-        errorMessage.toLowerCase().includes('invalid credentials')) {
-      errorMessage = 'Invalid username or password. If you haven\'t registered yet, please register first.';
+        errorMessage.toLowerCase().includes('invalid credentials') ||
+        errorMessage.toLowerCase().includes('authentication failed')) {
+      errorMessage = 'Invalid username or password. Please check your credentials.';
     }
     
     throw new Error(errorMessage);

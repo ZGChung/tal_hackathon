@@ -140,9 +140,9 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
-          加载预定义模板：
+          加载示例偏好：
         </label>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             type="button"
             onClick={() => loadTemplate('example_preferences_1')}

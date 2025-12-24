@@ -67,7 +67,7 @@ const PreferencesList = forwardRef((props, ref) => {
   if (loading) {
     return (
       <div className="admin-section">
-        <h2>偏好设置列表</h2>
+        <h2>偏好列表</h2>
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>加载偏好设置中...</p>
@@ -79,7 +79,7 @@ const PreferencesList = forwardRef((props, ref) => {
   if (error) {
     return (
       <div className="admin-section">
-        <h2>偏好设置列表</h2>
+        <h2>偏好列表</h2>
         <div className="message error">{error}</div>
         <button onClick={fetchPreferences}>重试</button>
       </div>
@@ -89,7 +89,7 @@ const PreferencesList = forwardRef((props, ref) => {
   if (!preferences) {
     return (
       <div className="admin-section">
-        <h2>偏好设置列表</h2>
+        <h2>偏好列表</h2>
         <div className="empty-state">
           <p>尚未设置任何偏好。</p>
           <p className="empty-state-hint">前往"偏好设置"标签页创建您的偏好设置。</p>

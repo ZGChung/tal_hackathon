@@ -76,7 +76,7 @@ const AdminDashboard = () => {
             className={`admin-tab ${activeSection === 'preferences-list' ? 'active' : ''}`}
             onClick={() => setActiveSection('preferences-list')}
           >
-            偏好设置列表
+            偏好列表
           </button>
         </div>
 

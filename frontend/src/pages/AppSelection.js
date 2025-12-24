@@ -42,18 +42,20 @@ const AppSelection = ({ onAppSelect }) => {
       name: 'Bilibili',
       description: '哔哩哔哩 - 你感兴趣的视频都在B站',
       icon: '📺',
-      available: false,
+      available: true,
     },
   ];
 
   const handleAppSelect = (appId) => {
+    setSelectedApp(appId);
     if (appId === 'rednote') {
-      setSelectedApp(appId);
       if (onAppSelect) {
         onAppSelect(appId);
       } else {
         navigate('/dashboard', { state: { selectedApp: appId } });
       }
+    } else if (appId === 'bilibili') {
+      navigate('/bilibili-examples');
     }
   };
 

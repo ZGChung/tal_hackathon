@@ -17,6 +17,13 @@ const AppSelection = ({ onAppSelect }) => {
       available: true,
     },
     {
+      id: 'bilibili',
+      name: 'Bilibili',
+      description: '哔哩哔哩 - 你感兴趣的视频都在B站',
+      icon: '📺',
+      available: true,
+    },
+    {
       id: 'weibo',
       name: '微博',
       description: '微博 - 随时随地发现新鲜内容',
@@ -36,13 +43,6 @@ const AppSelection = ({ onAppSelect }) => {
       description: '知乎 - 有问题，就会有答案',
       icon: '💡',
       available: false,
-    },
-    {
-      id: 'bilibili',
-      name: 'Bilibili',
-      description: '哔哩哔哩 - 你感兴趣的视频都在B站',
-      icon: '📺',
-      available: true,
     },
   ];
 

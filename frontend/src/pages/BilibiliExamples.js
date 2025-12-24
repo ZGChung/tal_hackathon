@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import BilibiliVideoCard from '../components/Bilibili/BilibiliVideoCard';
 import VideoComparison from '../components/Bilibili/VideoComparison';
 import { listCurricula } from '../services/curriculumService';
@@ -6,6 +8,8 @@ import { getPreferences } from '../services/preferencesService';
 import './BilibiliExamples.css';
 
 const BilibiliExamples = () => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -120,6 +124,15 @@ const BilibiliExamples = () => {
     setComparingVideo(null);
   };
 
+  const handleBackToApps = () => {
+    navigate('/dashboard');
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   if (loading) {
     return (
       <div className="bilibili-examples-page">
@@ -149,11 +162,20 @@ const BilibiliExamples = () => {
 
   return (
     <div className="bilibili-examples-page">
-      <div className="bilibili-examples-header">
-        <h1 className="bilibili-examples-title">B站示例</h1>
-        <p className="bilibili-examples-subtitle">
-          查看课程关键词和偏好如何修改视频
-        </p>
+      {/* Global Buttons - Fixed at top, above all UI elements */}
+      <div className="global-buttons">
+        <button 
+          onClick={handleBackToApps}
+          className="global-btn back-btn"
+        >
+          ← 返回应用
+        </button>
+        <button 
+          onClick={handleLogout}
+          className="global-btn logout-btn"
+        >
+          退出登录
+        </button>
       </div>
 
       <div className="bilibili-examples-content">

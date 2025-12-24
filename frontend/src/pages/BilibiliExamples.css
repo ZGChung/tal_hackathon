@@ -6,28 +6,53 @@
   margin: 0 auto;
 }
 
-.bilibili-examples-header {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 32px 0;
+/* Global Buttons - Fixed at top, above all UI elements */
+.global-buttons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.bilibili-examples-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 12px 0;
+.global-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-.bilibili-examples-subtitle {
-  font-size: 18px;
-  color: #666;
-  margin: 0;
-  line-height: 1.6;
+.back-btn {
+  background-color: #667eea;
+  color: white;
+}
+
+.back-btn:hover {
+  background-color: #5568d3;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
 }
 
 .bilibili-examples-content {
   width: 100%;
+  padding-top: 60px; /* Space for global buttons */
 }
 
 .bilibili-videos-list {
@@ -106,31 +131,12 @@
     padding: 16px;
   }
 
-  .bilibili-examples-header {
-    margin-bottom: 24px;
-    padding: 24px 0;
-  }
-
-  .bilibili-examples-title {
-    font-size: 28px;
-  }
-
-  .bilibili-examples-subtitle {
-    font-size: 16px;
+  .bilibili-examples-content {
+    padding-top: 60px;
   }
 
   .bilibili-videos-list {
     gap: 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  .bilibili-examples-title {
-    font-size: 24px;
-  }
-
-  .bilibili-examples-subtitle {
-    font-size: 14px;
   }
 }
 

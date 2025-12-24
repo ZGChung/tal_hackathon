@@ -114,8 +114,8 @@ describe('Login Component', () => {
 
   test('renders quick login buttons', () => {
     renderWithRouter(<Login />);
-    expect(screen.getByRole('button', { name: /login as test admin/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /login as test user/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /快速登录.*管理员/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /快速登录.*学生/i })).toBeInTheDocument();
   });
 
   test('admin quick login button logs in successfully and redirects to admin dashboard', async () => {
@@ -129,7 +129,7 @@ describe('Login Component', () => {
 
     renderWithRouter(<Login />);
 
-    const adminButton = screen.getByRole('button', { name: /login as test admin/i });
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
     fireEvent.click(adminButton);
 
     await waitFor(() => {
@@ -150,7 +150,7 @@ describe('Login Component', () => {
 
     renderWithRouter(<Login />);
 
-    const userButton = screen.getByRole('button', { name: /login as test user/i });
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
     fireEvent.click(userButton);
 
     await waitFor(() => {
@@ -173,8 +173,8 @@ describe('Login Component', () => {
 
     renderWithRouter(<Login />);
 
-    const adminButton = screen.getByRole('button', { name: /login as test admin/i });
-    const userButton = screen.getByRole('button', { name: /login as test user/i });
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
 
     fireEvent.click(adminButton);
 
@@ -182,7 +182,7 @@ describe('Login Component', () => {
     await waitFor(() => {
       expect(adminButton).toBeDisabled();
       expect(userButton).toBeDisabled();
-      expect(screen.getByText(/logging in/i)).toBeInTheDocument();
+      expect(screen.getByText(/登录中/i)).toBeInTheDocument();
     });
 
     // Resolve the login
@@ -201,7 +201,7 @@ describe('Login Component', () => {
 
     renderWithRouter(<Login />);
 
-    const adminButton = screen.getByRole('button', { name: /login as test admin/i });
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
     fireEvent.click(adminButton);
 
     await waitFor(() => {
@@ -221,8 +221,8 @@ describe('Login Component', () => {
 
     renderWithRouter(<Login />);
 
-    const adminButton = screen.getByRole('button', { name: /login as test admin/i });
-    const userButton = screen.getByRole('button', { name: /login as test user/i });
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
     const submitButton = screen.getByRole('button', { name: /login/i });
 
     fireEvent.click(adminButton);

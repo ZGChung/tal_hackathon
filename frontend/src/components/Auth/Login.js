@@ -176,7 +176,7 @@ const Login = () => {
             disabled={loading}
             className="quick-login-button"
           >
-            {loading ? 'Logging in...' : 'Login as Test Admin'}
+            {loading ? '登录中...' : '快速登录 (管理员)'}
           </button>
           <button
             type="button"
@@ -184,7 +184,7 @@ const Login = () => {
             disabled={loading}
             className="quick-login-button"
           >
-            {loading ? 'Logging in...' : 'Login as Test User'}
+            {loading ? '登录中...' : '快速登录 (学生)'}
           </button>
         </div>
 

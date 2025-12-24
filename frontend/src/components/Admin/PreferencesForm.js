@@ -40,7 +40,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
         const errorMsg = error.response?.data?.detail || 
                        error.data?.detail || 
                        error.message || 
-                       'Failed to load preferences';
+                       '加载偏好设置失败';
         setMessage(errorMsg);
         setMessageType('error');
       }
@@ -75,10 +75,10 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       setKeywords(data.keywords?.join(', ') || '');
       setSubjectPreferences(data.subject_preferences?.join(', ') || '');
       
-      setMessage(`Loaded ${templateName.replace('example_preferences_', 'template ')} successfully!`);
+      setMessage(`成功加载 ${templateName.replace('example_preferences_', '模板 ')}！`);
       setMessageType('success');
     } catch (error) {
-      setMessage('Failed to load template. Please try again.');
+        setMessage('加载模板失败。请重试。');
       setMessageType('error');
       console.error('Error loading template:', error);
     } finally {
@@ -102,12 +102,12 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       if (preferencesId) {
         // Update existing preferences
         await updatePreferences(preferencesId, preferencesData);
-        setMessage('Preferences updated successfully!');
+        setMessage('偏好设置更新成功！');
       } else {
         // Create new preferences
         const response = await createPreferences(preferencesData);
         setPreferencesId(response.id);
-        setMessage('Preferences saved successfully!');
+        setMessage('偏好设置保存成功！');
       }
       setMessageType('success');
       
@@ -116,7 +116,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
         onSaveSuccess();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.detail || error.message || 'Save failed';
+      const errorMessage = error.response?.data?.detail || error.message || '保存失败';
       setMessage(errorMessage);
       setMessageType('error');
     } finally {
@@ -127,20 +127,20 @@ const PreferencesForm = ({ onSaveSuccess }) => {
   if (fetching) {
     return (
       <div className="admin-section">
-        <h2>Preferences</h2>
-        <p>Loading...</p>
+        <h2>偏好设置</h2>
+        <p>加载中...</p>
       </div>
     );
   }
 
   return (
     <div className="admin-section">
-      <h2>Preferences</h2>
+      <h2>偏好设置</h2>
       
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
-          Load Predefined Templates:
+          加载预定义模板：
         </label>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button
@@ -158,7 +158,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {loadingTemplate ? 'Loading...' : 'STEM Template'}
+            {loadingTemplate ? '加载中...' : 'STEM 模板'}
           </button>
           <button
             type="button"
@@ -175,7 +175,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {loadingTemplate ? 'Loading...' : 'Arts Template'}
+            {loadingTemplate ? '加载中...' : '艺术模板'}
           </button>
           <button
             type="button"
@@ -192,47 +192,47 @@ const PreferencesForm = ({ onSaveSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {loadingTemplate ? 'Loading...' : 'Holistic Template'}
+            {loadingTemplate ? '加载中...' : '综合模板'}
           </button>
         </div>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>
-          Click a template button to load predefined preferences. You can modify them before saving.
+          点击模板按钮可加载预定义偏好设置。您可以在保存前修改它们。
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="focus-areas">Focus Areas (comma-separated)</label>
+          <label htmlFor="focus-areas">重点领域（逗号分隔）</label>
           <input
             id="focus-areas"
             type="text"
             value={focusAreas}
             onChange={(e) => setFocusAreas(e.target.value)}
-            placeholder="e.g., STEM, Arts, Sports"
+            placeholder="例如：STEM、艺术、体育"
             disabled={loading}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="keywords">Keywords (comma-separated)</label>
+          <label htmlFor="keywords">关键词（逗号分隔）</label>
           <input
             id="keywords"
             type="text"
             value={keywords}
             onChange={(e) => setKeywords(e.target.value)}
-            placeholder="e.g., innovation, creativity, problem-solving"
+            placeholder="例如：创新、创造力、问题解决"
             disabled={loading}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="subject-preferences">Subject Preferences (comma-separated)</label>
+          <label htmlFor="subject-preferences">学科偏好（逗号分隔）</label>
           <input
             id="subject-preferences"
             type="text"
             value={subjectPreferences}
             onChange={(e) => setSubjectPreferences(e.target.value)}
-            placeholder="e.g., Mathematics, Science, History"
+            placeholder="例如：数学、科学、历史"
             disabled={loading}
           />
         </div>
@@ -244,7 +244,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
         )}
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : 'Save Preferences'}
+          {loading ? '保存中...' : '保存偏好设置'}
         </button>
       </form>
     </div>

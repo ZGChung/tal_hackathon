@@ -1,7 +1,7 @@
 import React from 'react';
 import './Loading.css';
 
-const Loading = ({ message = 'Loading...', size = 'medium', fullScreen = false }) => {
+const Loading = ({ message = '加载中...', size = 'medium', fullScreen = false }) => {
   const sizeClass = `loading-spinner-${size}`;
   const containerClass = fullScreen ? 'loading-fullscreen' : 'loading-container';
 

@@ -12,35 +12,35 @@ const AppSelection = ({ onAppSelect }) => {
     {
       id: 'rednote',
       name: 'RedNote',
-      description: 'RedNote - Discover Beautiful Life',
+      description: 'RedNote - 发现美好生活',
       icon: '📱',
       available: true,
     },
     {
       id: 'weibo',
       name: 'Weibo',
-      description: 'Weibo - Discover Fresh Content Anytime',
+      description: '微博 - 随时随地发现新鲜内容',
       icon: '🐦',
       available: false,
     },
     {
       id: 'douyin',
       name: 'Douyin',
-      description: 'Douyin - Record Beautiful Moments',
+      description: '抖音 - 记录美好时刻',
       icon: '🎬',
       available: false,
     },
     {
       id: 'zhihu',
       name: 'Zhihu',
-      description: 'Zhihu - Questions Lead to Answers',
+      description: '知乎 - 有问题，就会有答案',
       icon: '💡',
       available: false,
     },
     {
       id: 'bilibili',
       name: 'Bilibili',
-      description: 'Bilibili - All Videos You Love Are Here',
+      description: '哔哩哔哩 - 你感兴趣的视频都在B站',
       icon: '📺',
       available: false,
     },
@@ -66,17 +66,17 @@ const AppSelection = ({ onAppSelect }) => {
     <div className="app-selection">
       <div className="app-selection-header">
         <div>
-          <h1>Content Rewriter Dashboard</h1>
-          <p className="welcome-text">Welcome, {user?.username}!</p>
+          <h1>内容重写器仪表板</h1>
+          <p className="welcome-text">欢迎，{user?.username}！</p>
         </div>
         <button onClick={handleLogout} className="logout-btn">
-          Logout
+          退出登录
         </button>
       </div>
 
       <div className="app-selection-content">
-        <h2>Select a Platform</h2>
-        <p className="subtitle">Choose a social media platform to view rewritten content</p>
+        <h2>选择平台</h2>
+        <p className="subtitle">选择一个社交媒体平台以查看重写后的内容</p>
         
         <div className="apps-grid">
           {apps.map((app) => (
@@ -91,9 +91,9 @@ const AppSelection = ({ onAppSelect }) => {
                 <p>{app.description}</p>
               </div>
               {app.available ? (
-                <div className="app-status available-badge">Available</div>
+                <div className="app-status available-badge">可用</div>
               ) : (
-                <div className="app-status coming-soon-badge">Coming Soon</div>
+                <div className="app-status coming-soon-badge">即将推出</div>
               )}
             </div>
           ))}

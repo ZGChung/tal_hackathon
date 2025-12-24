@@ -10,7 +10,7 @@ export const getFeed = async () => {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.detail || 'Failed to fetch feed. Please try again.'
+      error.response?.data?.detail || '获取动态失败。请重试。'
     );
   }
 };
@@ -26,7 +26,7 @@ export const getPost = async (postId) => {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.detail || 'Failed to fetch post. Please try again.'
+      error.response?.data?.detail || '获取帖子失败。请重试。'
     );
   }
 };

@@ -45,9 +45,9 @@ class ErrorBoundary extends React.Component {
           borderRadius: '8px',
           backgroundColor: '#fff',
         }}>
-          <h2 style={{ color: '#d32f2f', marginTop: 0 }}>⚠️ Something went wrong</h2>
+          <h2 style={{ color: '#d32f2f', marginTop: 0 }}>⚠️ 出现了问题</h2>
           <p style={{ color: '#666', marginBottom: '1rem' }}>
-            An unexpected error occurred. Please try refreshing the page.
+            发生了意外错误。请尝试刷新页面。
           </p>
           
           {process.env.NODE_ENV === 'development' && this.state.error && (
@@ -59,7 +59,7 @@ class ErrorBoundary extends React.Component {
               fontSize: '0.875rem',
             }}>
               <summary style={{ cursor: 'pointer', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                Error Details (Development Only)
+                错误详情（仅开发模式）
               </summary>
               <pre style={{
                 whiteSpace: 'pre-wrap',
@@ -86,7 +86,7 @@ class ErrorBoundary extends React.Component {
                 marginRight: '0.5rem',
               }}
             >
-              Try Again
+              重试
             </button>
             <button
               onClick={() => window.location.href = '/'}
@@ -99,7 +99,7 @@ class ErrorBoundary extends React.Component {
                 cursor: 'pointer',
               }}
             >
-              Go Home
+              返回首页
             </button>
           </div>
         </div>

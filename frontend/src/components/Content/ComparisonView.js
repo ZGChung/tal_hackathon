@@ -110,7 +110,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
     <div className="comparison-view-overlay" data-testid="comparison-view">
       <div className="comparison-view-container">
         <div className="comparison-header">
-          <h2>Content Comparison</h2>
+          <h2>内容对比</h2>
           <button className="close-button" onClick={onClose} data-testid="close-button">
             ✕
           </button>
@@ -143,7 +143,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
         </div>
 
         <div className="keywords-section">
-          <h3>Keywords Used in Rewriting This Content</h3>
+          <h3>重写此内容时使用的关键词</h3>
           <div className="keywords-list">
             {rewriteData.keywords_used && rewriteData.keywords_used.length > 0 ? (
               rewriteData.keywords_used.map((keyword, index) => (
@@ -152,7 +152,7 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
                 </span>
               ))
             ) : (
-              <span className="no-keywords">No keywords</span>
+              <span className="no-keywords">无关键词</span>
             )}
           </div>
         </div>

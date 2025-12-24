@@ -18,19 +18,19 @@ const Register = () => {
         const newErrors = {};
 
         if (!username.trim()) {
-            newErrors.username = 'Username is required';
+            newErrors.username = '用户名是必填项';
         }
 
         if (!password) {
-            newErrors.password = 'Password is required';
+            newErrors.password = '密码是必填项';
         } else if (password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters';
+            newErrors.password = '密码至少需要6个字符';
         }
 
         if (!confirmPassword) {
-            newErrors.confirmPassword = 'Please confirm your password';
+            newErrors.confirmPassword = '请确认您的密码';
         } else if (password !== confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
+            newErrors.confirmPassword = '密码不匹配';
         }
 
         setErrors(newErrors);
@@ -50,10 +50,10 @@ const Register = () => {
         try {
             await authService.register(username, password, role);
             // Redirect to login after successful registration
-            navigate('/login', { state: { message: 'Registration successful! Please login.' } });
+            navigate('/login', { state: { message: '注册成功！请登录。' } });
         } catch (error) {
             // Extract error message from Error object or error object
-            const errorMsg = error?.message || error?.response?.data?.detail || 'Registration failed. Please check your input and try again.';
+            const errorMsg = error?.message || error?.response?.data?.detail || '注册失败。请检查您的输入并重试。';
             setErrorMessage(errorMsg);
             console.error('Registration error:', error); // Debug log
         } finally {
@@ -64,12 +64,12 @@ const Register = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Register</h2>
+                <h2>注册</h2>
                 <form onSubmit={handleSubmit}>
                     {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username">用户名</label>
                         <input
                             type="text"
                             id="username"
@@ -83,7 +83,7 @@ const Register = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">密码</label>
                         <input
                             type="password"
                             id="password"
@@ -97,7 +97,7 @@ const Register = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <label htmlFor="confirmPassword">确认密码</label>
                         <input
                             type="password"
                             id="confirmPassword"
@@ -111,7 +111,7 @@ const Register = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="role">Role</label>
+                        <label htmlFor="role">角色</label>
                         <select
                             id="role"
                             value={role}
@@ -123,12 +123,12 @@ const Register = () => {
                     </div>
 
                     <button type="submit" disabled={loading} className="submit-button">
-                        {loading ? 'Registering...' : 'Register'}
+                        {loading ? '注册中...' : '注册'}
                     </button>
                 </form>
 
                 <p className="auth-link">
-                    Already have an account? <Link to="/login">Login here</Link>
+                    已有账号？<Link to="/login">在此登录</Link>
                 </p>
             </div>
         </div>

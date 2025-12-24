@@ -21,7 +21,7 @@ const PreferencesList = forwardRef((props, ref) => {
         // No preferences yet - this is expected
         setPreferences(null);
       } else {
-        setError(err.response?.data?.detail || err.message || 'Failed to load preferences');
+        setError(err.response?.data?.detail || err.message || '加载偏好设置失败');
       }
     } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ const PreferencesList = forwardRef((props, ref) => {
       setPreferences(null);
       setShowConfirm(false);
     } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Failed to delete preferences');
+      setError(err.response?.data?.detail || err.message || '删除偏好设置失败');
       setShowConfirm(false);
     } finally {
       setDeleting(false);
@@ -67,10 +67,10 @@ const PreferencesList = forwardRef((props, ref) => {
   if (loading) {
     return (
       <div className="admin-section">
-        <h2>Preferences List</h2>
+        <h2>偏好设置列表</h2>
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading preferences...</p>
+          <p>加载偏好设置中...</p>
         </div>
       </div>
     );
@@ -79,9 +79,9 @@ const PreferencesList = forwardRef((props, ref) => {
   if (error) {
     return (
       <div className="admin-section">
-        <h2>Preferences List</h2>
+        <h2>偏好设置列表</h2>
         <div className="message error">{error}</div>
-        <button onClick={fetchPreferences}>Retry</button>
+        <button onClick={fetchPreferences}>重试</button>
       </div>
     );
   }
@@ -89,10 +89,10 @@ const PreferencesList = forwardRef((props, ref) => {
   if (!preferences) {
     return (
       <div className="admin-section">
-        <h2>Preferences List</h2>
+        <h2>偏好设置列表</h2>
         <div className="empty-state">
-          <p>No preferences have been set yet.</p>
-          <p className="empty-state-hint">Go to the "Preferences" tab to create your preferences.</p>
+          <p>尚未设置任何偏好。</p>
+          <p className="empty-state-hint">前往"偏好设置"标签页创建您的偏好设置。</p>
         </div>
       </div>
     );
@@ -100,7 +100,7 @@ const PreferencesList = forwardRef((props, ref) => {
 
   return (
     <div className="admin-section">
-      <h2>Preferences List</h2>
+      <h2>偏好设置列表</h2>
       {error && (
         <div className="message error" style={{ marginBottom: '1rem' }}>
           {error}
@@ -111,7 +111,7 @@ const PreferencesList = forwardRef((props, ref) => {
           <div className="preferences-section-header">
             <h3>
               <span className="section-icon">🎯</span>
-              Focus Areas
+              重点领域
             </h3>
           </div>
           {preferences.focus_areas && preferences.focus_areas.length > 0 ? (
@@ -123,7 +123,7 @@ const PreferencesList = forwardRef((props, ref) => {
               ))}
             </div>
           ) : (
-            <p className="no-items">No focus areas specified</p>
+            <p className="no-items">未指定重点领域</p>
           )}
         </div>
 
@@ -131,7 +131,7 @@ const PreferencesList = forwardRef((props, ref) => {
           <div className="preferences-section-header">
             <h3>
               <span className="section-icon">🔑</span>
-              Keywords
+              关键词
             </h3>
           </div>
           {preferences.keywords && preferences.keywords.length > 0 ? (
@@ -143,7 +143,7 @@ const PreferencesList = forwardRef((props, ref) => {
               ))}
             </div>
           ) : (
-            <p className="no-items">No keywords specified</p>
+            <p className="no-items">未指定关键词</p>
           )}
         </div>
 
@@ -151,7 +151,7 @@ const PreferencesList = forwardRef((props, ref) => {
           <div className="preferences-section-header">
             <h3>
               <span className="section-icon">📚</span>
-              Subject Preferences
+              学科偏好
             </h3>
           </div>
           {preferences.subject_preferences && preferences.subject_preferences.length > 0 ? (
@@ -163,23 +163,23 @@ const PreferencesList = forwardRef((props, ref) => {
               ))}
             </div>
           ) : (
-            <p className="no-items">No subject preferences specified</p>
+            <p className="no-items">未指定学科偏好</p>
           )}
         </div>
 
         <div className="preferences-meta">
-          <p className="preferences-id">Preferences ID: {preferences.id}</p>
+          <p className="preferences-id">偏好设置 ID：{preferences.id}</p>
           <div className="preferences-actions">
             {showConfirm ? (
               <div className="delete-confirmation">
-                <span className="delete-confirm-text">Delete preferences?</span>
+                <span className="delete-confirm-text">确认删除偏好设置？</span>
                 <button
                   type="button"
                   className="delete-confirm-btn"
                   onClick={handleDelete}
                   disabled={deleting}
                 >
-                  {deleting ? 'Deleting...' : 'Confirm'}
+                  {deleting ? '删除中...' : '确认'}
                 </button>
                 <button
                   type="button"
@@ -187,7 +187,7 @@ const PreferencesList = forwardRef((props, ref) => {
                   onClick={cancelDelete}
                   disabled={deleting}
                 >
-                  Cancel
+                  取消
                 </button>
               </div>
             ) : (
@@ -196,9 +196,9 @@ const PreferencesList = forwardRef((props, ref) => {
                 className="delete-btn"
                 onClick={handleDelete}
                 disabled={deleting}
-                title="Delete preferences"
+                title="删除偏好设置"
               >
-                🗑️ Delete Preferences
+                🗑️ 删除偏好设置
               </button>
             )}
           </div>

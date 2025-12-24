@@ -13,7 +13,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       if (!selectedFile.name.endsWith('.md')) {
-        setMessage('Please select a markdown (.md) file');
+        setMessage('请选择 Markdown (.md) 文件');
         setMessageType('error');
         setFile(null);
         return;
@@ -33,7 +33,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
       // Fetch the template file
       const response = await fetch(`/${templateName}.md`);
       if (!response.ok) {
-        throw new Error('Failed to load template');
+        throw new Error('加载模板失败');
       }
       const content = await response.text();
       
@@ -50,7 +50,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
       
       setLoading(true);
       const uploadResponse = await uploadCurriculum(templateFile);
-      setMessage(`Template "${displayName}" uploaded successfully! Keywords: ${uploadResponse.keywords.join(', ')}`);
+      setMessage(`模板 "${displayName}" 上传成功！关键词：${uploadResponse.keywords.join('、')}`);
       setMessageType('success');
       setFile(null);
       
@@ -59,7 +59,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         onUploadSuccess();
       }
     } catch (error) {
-      setMessage(`Failed to load template: ${error.message}`);
+      setMessage(`加载模板失败：${error.message}`);
       setMessageType('error');
     } finally {
       setLoading(false);
@@ -71,7 +71,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
     e.preventDefault();
     
     if (!file) {
-      setMessage('Please select a file to upload');
+      setMessage('请选择要上传的文件');
       setMessageType('error');
       return;
     }
@@ -82,7 +82,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
 
     try {
       const response = await uploadCurriculum(file);
-      setMessage(`Uploaded successfully! Keywords: ${response.keywords.join(', ')}`);
+      setMessage(`上传成功！关键词：${response.keywords.join('、')}`);
       setMessageType('success');
       setFile(null);
       // Reset file input
@@ -93,7 +93,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         onUploadSuccess();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.detail || error.message || 'Upload failed';
+      const errorMessage = error.response?.data?.detail || error.message || '上传失败';
       setMessage(errorMessage);
       setMessageType('error');
     } finally {
@@ -103,12 +103,12 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
 
   return (
     <div className="admin-section">
-      <h2>Curriculum Upload</h2>
+      <h2>课程上传</h2>
       
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
-          Quick Upload Templates:
+          快速上传模板：
         </label>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button
@@ -126,7 +126,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? 'Loading...' : 'Mathematics'}
+            {(loading || loadingTemplate) ? '加载中...' : '数学'}
           </button>
           <button
             type="button"
@@ -143,7 +143,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? 'Loading...' : 'Science'}
+            {(loading || loadingTemplate) ? '加载中...' : '科学'}
           </button>
           <button
             type="button"
@@ -160,17 +160,17 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? 'Loading...' : 'Computer Science'}
+            {(loading || loadingTemplate) ? '加载中...' : '计算机科学'}
           </button>
         </div>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>
-          Click a template button to quickly upload a predefined curriculum. Or upload your own file below.
+          点击模板按钮可快速上传预定义课程。或在下方上传您自己的文件。
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="curriculum-file">Upload Curriculum (Markdown)</label>
+          <label htmlFor="curriculum-file">上传课程（Markdown）</label>
           <input
             id="curriculum-file"
             type="file"
@@ -187,7 +187,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         )}
 
         <button type="submit" disabled={loading || !file || loadingTemplate}>
-          {loading ? 'Uploading...' : 'Upload'}
+          {loading ? '上传中...' : '上传'}
         </button>
       </form>
     </div>

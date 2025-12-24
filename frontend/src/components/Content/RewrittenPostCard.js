@@ -11,10 +11,10 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} min ago`;
-    if (diffHours < 24) return `${diffHours} hr ago`;
-    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffMins < 1) return '刚刚';
+    if (diffMins < 60) return `${diffMins} 分钟前`;
+    if (diffHours < 24) return `${diffHours} 小时前`;
+    if (diffDays < 7) return `${diffDays} 天前`;
     
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -42,7 +42,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
           <div className="post-author">{post.author}</div>
           <div className="post-timestamp">{formatTimestamp(post.timestamp)}</div>
         </div>
-        <div className="rewritten-badge">Rewritten</div>
+        <div className="rewritten-badge">已重写</div>
       </div>
       
       <div className="post-content">
@@ -61,7 +61,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
           ) : null}
           <div className="post-image-placeholder" style={{ display: post.image_url ? 'none' : 'flex' }}>
             <div className="placeholder-icon">📷</div>
-            <div className="placeholder-text">Image Placeholder</div>
+            <div className="placeholder-text">图片占位符</div>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@ const RewrittenPostCard = ({ post, rewriteData, onCompare }) => {
           onClick={() => onCompare(post, rewriteData)}
           data-testid="compare-button"
         >
-          Compare Original
+          对比原文
         </button>
       </div>
     </div>

@@ -21,7 +21,7 @@ api.interceptors.request.use(
     (error) => {
         // Request error (before request is sent)
         return Promise.reject({
-            message: 'Network error: Failed to send request',
+            message: '网络错误：发送请求失败',
             originalError: error,
         });
     }
@@ -35,19 +35,19 @@ api.interceptors.response.use(
         if (!error.response) {
             if (error.code === 'ECONNABORTED') {
                 return Promise.reject({
-                    message: 'Request timeout: Server took too long to respond',
+                    message: '请求超时：服务器响应时间过长',
                     originalError: error,
                 });
             }
             if (error.message === 'Network Error') {
                 const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
                 return Promise.reject({
-                    message: `Network error: Unable to connect to server at ${baseURL}. Please ensure the backend is running on port 8000.`,
+                    message: `网络错误：无法连接到服务器 ${baseURL}。请确保后端在端口 8000 上运行。`,
                     originalError: error,
                 });
             }
             return Promise.reject({
-                message: 'Network error: Unable to reach server',
+                message: '网络错误：无法连接到服务器',
                 originalError: error,
             });
         }
@@ -65,7 +65,7 @@ api.interceptors.response.use(
                 window.location.href = '/login';
             }
             return Promise.reject({
-                message: 'Authentication failed: Please log in again',
+                message: '身份验证失败：请重新登录',
                 status,
                 data,
                 originalError: error,
@@ -74,7 +74,7 @@ api.interceptors.response.use(
 
         if (status === 403) {
             return Promise.reject({
-                message: data?.detail || 'Access forbidden: You do not have permission',
+                message: data?.detail || '访问被禁止：您没有权限',
                 status,
                 data,
                 originalError: error,
@@ -83,7 +83,7 @@ api.interceptors.response.use(
 
         if (status === 404) {
             return Promise.reject({
-                message: data?.detail || 'Resource not found',
+                message: data?.detail || '资源未找到',
                 status,
                 data,
                 originalError: error,
@@ -92,7 +92,7 @@ api.interceptors.response.use(
 
         if (status === 422) {
             return Promise.reject({
-                message: data?.detail || 'Validation error: Please check your input',
+                message: data?.detail || '验证错误：请检查您的输入',
                 status,
                 data,
                 originalError: error,
@@ -101,7 +101,7 @@ api.interceptors.response.use(
 
         if (status >= 500) {
             return Promise.reject({
-                message: data?.detail || 'Server error: Please try again later',
+                message: data?.detail || '服务器错误：请稍后重试',
                 status,
                 data,
                 originalError: error,
@@ -110,7 +110,7 @@ api.interceptors.response.use(
 
         // Generic error handling
         return Promise.reject({
-            message: data?.detail || error.message || 'An unexpected error occurred',
+            message: data?.detail || error.message || '发生了意外错误',
             status,
             data,
             originalError: error,

@@ -180,28 +180,61 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               disabled={loading || loadingTemplate}
               style={{ display: 'none' }}
             />
-            <button
-              type="button"
-              onClick={() => document.getElementById('curriculum-file').click()}
-              disabled={loading || loadingTemplate}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              flex: 1,
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              padding: '0.5rem',
+              backgroundColor: (loading || loadingTemplate) ? '#f5f5f5' : '#fff',
+              cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+              minHeight: '2.5rem'
+            }}>
+              {file ? (
+                <span style={{ fontSize: '14px', color: '#333', flex: 1 }}>
+                  {file.name}
+                </span>
+              ) : (
+                <span style={{ fontSize: '14px', color: '#999', flex: 1 }}>
+                  未选择文件
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => document.getElementById('curriculum-file').click()}
+                disabled={loading || loadingTemplate}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  opacity: (loading || loadingTemplate) ? 0.6 : 1,
+                  marginLeft: 'auto'
+                }}
+              >
+                浏览文件...
+              </button>
+            </div>
+            <button 
+              type="submit" 
+              disabled={loading || !file || loadingTemplate}
               style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#6c757d',
+                padding: '0.5rem 1.5rem',
+                backgroundColor: loading || !file || loadingTemplate ? '#ccc' : '#007bff',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                opacity: (loading || loadingTemplate) ? 0.6 : 1
+                cursor: (loading || !file || loadingTemplate) ? 'not-allowed' : 'pointer',
+                fontSize: '1rem',
+                whiteSpace: 'nowrap'
               }}
             >
-              浏览文件...
+              {loading ? '上传中...' : '上传'}
             </button>
-            {file && (
-              <span style={{ fontSize: '14px', color: '#666' }}>
-                已选择：{file.name}
-              </span>
-            )}
           </div>
         </div>
         
@@ -210,10 +243,6 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
             {message}
           </div>
         )}
-
-        <button type="submit" disabled={loading || !file || loadingTemplate}>
-          {loading ? '上传中...' : '上传'}
-        </button>
       </form>
     </div>
   );

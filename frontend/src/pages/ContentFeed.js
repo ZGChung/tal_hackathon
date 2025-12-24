@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import RewrittenPostCard from '../components/Content/RewrittenPostCard';
 import ComparisonView from '../components/Content/ComparisonView';
 import { getFeed } from '../services/rednoteService';
 import { rewriteText } from '../services/rewriteService';
 import './ContentFeed.css';
 
-const ContentFeed = () => {
+const ContentFeed = ({ onBackToApps }) => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [rewrittenPosts, setRewrittenPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +26,7 @@ const ContentFeed = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch posts from RedNote feed
+        // Fetch posts from 小红书 feed
         const feedData = await getFeed();
         if (!isMounted) return;
 
@@ -88,6 +92,17 @@ const ContentFeed = () => {
     setComparingRewriteData(null);
   };
 
+  const handleBackToApps = () => {
+    if (onBackToApps) {
+      onBackToApps();
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   if (loading) {
     return (
       <div className="content-feed">
@@ -114,14 +129,20 @@ const ContentFeed = () => {
 
   return (
     <div className="rednote-app">
-      {/* Status Bar */}
-      <div className="status-bar">
-        <span className="status-time">9:41</span>
-        <div className="status-icons">
-          <span className="status-icon">📶</span>
-          <span className="status-icon">📶</span>
-          <span className="status-icon">🔋</span>
-        </div>
+      {/* Global Buttons - Fixed at top, above all UI elements */}
+      <div className="global-buttons">
+        <button 
+          onClick={handleBackToApps}
+          className="global-btn back-btn"
+        >
+          ← 返回应用
+        </button>
+        <button 
+          onClick={handleLogout}
+          className="global-btn logout-btn"
+        >
+          退出登录
+        </button>
       </div>
 
       {/* Top Navigation Tabs */}

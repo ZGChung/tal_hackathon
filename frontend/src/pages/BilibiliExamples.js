@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import YouTubeVideoCard from '../components/YouTube/YouTubeVideoCard';
-import VideoComparison from '../components/YouTube/VideoComparison';
+import BilibiliVideoCard from '../components/Bilibili/BilibiliVideoCard';
+import VideoComparison from '../components/Bilibili/VideoComparison';
 import { listCurricula } from '../services/curriculumService';
 import { getPreferences } from '../services/preferencesService';
-import './YouTubeExamples.css';
+import './BilibiliExamples.css';
 
-const YouTubeExamples = () => {
+const BilibiliExamples = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,7 +64,7 @@ const YouTubeExamples = () => {
         // Create example videos with keywords
         const exampleVideos = [
           {
-            id: 'youtube_example_1',
+            id: 'bilibili_example_1',
             title: 'Science Experiment Tutorial',
             description: 'Original video about general science. Modified to emphasize chemistry concepts from curriculum.',
             original_video_url: 'placeholder_video_1_original.mp4',
@@ -77,7 +77,7 @@ const YouTubeExamples = () => {
               'Original video about general science. Modified to emphasize chemistry concepts from curriculum.',
           },
           {
-            id: 'youtube_example_2',
+            id: 'bilibili_example_2',
             title: 'History Documentary',
             description: 'Original video about history. Modified to focus on topics preferred by teachers/parents.',
             original_video_url: 'placeholder_video_2_original.mp4',
@@ -95,7 +95,7 @@ const YouTubeExamples = () => {
       } catch (err) {
         if (isMounted) {
           setError(
-            err.message || 'Failed to load YouTube examples. Please try again.'
+            err.message || 'Failed to load Bilibili examples. Please try again.'
           );
         }
       } finally {
@@ -122,8 +122,8 @@ const YouTubeExamples = () => {
 
   if (loading) {
     return (
-      <div className="youtube-examples-page">
-        <div className="youtube-loading">
+      <div className="bilibili-examples-page">
+        <div className="bilibili-loading">
           <div className="loading-spinner"></div>
           <p>Loading...</p>
         </div>
@@ -133,8 +133,8 @@ const YouTubeExamples = () => {
 
   if (error) {
     return (
-      <div className="youtube-examples-page">
-        <div className="youtube-error">
+      <div className="bilibili-examples-page">
+        <div className="bilibili-error">
           <p>❌ {error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -148,23 +148,23 @@ const YouTubeExamples = () => {
   }
 
   return (
-    <div className="youtube-examples-page">
-      <div className="youtube-examples-header">
-        <h1 className="youtube-examples-title">YouTube Examples</h1>
-        <p className="youtube-examples-subtitle">
+    <div className="bilibili-examples-page">
+      <div className="bilibili-examples-header">
+        <h1 className="bilibili-examples-title">Bilibili Examples</h1>
+        <p className="bilibili-examples-subtitle">
           See how curriculum keywords and preferences modify videos
         </p>
       </div>
 
-      <div className="youtube-examples-content">
+      <div className="bilibili-examples-content">
         {videos.length === 0 ? (
-          <div className="youtube-examples-empty">
+          <div className="bilibili-examples-empty">
             <p>No examples available</p>
           </div>
         ) : (
-          <div className="youtube-videos-list">
+          <div className="bilibili-videos-list">
             {videos.map((video) => (
-              <YouTubeVideoCard
+              <BilibiliVideoCard
                 key={video.id}
                 video={video}
                 onCompare={handleCompare}
@@ -185,5 +185,5 @@ const YouTubeExamples = () => {
   );
 };
 
-export default YouTubeExamples;
+export default BilibiliExamples;
 

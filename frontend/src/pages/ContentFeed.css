@@ -1,4 +1,4 @@
-/* RedNote App Container - Mobile App Style */
+/* 小红书 App Container - Mobile App Style */
 .rednote-app {
   min-height: 100vh;
   background: #ffffff;
@@ -12,26 +12,48 @@
   overflow-x: hidden;
 }
 
-/* Status Bar */
-.status-bar {
+/* Global Buttons - Fixed at top, above all UI elements */
+.global-buttons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
-  background: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  color: #000;
-  border-bottom: 1px solid #f0f0f0;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.status-icons {
-  display: flex;
-  gap: 4px;
+.global-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-.status-icon {
-  font-size: 12px;
+.back-btn {
+  background-color: #667eea;
+  color: white;
+}
+
+.back-btn:hover {
+  background-color: #5568d3;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
 }
 
 /* Top Navigation Tabs */
@@ -44,6 +66,7 @@
   background: #ffffff;
   border-bottom: 1px solid #f0f0f0;
   position: relative;
+  margin-top: 48px; /* Space for global buttons */
 }
 
 .nav-tab {

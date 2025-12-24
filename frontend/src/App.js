@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import RedNoteFeed from './pages/RedNoteFeed';
 import ContentFeed from './pages/ContentFeed';
-import YouTubeExamples from './pages/YouTubeExamples';
+import BilibiliExamples from './pages/BilibiliExamples';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -54,10 +54,10 @@ function App() {
                 }
               />
               <Route
-                path="/youtube-examples"
+                path="/bilibili-examples"
                 element={
                   <ProtectedRoute>
-                    <YouTubeExamples />
+                    <BilibiliExamples />
                   </ProtectedRoute>
                 }
               />

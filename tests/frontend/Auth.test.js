@@ -15,6 +15,16 @@ jest.mock('../../frontend/src/services/authService', () => ({
   getCurrentUser: jest.fn(),
 }));
 
+// Mock useNavigate
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  const actual = jest.requireActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('Login Component', () => {
   const mockLogin = jest.fn();
   const mockContextValue = {
@@ -38,6 +48,7 @@ describe('Login Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockNavigate.mockClear();
   });
 
   test('renders login form with username and password fields', () => {
@@ -98,6 +109,139 @@ describe('Login Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
+    });
+  });
+
+  test('renders quick login buttons', () => {
+    renderWithRouter(<Login />);
+    expect(screen.getByRole('button', { name: /快速登录.*管理员/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /快速登录.*学生/i })).toBeInTheDocument();
+  });
+
+  test('admin quick login button logs in successfully and redirects to admin dashboard', async () => {
+    const mockToken = 'mock-jwt-token';
+    const mockAdminUser = { id: 1, username: 'admin_test', role: 'Admin' };
+    authService.login.mockResolvedValue({
+      access_token: mockToken,
+      user: mockAdminUser,
+    });
+    mockLogin.mockResolvedValue();
+
+    renderWithRouter(<Login />);
+
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    fireEvent.click(adminButton);
+
+    await waitFor(() => {
+      expect(authService.login).toHaveBeenCalledWith('admin_test', 'admin123');
+      expect(mockLogin).toHaveBeenCalledWith(mockToken, mockAdminUser);
+      expect(mockNavigate).toHaveBeenCalledWith('/admin/dashboard');
+    });
+  });
+
+  test('user quick login button logs in successfully and redirects to dashboard', async () => {
+    const mockToken = 'mock-jwt-token';
+    const mockUser = { id: 2, username: 'user_test', role: 'Student' };
+    authService.login.mockResolvedValue({
+      access_token: mockToken,
+      user: mockUser,
+    });
+    mockLogin.mockResolvedValue();
+
+    renderWithRouter(<Login />);
+
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
+    fireEvent.click(userButton);
+
+    await waitFor(() => {
+      expect(authService.login).toHaveBeenCalledWith('user_test', 'user123');
+      expect(mockLogin).toHaveBeenCalledWith(mockToken, mockUser);
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+
+  test('quick login buttons show loading state during login', async () => {
+    const mockToken = 'mock-jwt-token';
+    const mockUser = { id: 2, username: 'user_test', role: 'Student' };
+    
+    // Create a promise that we can control
+    let resolveLogin;
+    const loginPromise = new Promise((resolve) => {
+      resolveLogin = resolve;
+    });
+    authService.login.mockReturnValue(loginPromise);
+
+    renderWithRouter(<Login />);
+
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
+
+    fireEvent.click(adminButton);
+
+    // Check that buttons are disabled and show loading state
+    await waitFor(() => {
+      expect(adminButton).toBeDisabled();
+      expect(userButton).toBeDisabled();
+      expect(screen.getByText(/登录中/i)).toBeInTheDocument();
+    });
+
+    // Resolve the login
+    resolveLogin({
+      access_token: mockToken,
+      user: mockUser,
+    });
+
+    await waitFor(() => {
+      expect(adminButton).not.toBeDisabled();
+    });
+  });
+
+  test('quick login buttons handle errors gracefully', async () => {
+    authService.login.mockRejectedValue(new Error('Quick login failed'));
+
+    renderWithRouter(<Login />);
+
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    fireEvent.click(adminButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/quick login failed/i)).toBeInTheDocument();
+    });
+  });
+
+  test('quick login buttons are disabled when loading', async () => {
+    const mockToken = 'mock-jwt-token';
+    const mockUser = { id: 2, username: 'user_test', role: 'Student' };
+    
+    let resolveLogin;
+    const loginPromise = new Promise((resolve) => {
+      resolveLogin = resolve;
+    });
+    authService.login.mockReturnValue(loginPromise);
+
+    renderWithRouter(<Login />);
+
+    const adminButton = screen.getByRole('button', { name: /快速登录.*管理员/i });
+    const userButton = screen.getByRole('button', { name: /快速登录.*学生/i });
+    const submitButton = screen.getByRole('button', { name: /login/i });
+
+    fireEvent.click(adminButton);
+
+    await waitFor(() => {
+      expect(adminButton).toBeDisabled();
+      expect(userButton).toBeDisabled();
+      expect(submitButton).toBeDisabled();
+    });
+
+    resolveLogin({
+      access_token: mockToken,
+      user: mockUser,
+    });
+
+    await waitFor(() => {
+      expect(adminButton).not.toBeDisabled();
+      expect(userButton).not.toBeDisabled();
+      expect(submitButton).not.toBeDisabled();
     });
   });
 });

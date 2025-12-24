@@ -91,6 +91,43 @@ const Login = () => {
     }
   };
 
+  const handleQuickLogin = async (username, password) => {
+    setLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    
+    try {
+      const response = await authService.login(username, password);
+      
+      // Ensure user object exists and has required fields
+      if (!response || !response.user) {
+        console.error('Invalid response structure:', response);
+        throw new Error('Invalid response from server: missing user data');
+      }
+      
+      // Ensure user has role
+      if (!response.user.role) {
+        console.error('User object missing role:', response.user);
+        throw new Error('Invalid user data: missing role');
+      }
+      
+      contextLogin(response.access_token, response.user);
+      
+      // Redirect based on role
+      if (response.user.role === 'Admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      const errorMsg = error?.message || error?.response?.data?.detail || 'Quick login failed';
+      setErrorMessage(errorMsg);
+      console.error('Quick login error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -131,6 +168,25 @@ const Login = () => {
             {loading ? '登录中...' : '登录'}
           </button>
         </form>
+
+        <div className="quick-login-buttons">
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('admin_test', 'admin123')}
+            disabled={loading}
+            className="quick-login-button"
+          >
+            {loading ? '登录中...' : '快速登录 (管理员)'}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('user_test', 'user123')}
+            disabled={loading}
+            className="quick-login-button"
+          >
+            {loading ? '登录中...' : '快速登录 (学生)'}
+          </button>
+        </div>
 
         <p className="auth-link">
           还没有账号？<Link to="/register">在此注册</Link>

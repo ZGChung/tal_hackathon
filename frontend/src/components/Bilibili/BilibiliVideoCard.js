@@ -1,9 +1,9 @@
 import React from 'react';
-import './YouTubeVideoCard.css';
+import './BilibiliVideoCard.css';
 
-const YouTubeVideoCard = ({ video, onCompare }) => {
+const BilibiliVideoCard = ({ video, onCompare }) => {
   return (
-    <div className="youtube-video-card" data-testid={`youtube-video-card-${video.id}`}>
+    <div className="bilibili-video-card" data-testid={`bilibili-video-card-${video.id}`}>
       <div className="video-card-header">
         <h3 className="video-title">{video.title}</h3>
         <p className="video-description">{video.description}</p>
@@ -79,5 +79,5 @@ const YouTubeVideoCard = ({ video, onCompare }) => {
   );
 };
 
-export default YouTubeVideoCard;
+export default BilibiliVideoCard;
 

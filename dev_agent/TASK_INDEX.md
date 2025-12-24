@@ -19,6 +19,7 @@ This document provides an overview of all development tasks broken down for the 
 8. **Task 08**: Frontend Mock RedNote Feed UI
 9. **Task 09**: Frontend Content Display & Comparison
 11. **Task 11**: Frontend YouTube Examples Module
+12. **Task 12**: Add Quick Login Buttons to Login Page
 
 ### Integration Tasks
 
@@ -51,6 +52,7 @@ This document provides an overview of all development tasks broken down for the 
 ### Phase 5: Additional Features (Optional)
 
 -   Task 11: Frontend YouTube Examples Module
+-   Task 12: Add Quick Login Buttons to Login Page
 
 ## How to Use These Tasks
 
@@ -71,6 +73,7 @@ Task 05 (Mock RedNote) → Task 08 (RedNote Feed UI)
 Task 04 (Rewriting) + Task 05 (Mock RedNote) → Task 09 (Content Display)
 All Tasks → Task 10 (Integration)
 Task 01, 02, 03, 06 → Task 11 (YouTube Examples)
+Task 01, 06 → Task 12 (Quick Login Buttons)
 ```
 
 ## Notes

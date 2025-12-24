@@ -18,6 +18,7 @@ This document provides an overview of all development tasks broken down for the 
 7. **Task 07**: Frontend Admin Dashboard
 8. **Task 08**: Frontend Mock RedNote Feed UI
 9. **Task 09**: Frontend Content Display & Comparison
+11. **Task 11**: Frontend YouTube Examples Module
 
 ### Integration Tasks
 
@@ -47,6 +48,10 @@ This document provides an overview of all development tasks broken down for the 
 
 -   Task 10: Integration & E2E Testing
 
+### Phase 5: Additional Features (Optional)
+
+-   Task 11: Frontend YouTube Examples Module
+
 ## How to Use These Tasks
 
 Each task has a standalone prompt file (`task_XX_description.md`) that can be used to initialize a new development agent. Simply:
@@ -65,6 +70,7 @@ Task 03 (Preferences) → Task 07 (Admin Dashboard - Preferences part)
 Task 05 (Mock RedNote) → Task 08 (RedNote Feed UI)
 Task 04 (Rewriting) + Task 05 (Mock RedNote) → Task 09 (Content Display)
 All Tasks → Task 10 (Integration)
+Task 01, 02, 03, 06 → Task 11 (YouTube Examples)
 ```
 
 ## Notes

@@ -14,20 +14,21 @@ const Dashboard = () => {
   const [, setSelectedApp] = useState(null);
 
   useEffect(() => {
-    // Check if app was selected from URL or state
+    // Only enter app if explicitly selected via state (user clicked)
+    // Do NOT use localStorage to auto-enter - always show selection screen first
     const appFromState = location.state?.selectedApp;
-    const appFromStorage = localStorage.getItem('selectedApp');
     
-    // Auto-select RedNote on first load if no app is selected
-    if (appFromState || appFromStorage) {
-      setSelectedApp(appFromState || appFromStorage);
+    if (appFromState) {
+      setSelectedApp(appFromState);
+      localStorage.setItem('selectedApp', appFromState);
       setShowAppSelection(false);
-    } else if (!isAdmin && user?.role === 'Student') {
-      // Auto-select RedNote for students on first visit
-      setSelectedApp('rednote');
-      localStorage.setItem('selectedApp', 'rednote');
-      setShowAppSelection(false);
+    } else {
+      // Clear any old localStorage value to ensure we show selection screen
+      localStorage.removeItem('selectedApp');
+      setShowAppSelection(true);
     }
+    // Note: 小红书 tab is selected/highlighted by default in AppSelection component
+    // but user must click to enter it (no auto-enter)
   }, [location, isAdmin, user]);
 
   const handleAppSelect = (appId) => {
@@ -40,6 +41,8 @@ const Dashboard = () => {
     setShowAppSelection(true);
     setSelectedApp(null);
     localStorage.removeItem('selectedApp');
+    // Navigate to clear location.state so it doesn't auto-enter
+    navigate('/dashboard', { replace: true, state: {} });
   };
 
   const handleLogout = () => {
@@ -73,47 +76,7 @@ const Dashboard = () => {
 
     return (
       <ProtectedRoute>
-        <div style={{ position: 'relative' }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: '20px', 
-            right: '20px', 
-            zIndex: 1000,
-            display: 'flex',
-            gap: '10px',
-            alignItems: 'center'
-          }}>
-            <button 
-              onClick={handleBackToApps}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#667eea',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
-            >
-              ← 返回应用
-            </button>
-            <button 
-              onClick={handleLogout}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#dc3545',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
-            >
-              退出登录
-            </button>
-          </div>
-          <ContentFeed />
-        </div>
+        <ContentFeed onBackToApps={handleBackToApps} />
       </ProtectedRoute>
     );
   }

@@ -16,7 +16,7 @@ const RedNoteFeed = () => {
         const feedData = await getFeed();
         setPosts(feedData);
       } catch (err) {
-        setError(err.message || 'Failed to load feed');
+        setError(err.message || '加载动态失败');
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ const RedNoteFeed = () => {
   return (
     <div className="rednote-feed">
       <div className="feed-header">
-        <h1>RedNote</h1>
+        <h1>小红书</h1>
         <p className="feed-subtitle">发现美好生活</p>
       </div>
       <PostList posts={posts} />

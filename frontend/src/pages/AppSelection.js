@@ -11,8 +11,8 @@ const AppSelection = ({ onAppSelect }) => {
   const apps = [
     {
       id: 'rednote',
-      name: 'RedNote',
-      description: 'RedNote - 发现美好生活',
+      name: '小红书',
+      description: '小红书 - 发现美好生活',
       icon: '📱',
       available: true,
     },
@@ -66,7 +66,7 @@ const AppSelection = ({ onAppSelect }) => {
     <div className="app-selection">
       <div className="app-selection-header">
         <div>
-          <h1>内容重写器仪表板</h1>
+          <h1>信息流平台选择器</h1>
           <p className="welcome-text">欢迎，{user?.username}！</p>
         </div>
         <button onClick={handleLogout} className="logout-btn">

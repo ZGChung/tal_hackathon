@@ -68,7 +68,7 @@ const AppSelection = ({ onAppSelect }) => {
     <div className="app-selection">
       <div className="app-selection-header">
         <div>
-          <h1>信息流平台选择器</h1>
+          <h1>学生信息流页面</h1>
           <p className="welcome-text">欢迎，{user?.username}！【角色：{user?.role}】</p>
         </div>
         <button onClick={handleLogout} className="logout-btn">

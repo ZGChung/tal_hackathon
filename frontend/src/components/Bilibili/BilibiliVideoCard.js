@@ -11,7 +11,7 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
 
       <div className="video-comparison-container">
         <div className="video-wrapper">
-          <div className="video-label">Original</div>
+          <div className="video-label">原始</div>
           <div className="video-player-container" data-testid="video-original">
             <video
               src={video.original_video_url || undefined}
@@ -21,14 +21,14 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
             >
               <div className="video-placeholder">
                 <div className="placeholder-icon">▶️</div>
-                <p>Video placeholder - Content coming soon</p>
+                <p>视频占位符 - 内容即将推出</p>
               </div>
             </video>
           </div>
         </div>
 
         <div className="video-wrapper">
-          <div className="video-label">Modified</div>
+          <div className="video-label">修改后</div>
           <div className="video-player-container" data-testid="video-modified">
             <video
               src={video.modified_video_url || undefined}
@@ -38,7 +38,7 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
             >
               <div className="video-placeholder">
                 <div className="placeholder-icon">▶️</div>
-                <p>Video placeholder - Content coming soon</p>
+                <p>视频占位符 - 内容即将推出</p>
               </div>
             </video>
           </div>
@@ -46,7 +46,7 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
       </div>
 
       <div className="video-keywords-section">
-        <h4 className="keywords-title">Keywords Used:</h4>
+        <h4 className="keywords-title">使用的关键词：</h4>
         <div className="keywords-list">
           {video.keywords_used && video.keywords_used.length > 0 ? (
             video.keywords_used.map((keyword, index) => (
@@ -55,7 +55,7 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
               </span>
             ))
           ) : (
-            <span className="no-keywords">No keywords available</span>
+            <span className="no-keywords">暂无关键词</span>
           )}
         </div>
       </div>
@@ -71,7 +71,7 @@ const BilibiliVideoCard = ({ video, onCompare }) => {
             onClick={() => onCompare(video)}
             data-testid="compare-button"
           >
-            Compare Videos
+            对比视频
           </button>
         </div>
       )}

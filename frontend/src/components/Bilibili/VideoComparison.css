@@ -81,14 +81,14 @@
 }
 
 .toggle-btn:hover {
-  background: #fff5f7;
-  border-color: #ff2442;
-  color: #ff2442;
+  background: #FFF0F5;
+  border-color: #FB7299;
+  color: #FB7299;
 }
 
 .toggle-btn.active {
-  background: linear-gradient(135deg, #ff2442 0%, #ff4d4d 100%);
-  border-color: #ff2442;
+  background: linear-gradient(135deg, #FB7299 0%, #FF8FA3 100%);
+  border-color: #FB7299;
   color: white;
 }
 
@@ -179,14 +179,14 @@
 }
 
 .toggle-video-btn:hover {
-  background: #fff5f7;
-  border-color: #ff2442;
-  color: #ff2442;
+  background: #FFF0F5;
+  border-color: #FB7299;
+  color: #FB7299;
 }
 
 .toggle-video-btn.active {
-  background: linear-gradient(135deg, #ff2442 0%, #ff4d4d 100%);
-  border-color: #ff2442;
+  background: linear-gradient(135deg, #FB7299 0%, #FF8FA3 100%);
+  border-color: #FB7299;
   color: white;
 }
 

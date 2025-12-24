@@ -65,29 +65,29 @@ const BilibiliExamples = () => {
         const exampleVideos = [
           {
             id: 'bilibili_example_1',
-            title: 'Science Experiment Tutorial',
-            description: 'Original video about general science. Modified to emphasize chemistry concepts from curriculum.',
+            title: '科学实验教程',
+            description: '原始视频关于一般科学。已修改以强调课程中的化学概念。',
             original_video_url: 'placeholder_video_1_original.mp4',
             modified_video_url: 'placeholder_video_1_modified.mp4',
             keywords_used:
               keywordsFromCurriculum.length > 0
                 ? keywordsFromCurriculum.slice(0, 4)
-                : ['chemistry', 'reaction', 'experiment', 'molecules'],
+                : ['化学', '反应', '实验', '分子'],
             explanation:
-              'Original video about general science. Modified to emphasize chemistry concepts from curriculum.',
+              '原始视频关于一般科学。已修改以强调课程中的化学概念。',
           },
           {
             id: 'bilibili_example_2',
-            title: 'History Documentary',
-            description: 'Original video about history. Modified to focus on topics preferred by teachers/parents.',
+            title: '历史纪录片',
+            description: '原始视频关于历史。已修改以关注教师/家长偏好的主题。',
             original_video_url: 'placeholder_video_2_original.mp4',
             modified_video_url: 'placeholder_video_2_modified.mp4',
             keywords_used:
               keywordsFromPreferences.length > 0
                 ? keywordsFromPreferences.slice(0, 4)
-                : ['ancient history', 'civilization', 'archaeology', 'culture'],
+                : ['古代历史', '文明', '考古', '文化'],
             explanation:
-              'Original video about history. Modified to focus on topics preferred by teachers/parents.',
+              '原始视频关于历史。已修改以关注教师/家长偏好的主题。',
           },
         ];
 
@@ -95,7 +95,7 @@ const BilibiliExamples = () => {
       } catch (err) {
         if (isMounted) {
           setError(
-            err.message || 'Failed to load Bilibili examples. Please try again.'
+            err.message || '加载B站示例失败，请重试。'
           );
         }
       } finally {
@@ -125,7 +125,7 @@ const BilibiliExamples = () => {
       <div className="bilibili-examples-page">
         <div className="bilibili-loading">
           <div className="loading-spinner"></div>
-          <p>Loading...</p>
+          <p>加载中...</p>
         </div>
       </div>
     );
@@ -140,7 +140,7 @@ const BilibiliExamples = () => {
             onClick={() => window.location.reload()}
             className="retry-button"
           >
-            Retry
+            重试
           </button>
         </div>
       </div>
@@ -150,16 +150,16 @@ const BilibiliExamples = () => {
   return (
     <div className="bilibili-examples-page">
       <div className="bilibili-examples-header">
-        <h1 className="bilibili-examples-title">Bilibili Examples</h1>
+        <h1 className="bilibili-examples-title">B站示例</h1>
         <p className="bilibili-examples-subtitle">
-          See how curriculum keywords and preferences modify videos
+          查看课程关键词和偏好如何修改视频
         </p>
       </div>
 
       <div className="bilibili-examples-content">
         {videos.length === 0 ? (
           <div className="bilibili-examples-empty">
-            <p>No examples available</p>
+            <p>暂无示例</p>
           </div>
         ) : (
           <div className="bilibili-videos-list">

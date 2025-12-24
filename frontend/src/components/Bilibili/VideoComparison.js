@@ -24,20 +24,20 @@ const VideoComparison = ({ video, onClose }) => {
             className={`toggle-btn ${viewMode === 'side-by-side' ? 'active' : ''}`}
             onClick={() => setViewMode('side-by-side')}
           >
-            Side by Side
+            并排显示
           </button>
           <button
             className={`toggle-btn ${viewMode === 'toggle' ? 'active' : ''}`}
             onClick={() => setViewMode('toggle')}
           >
-            Toggle View
+            切换视图
           </button>
         </div>
 
         {viewMode === 'side-by-side' ? (
           <div className="side-by-side-videos">
             <div className="comparison-video-wrapper">
-              <div className="comparison-video-label">Original Video</div>
+              <div className="comparison-video-label">原始视频</div>
               <div className="comparison-video-container" data-testid="video-original">
                 <video
                   src={video.original_video_url || undefined}
@@ -46,14 +46,14 @@ const VideoComparison = ({ video, onClose }) => {
                 >
                   <div className="video-placeholder">
                     <div className="placeholder-icon">▶️</div>
-                    <p>Video placeholder - Content coming soon</p>
+                    <p>视频占位符 - 内容即将推出</p>
                   </div>
                 </video>
               </div>
             </div>
 
             <div className="comparison-video-wrapper">
-              <div className="comparison-video-label">Modified Video</div>
+              <div className="comparison-video-label">修改后视频</div>
               <div className="comparison-video-container" data-testid="video-modified">
                 <video
                   src={video.modified_video_url || undefined}
@@ -62,7 +62,7 @@ const VideoComparison = ({ video, onClose }) => {
                 >
                   <div className="video-placeholder">
                     <div className="placeholder-icon">▶️</div>
-                    <p>Video placeholder - Content coming soon</p>
+                    <p>视频占位符 - 内容即将推出</p>
                   </div>
                 </video>
               </div>
@@ -75,13 +75,13 @@ const VideoComparison = ({ video, onClose }) => {
                 className={`toggle-video-btn ${toggleVideo === 'original' ? 'active' : ''}`}
                 onClick={() => setToggleVideo('original')}
               >
-                Show Original
+                显示原始
               </button>
               <button
                 className={`toggle-video-btn ${toggleVideo === 'modified' ? 'active' : ''}`}
                 onClick={() => setToggleVideo('modified')}
               >
-                Show Modified
+                显示修改后
               </button>
             </div>
             <div className="toggle-video-container">
@@ -94,7 +94,7 @@ const VideoComparison = ({ video, onClose }) => {
                   >
                     <div className="video-placeholder">
                       <div className="placeholder-icon">▶️</div>
-                      <p>Video placeholder - Content coming soon</p>
+                      <p>视频占位符 - 内容即将推出</p>
                     </div>
                   </video>
                 </div>
@@ -107,7 +107,7 @@ const VideoComparison = ({ video, onClose }) => {
                   >
                     <div className="video-placeholder">
                       <div className="placeholder-icon">▶️</div>
-                      <p>Video placeholder - Content coming soon</p>
+                      <p>视频占位符 - 内容即将推出</p>
                     </div>
                   </video>
                 </div>
@@ -117,7 +117,7 @@ const VideoComparison = ({ video, onClose }) => {
         )}
 
         <div className="comparison-keywords">
-          <h3 className="comparison-keywords-title">Keywords Used:</h3>
+          <h3 className="comparison-keywords-title">使用的关键词：</h3>
           <div className="comparison-keywords-list">
             {video.keywords_used && video.keywords_used.length > 0 ? (
               video.keywords_used.map((keyword, index) => (
@@ -126,7 +126,7 @@ const VideoComparison = ({ video, onClose }) => {
                 </span>
               ))
             ) : (
-              <span className="no-keywords">No keywords available</span>
+              <span className="no-keywords">暂无关键词</span>
             )}
           </div>
         </div>

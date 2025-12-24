@@ -100,7 +100,7 @@ const PreferencesList = forwardRef((props, ref) => {
 
   return (
     <div className="admin-section">
-      <h2>偏好设置列表</h2>
+      <h2>偏好列表</h2>
       {error && (
         <div className="message error" style={{ marginBottom: '1rem' }}>
           {error}

@@ -108,9 +108,9 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
-          快速上传模板：
+          快速上传示例课程：
         </label>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             type="button"
             onClick={() => loadTemplate('mathematics_curriculum', 'Mathematics')}
@@ -170,14 +170,39 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="curriculum-file">上传课程（Markdown）</label>
-          <input
-            id="curriculum-file"
-            type="file"
-            accept=".md"
-            onChange={handleFileChange}
-            disabled={loading || loadingTemplate}
-          />
+          <label htmlFor="curriculum-file">上传课程（推荐 Markdown 格式）</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <input
+              id="curriculum-file"
+              type="file"
+              accept=".md"
+              onChange={handleFileChange}
+              disabled={loading || loadingTemplate}
+              style={{ display: 'none' }}
+            />
+            <button
+              type="button"
+              onClick={() => document.getElementById('curriculum-file').click()}
+              disabled={loading || loadingTemplate}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                opacity: (loading || loadingTemplate) ? 0.6 : 1
+              }}
+            >
+              浏览文件...
+            </button>
+            {file && (
+              <span style={{ fontSize: '14px', color: '#666' }}>
+                已选择：{file.name}
+              </span>
+            )}
+          </div>
         </div>
         
         {message && (

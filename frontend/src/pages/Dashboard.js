@@ -10,7 +10,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showAppSelection, setShowAppSelection] = useState(true);
-  const [selectedApp, setSelectedApp] = useState(null);
+  // selectedApp is stored in localStorage but not used in render
+  const [, setSelectedApp] = useState(null);
 
   useEffect(() => {
     // Check if app was selected from URL or state
@@ -51,10 +52,10 @@ const Dashboard = () => {
     return (
       <ProtectedRoute>
         <div style={{ padding: '20px' }}>
-          <h1>Dashboard</h1>
-          <p>Welcome, {user?.username}!</p>
-          <p>Role: {user?.role}</p>
-          <button onClick={handleLogout}>Logout</button>
+          <h1>仪表板</h1>
+          <p>欢迎，{user?.username}！</p>
+          <p>角色：{user?.role}</p>
+          <button onClick={handleLogout}>退出登录</button>
         </div>
       </ProtectedRoute>
     );
@@ -94,7 +95,7 @@ const Dashboard = () => {
                 fontSize: '0.9rem'
               }}
             >
-              ← Back to Apps
+              ← 返回应用
             </button>
             <button 
               onClick={handleLogout}
@@ -108,7 +109,7 @@ const Dashboard = () => {
                 fontSize: '0.9rem'
               }}
             >
-              Logout
+              退出登录
             </button>
           </div>
           <ContentFeed />
@@ -121,10 +122,10 @@ const Dashboard = () => {
   return (
     <ProtectedRoute>
       <div style={{ padding: '20px' }}>
-        <h1>Dashboard</h1>
-        <p>Welcome, {user?.username}!</p>
-        <p>Role: {user?.role}</p>
-        <button onClick={handleLogout}>Logout</button>
+        <h1>仪表板</h1>
+        <p>欢迎，{user?.username}！</p>
+        <p>角色：{user?.role}</p>
+        <button onClick={handleLogout}>退出登录</button>
       </div>
     </ProtectedRoute>
   );

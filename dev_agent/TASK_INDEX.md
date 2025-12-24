@@ -20,6 +20,7 @@ This document provides an overview of all development tasks broken down for the 
 9. **Task 09**: Frontend Content Display & Comparison
 11. **Task 11**: Frontend YouTube Examples Module
 12. **Task 12**: Add Quick Login Buttons to Login Page
+13. **Task 13**: Rewrite Default Curricula - Chinese Learning Focus
 
 ### Integration Tasks
 
@@ -53,6 +54,7 @@ This document provides an overview of all development tasks broken down for the 
 
 -   Task 11: Frontend YouTube Examples Module
 -   Task 12: Add Quick Login Buttons to Login Page
+-   Task 13: Rewrite Default Curricula - Chinese Learning Focus
 
 ## How to Use These Tasks
 
@@ -74,6 +76,7 @@ Task 04 (Rewriting) + Task 05 (Mock RedNote) → Task 09 (Content Display)
 All Tasks → Task 10 (Integration)
 Task 01, 02, 03, 06 → Task 11 (YouTube Examples)
 Task 01, 06 → Task 12 (Quick Login Buttons)
+Task 01, 02, 07 → Task 13 (Rewrite Default Curricula)
 ```
 
 ## Notes

@@ -16,7 +16,8 @@
         "@testing-library/user-event": "^14.5.1"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "BROWSER=none react-scripts start",
+        "start:cursor": "BROWSER=none react-scripts start & ./open-in-cursor.sh",
         "build": "react-scripts build",
         "serve": "node server.js",
         "test": "react-scripts test",

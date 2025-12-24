@@ -6,7 +6,6 @@ import { rewriteText } from '../services/rewriteService';
 import './ContentFeed.css';
 
 const ContentFeed = () => {
-  const [posts, setPosts] = useState([]);
   const [rewrittenPosts, setRewrittenPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,8 +25,6 @@ const ContentFeed = () => {
         // Fetch posts from RedNote feed
         const feedData = await getFeed();
         if (!isMounted) return;
-        
-        setPosts(feedData);
 
         // Rewrite each post
         const rewrittenData = await Promise.all(
@@ -65,7 +62,7 @@ const ContentFeed = () => {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message || 'Failed to load feed');
+          setError(err.message || '加载动态失败');
         }
       } finally {
         if (isMounted) {
@@ -96,7 +93,7 @@ const ContentFeed = () => {
       <div className="content-feed">
         <div className="feed-loading">
           <div className="loading-spinner"></div>
-          <p>Loading...</p>
+          <p>加载中...</p>
         </div>
       </div>
     );
@@ -108,7 +105,7 @@ const ContentFeed = () => {
         <div className="feed-error">
           <p>❌ {error}</p>
           <button onClick={() => window.location.reload()} className="retry-button">
-            Retry
+            重试
           </button>
         </div>
       </div>
@@ -198,20 +195,20 @@ const ContentFeed = () => {
         {loading ? (
           <div className="feed-loading">
             <div className="loading-spinner"></div>
-            <p>Loading...</p>
+            <p>加载中...</p>
           </div>
         ) : error ? (
           <div className="feed-error">
             <p>❌ {error}</p>
             <button onClick={() => window.location.reload()} className="retry-button">
-              Retry
+              重试
             </button>
           </div>
         ) : (
           <div className="rewritten-posts-list">
             {rewrittenPosts.length === 0 ? (
               <div className="post-list-empty">
-                <p>No content available</p>
+                <p>暂无内容</p>
               </div>
             ) : (
               rewrittenPosts.map(({ post, rewriteData }) => (

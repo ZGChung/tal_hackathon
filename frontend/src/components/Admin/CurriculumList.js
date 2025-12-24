@@ -16,7 +16,7 @@ const CurriculumList = forwardRef((props, ref) => {
       const data = await listCurricula();
       setCurricula(data);
     } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Failed to load curricula');
+      setError(err.response?.data?.detail || err.message || '加载课程列表失败');
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ const CurriculumList = forwardRef((props, ref) => {
       // Refresh the list
       await fetchCurricula();
     } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Failed to delete curriculum');
+      setError(err.response?.data?.detail || err.message || '删除课程失败');
     } finally {
       setDeletingId(null);
     }
@@ -89,10 +89,10 @@ const CurriculumList = forwardRef((props, ref) => {
   if (loading) {
     return (
       <div className="admin-section">
-        <h2>Curriculum List</h2>
+        <h2>课程列表</h2>
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading curricula...</p>
+          <p>加载课程中...</p>
         </div>
       </div>
     );
@@ -101,9 +101,9 @@ const CurriculumList = forwardRef((props, ref) => {
   if (error) {
     return (
       <div className="admin-section">
-        <h2>Curriculum List</h2>
+        <h2>课程列表</h2>
         <div className="message error">{error}</div>
-        <button onClick={fetchCurricula}>Retry</button>
+        <button onClick={fetchCurricula}>重试</button>
       </div>
     );
   }
@@ -111,13 +111,13 @@ const CurriculumList = forwardRef((props, ref) => {
   return (
     <div className="admin-section">
       <div className="curriculum-list-header">
-        <h2>Curriculum List</h2>
-        <span className="curriculum-count">{curricula.length} {curricula.length === 1 ? 'curriculum' : 'curricula'}</span>
+        <h2>课程列表</h2>
+        <span className="curriculum-count">{curricula.length} {curricula.length === 1 ? '个课程' : '个课程'}</span>
       </div>
       {curricula.length === 0 ? (
         <div className="empty-state">
-          <p>No curricula uploaded yet.</p>
-          <p className="empty-state-hint">Upload a curriculum using the "Curriculum Upload" tab.</p>
+          <p>尚未上传任何课程。</p>
+          <p className="empty-state-hint">使用"课程上传"标签页上传课程。</p>
         </div>
       ) : (
         <div className="curriculum-list">
@@ -144,7 +144,7 @@ const CurriculumList = forwardRef((props, ref) => {
                     </span>
                     <span className="keyword-count">
                       <span className="meta-icon">🏷️</span>
-                      {keywords.length} keywords
+                      {keywords.length} 个关键词
                     </span>
                   </div>
                 </div>
@@ -152,7 +152,7 @@ const CurriculumList = forwardRef((props, ref) => {
                 {keywords.length > 0 ? (
                   <div className="curriculum-keywords-section">
                     <div className="keywords-label">
-                      <strong>Keywords:</strong>
+                      <strong>关键词：</strong>
                     </div>
                     <div className="keywords-container">
                       {displayKeywords.map((keyword, index) => (
@@ -162,7 +162,7 @@ const CurriculumList = forwardRef((props, ref) => {
                       ))}
                       {hasMoreKeywords && !isExpanded && (
                         <span className="keyword-more-indicator">
-                          +{keywords.length - 10} more
+                          还有 {keywords.length - 10} 个
                         </span>
                       )}
                     </div>
@@ -173,19 +173,19 @@ const CurriculumList = forwardRef((props, ref) => {
                           className="toggle-keywords-btn"
                           onClick={() => toggleExpand(curriculum.id)}
                         >
-                          {isExpanded ? 'Show Less' : `Show All ${keywords.length} Keywords`}
+                          {isExpanded ? '收起' : `显示全部 ${keywords.length} 个关键词`}
                         </button>
                       )}
                       {isConfirming ? (
                         <div className="delete-confirmation">
-                          <span className="delete-confirm-text">Delete?</span>
+                          <span className="delete-confirm-text">确认删除？</span>
                           <button
                             type="button"
                             className="delete-confirm-btn"
                             onClick={() => handleDelete(curriculum.id, curriculum.filename)}
                             disabled={isDeleting}
                           >
-                            {isDeleting ? 'Deleting...' : 'Confirm'}
+                            {isDeleting ? '删除中...' : '确认'}
                           </button>
                           <button
                             type="button"
@@ -193,7 +193,7 @@ const CurriculumList = forwardRef((props, ref) => {
                             onClick={cancelDelete}
                             disabled={isDeleting}
                           >
-                            Cancel
+                            取消
                           </button>
                         </div>
                       ) : (
@@ -202,27 +202,27 @@ const CurriculumList = forwardRef((props, ref) => {
                           className="delete-btn"
                           onClick={() => handleDelete(curriculum.id, curriculum.filename)}
                           disabled={isDeleting || deleteConfirmId !== null}
-                          title="Delete curriculum"
+                          title="删除课程"
                         >
-                          🗑️ Delete
+                          🗑️ 删除
                         </button>
                       )}
                     </div>
                   </div>
                 ) : (
                   <div className="curriculum-keywords-section">
-                    <span className="no-keywords">No keywords extracted</span>
+                    <span className="no-keywords">未提取到关键词</span>
                     <div className="keywords-actions">
                       {isConfirming ? (
                         <div className="delete-confirmation">
-                          <span className="delete-confirm-text">Delete?</span>
+                          <span className="delete-confirm-text">确认删除？</span>
                           <button
                             type="button"
                             className="delete-confirm-btn"
                             onClick={() => handleDelete(curriculum.id, curriculum.filename)}
                             disabled={isDeleting}
                           >
-                            {isDeleting ? 'Deleting...' : 'Confirm'}
+                            {isDeleting ? '删除中...' : '确认'}
                           </button>
                           <button
                             type="button"
@@ -230,7 +230,7 @@ const CurriculumList = forwardRef((props, ref) => {
                             onClick={cancelDelete}
                             disabled={isDeleting}
                           >
-                            Cancel
+                            取消
                           </button>
                         </div>
                       ) : (
@@ -239,9 +239,9 @@ const CurriculumList = forwardRef((props, ref) => {
                           className="delete-btn"
                           onClick={() => handleDelete(curriculum.id, curriculum.filename)}
                           disabled={isDeleting || deleteConfirmId !== null}
-                          title="Delete curriculum"
+                          title="删除课程"
                         >
-                          🗑️ Delete
+                          🗑️ 删除
                         </button>
                       )}
                     </div>

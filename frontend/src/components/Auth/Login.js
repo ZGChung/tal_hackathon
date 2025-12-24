@@ -32,11 +32,11 @@ const Login = () => {
     const newErrors = {};
 
     if (!username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = '用户名是必填项';
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = '密码是必填项';
     }
 
     setErrors(newErrors);
@@ -83,7 +83,7 @@ const Login = () => {
       }
     } catch (error) {
       // Extract error message from Error object or error object
-      const errorMsg = error?.message || error?.response?.data?.detail || 'Invalid credentials. Please check your username and password.';
+      const errorMsg = error?.message || error?.response?.data?.detail || '凭据无效。请检查您的用户名和密码。';
       setErrorMessage(errorMsg);
       console.error('Login error:', error); // Debug log
     } finally {
@@ -94,13 +94,13 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Login</h2>
+        <h2>登录</h2>
         <form onSubmit={handleSubmit}>
           {successMessage && <div className="success-message">{successMessage}</div>}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">用户名</label>
             <input
               type="text"
               id="username"
@@ -114,7 +114,7 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">密码</label>
             <input
               type="password"
               id="password"
@@ -128,12 +128,12 @@ const Login = () => {
           </div>
 
           <button type="submit" disabled={loading} className="submit-button">
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? '登录中...' : '登录'}
           </button>
         </form>
 
         <p className="auth-link">
-          Don't have an account? <Link to="/register">Register here</Link>
+          还没有账号？<Link to="/register">在此注册</Link>
         </p>
       </div>
     </div>

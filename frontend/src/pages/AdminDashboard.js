@@ -43,13 +43,13 @@ const AdminDashboard = () => {
       <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <div>
-            <h1>Admin Dashboard</h1>
+            <h1>管理员仪表板</h1>
             <p style={{ margin: '0.5rem 0', color: '#666' }}>
-              Welcome, {user?.username}! ({user?.role})
+              欢迎，{user?.username}！（{user?.role}）
             </p>
           </div>
           <button onClick={handleLogout} style={{ padding: '0.5rem 1rem' }}>
-            Logout
+            退出登录
           </button>
         </div>
 
@@ -58,25 +58,25 @@ const AdminDashboard = () => {
             className={`admin-tab ${activeSection === 'upload' ? 'active' : ''}`}
             onClick={() => setActiveSection('upload')}
           >
-            Curriculum Upload
+            课程上传
           </button>
           <button
             className={`admin-tab ${activeSection === 'list' ? 'active' : ''}`}
             onClick={() => setActiveSection('list')}
           >
-            Curriculum List
+            课程列表
           </button>
           <button
             className={`admin-tab ${activeSection === 'preferences' ? 'active' : ''}`}
             onClick={() => setActiveSection('preferences')}
           >
-            Preferences
+            偏好设置
           </button>
           <button
             className={`admin-tab ${activeSection === 'preferences-list' ? 'active' : ''}`}
             onClick={() => setActiveSection('preferences-list')}
           >
-            Preferences List
+            偏好设置列表
           </button>
         </div>
 

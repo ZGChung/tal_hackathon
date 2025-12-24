@@ -17,7 +17,7 @@ export const rewriteText = async (text, curriculum_id) => {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.detail || 'Failed to rewrite text. Please try again.'
+      error.response?.data?.detail || '重写文本失败。请重试。'
     );
   }
 };

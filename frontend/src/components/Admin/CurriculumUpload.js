@@ -180,17 +180,48 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               disabled={loading || loadingTemplate}
               style={{ display: 'none' }}
             />
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              flex: 1,
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              padding: '0.5rem',
-              backgroundColor: (loading || loadingTemplate) ? '#f5f5f5' : '#fff',
-              cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
-              minHeight: '2.5rem'
-            }}>
+            <div 
+              onClick={() => {
+                if (!loading && !loadingTemplate) {
+                  document.getElementById('curriculum-file').click();
+                }
+              }}
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                flex: 1,
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                padding: '0.5rem',
+                backgroundColor: (loading || loadingTemplate) ? '#f5f5f5' : '#fff',
+                cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+                minHeight: '2.5rem',
+                gap: '10px'
+              }}
+            >
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!loading && !loadingTemplate) {
+                    document.getElementById('curriculum-file').click();
+                  }
+                }}
+                disabled={loading || loadingTemplate}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#1976d2',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  opacity: (loading || loadingTemplate) ? 0.6 : 1,
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                浏览文件...
+              </button>
               {file ? (
                 <span style={{ fontSize: '14px', color: '#333', flex: 1 }}>
                   {file.name}
@@ -200,24 +231,6 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
                   未选择文件
                 </span>
               )}
-              <button
-                type="button"
-                onClick={() => document.getElementById('curriculum-file').click()}
-                disabled={loading || loadingTemplate}
-                style={{
-                  padding: '0.5rem 1rem',
-                  backgroundColor: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: (loading || loadingTemplate) ? 'not-allowed' : 'pointer',
-                  fontSize: '14px',
-                  opacity: (loading || loadingTemplate) ? 0.6 : 1,
-                  marginLeft: 'auto'
-                }}
-              >
-                浏览文件...
-              </button>
             </div>
             <button 
               type="submit" 

@@ -56,8 +56,7 @@ const Dashboard = () => {
       <ProtectedRoute>
         <div style={{ padding: '20px' }}>
           <h1>仪表板</h1>
-          <p>欢迎，{user?.username}！</p>
-          <p>角色：{user?.role}</p>
+          <p>欢迎，{user?.username}！【角色：{user?.role}】</p>
           <button onClick={handleLogout}>退出登录</button>
         </div>
       </ProtectedRoute>
@@ -86,8 +85,7 @@ const Dashboard = () => {
     <ProtectedRoute>
       <div style={{ padding: '20px' }}>
         <h1>仪表板</h1>
-        <p>欢迎，{user?.username}！</p>
-        <p>角色：{user?.role}</p>
+        <p>欢迎，{user?.username}！【角色：{user?.role}】</p>
         <button onClick={handleLogout}>退出登录</button>
       </div>
     </ProtectedRoute>

@@ -45,7 +45,7 @@ const AdminDashboard = () => {
           <div>
             <h1>管理员仪表板</h1>
             <p style={{ margin: '0.5rem 0', color: '#666' }}>
-              欢迎，{user?.username}！（{user?.role}）
+              欢迎，{user?.username}！【角色：{user?.role}】
             </p>
           </div>
           <button onClick={handleLogout} style={{ padding: '0.5rem 1rem' }}>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import BilibiliExamples from './pages/BilibiliExamples';
-import BilibiliVideoCard from './components/Bilibili/BilibiliVideoCard';
-import VideoComparison from './components/Bilibili/VideoComparison';
+import YouTubeExamples from './pages/YouTubeExamples';
+import YouTubeVideoCard from './components/YouTube/YouTubeVideoCard';
+import VideoComparison from './components/YouTube/VideoComparison';
 import * as curriculumService from './services/curriculumService';
 import * as preferencesService from './services/preferencesService';
 
@@ -17,9 +17,9 @@ jest.mock('./services/preferencesService', () => ({
   getPreferences: jest.fn(),
 }));
 
-describe('BilibiliVideoCard Component', () => {
+describe('YouTubeVideoCard Component', () => {
   const mockVideo = {
-    id: 'bilibili_example_1',
+    id: 'youtube_example_1',
     title: 'Science Experiment Tutorial',
     description: 'Original video description',
     original_video_url: 'placeholder_video_1_original.mp4',
@@ -33,21 +33,21 @@ describe('BilibiliVideoCard Component', () => {
   });
 
   test('renders video card with title and description', () => {
-    render(<BilibiliVideoCard video={mockVideo} />);
+    render(<YouTubeVideoCard video={mockVideo} />);
 
     expect(screen.getByText('Science Experiment Tutorial')).toBeInTheDocument();
     expect(screen.getByText('Original video description')).toBeInTheDocument();
   });
 
   test('displays original and modified video placeholders', () => {
-    render(<BilibiliVideoCard video={mockVideo} />);
+    render(<YouTubeVideoCard video={mockVideo} />);
 
     const videos = screen.getAllByTestId(/video-(original|modified)/);
     expect(videos.length).toBeGreaterThan(0);
   });
 
   test('displays keywords used', () => {
-    render(<BilibiliVideoCard video={mockVideo} />);
+    render(<YouTubeVideoCard video={mockVideo} />);
 
     expect(screen.getByText('chemistry')).toBeInTheDocument();
     expect(screen.getByText('reaction')).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('BilibiliVideoCard Component', () => {
   });
 
   test('displays explanation text', () => {
-    render(<BilibiliVideoCard video={mockVideo} />);
+    render(<YouTubeVideoCard video={mockVideo} />);
 
     expect(
       screen.getByText(/This video was modified to incorporate curriculum keywords/i)
@@ -64,7 +64,7 @@ describe('BilibiliVideoCard Component', () => {
 
   test('calls onCompare when compare button is clicked', () => {
     const mockOnCompare = jest.fn();
-    render(<BilibiliVideoCard video={mockVideo} onCompare={mockOnCompare} />);
+    render(<YouTubeVideoCard video={mockVideo} onCompare={mockOnCompare} />);
 
     const compareButton = screen.getByRole('button', { name: /compare/i });
     fireEvent.click(compareButton);
@@ -75,7 +75,7 @@ describe('BilibiliVideoCard Component', () => {
 
 describe('VideoComparison Component', () => {
   const mockVideo = {
-    id: 'bilibili_example_1',
+    id: 'youtube_example_1',
     title: 'Science Experiment Tutorial',
     original_video_url: 'placeholder_video_1_original.mp4',
     modified_video_url: 'placeholder_video_1_modified.mp4',
@@ -87,20 +87,20 @@ describe('VideoComparison Component', () => {
   });
 
   test('renders both original and modified video placeholders', () => {
-    render(<VideoComparison video={mockVideo} onClose={() => { }} />);
+    render(<VideoComparison video={mockVideo} onClose={() => {}} />);
 
     expect(screen.getByTestId('video-original')).toBeInTheDocument();
     expect(screen.getByTestId('video-modified')).toBeInTheDocument();
   });
 
   test('displays video title', () => {
-    render(<VideoComparison video={mockVideo} onClose={() => { }} />);
+    render(<VideoComparison video={mockVideo} onClose={() => {}} />);
 
     expect(screen.getByText('Science Experiment Tutorial')).toBeInTheDocument();
   });
 
   test('displays keywords used', () => {
-    render(<VideoComparison video={mockVideo} onClose={() => { }} />);
+    render(<VideoComparison video={mockVideo} onClose={() => {}} />);
 
     expect(screen.getByText('chemistry')).toBeInTheDocument();
     expect(screen.getByText('reaction')).toBeInTheDocument();
@@ -118,7 +118,7 @@ describe('VideoComparison Component', () => {
   });
 
   test('supports toggle view between original and modified', () => {
-    render(<VideoComparison video={mockVideo} onClose={() => { }} />);
+    render(<VideoComparison video={mockVideo} onClose={() => {}} />);
 
     // Should show both videos in side-by-side view by default
     expect(screen.getByTestId('video-original')).toBeInTheDocument();
@@ -126,7 +126,7 @@ describe('VideoComparison Component', () => {
   });
 });
 
-describe('BilibiliExamples Page', () => {
+describe('YouTubeExamples Page', () => {
   const mockCurricula = [
     {
       id: 1,
@@ -147,16 +147,16 @@ describe('BilibiliExamples Page', () => {
     preferencesService.getPreferences.mockResolvedValue(mockPreferences);
   });
 
-  test('renders Bilibili examples page with header', async () => {
-    render(<BilibiliExamples />);
+  test('renders YouTube examples page with header', async () => {
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Bilibili Examples/i)).toBeInTheDocument();
+      expect(screen.getByText(/YouTube Examples/i)).toBeInTheDocument();
     });
   });
 
   test('displays subtitle about curriculum keywords and preferences', async () => {
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
       expect(
@@ -166,7 +166,7 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('fetches curriculum and preferences on mount', async () => {
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
       expect(curriculumService.listCurricula).toHaveBeenCalled();
@@ -175,10 +175,10 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('displays two example videos', async () => {
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
-      const videoCards = screen.getAllByTestId(/bilibili-video-card/i);
+      const videoCards = screen.getAllByTestId(/youtube-video-card/i);
       expect(videoCards.length).toBe(2);
     });
   });
@@ -191,7 +191,7 @@ describe('BilibiliExamples Page', () => {
       () => new Promise((resolve) => setTimeout(resolve, 100))
     );
 
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
@@ -202,7 +202,7 @@ describe('BilibiliExamples Page', () => {
     );
     preferencesService.getPreferences.mockResolvedValue(mockPreferences);
 
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     // Should still display videos with fallback keywords
     await waitFor(() => {
@@ -219,7 +219,7 @@ describe('BilibiliExamples Page', () => {
       new Error('Failed to fetch preferences')
     );
 
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     // Should still display videos with fallback keywords
     await waitFor(() => {
@@ -231,7 +231,7 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('opens comparison view when compare button is clicked', async () => {
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
       expect(screen.getByText(/Science Experiment Tutorial/i)).toBeInTheDocument();
@@ -243,7 +243,7 @@ describe('BilibiliExamples Page', () => {
     await waitFor(() => {
       const modal = screen.getByTestId('video-comparison-modal');
       expect(modal).toBeInTheDocument();
-
+      
       // Find videos within the modal
       const originalVideo = modal.querySelector('[data-testid="video-original"]');
       const modifiedVideo = modal.querySelector('[data-testid="video-modified"]');
@@ -253,7 +253,7 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('closes comparison view when close button is clicked', async () => {
-    render(<BilibiliExamples />);
+    render(<YouTubeExamples />);
 
     await waitFor(() => {
       expect(screen.getByText(/Science Experiment Tutorial/i)).toBeInTheDocument();

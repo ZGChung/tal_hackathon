@@ -77,12 +77,14 @@ def seed_database():
         # Old default curricula to remove (replaced by new ones)
         old_default_curricula = [
             "language_arts_curriculum.md",
-            "social_studies_curriculum.md"
+            "social_studies_curriculum.md",
+            "mathematics_curriculum.md",
+            "science_curriculum.md",
+            "computer_science_curriculum.md"
         ]
         
-        # Seed curricula for each admin user that doesn't have any
+        # First, remove old default curricula for all admin users (always do this)
         for admin_user in admin_users:
-            # Remove old default curricula if they exist
             old_curricula = db.query(Curriculum).filter(
                 Curriculum.user_id == admin_user.id,
                 Curriculum.filename.in_(old_default_curricula)
@@ -101,7 +103,9 @@ def seed_database():
                 
                 if old_curricula:
                     db.commit()
-            
+        
+        # Seed curricula for each admin user that doesn't have any
+        for admin_user in admin_users:
             # Check if this admin already has the new curricula
             existing_count = db.query(Curriculum).filter(
                 Curriculum.user_id == admin_user.id

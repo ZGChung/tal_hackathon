@@ -23,6 +23,7 @@ This document provides an overview of all development tasks broken down for the 
 13. **Task 13**: Rewrite Default Curricula - Chinese Learning Focus
 14. **Task 14**: Rewrite Default Preferences - Chinese Learning Focus for Kids Under 12
 15. **Task 15**: Rewrite RedNote Default Examples - Chinese Learning Focus for Kids Under 12
+16. **Task 16**: Populate Bilibili Examples with Real Videos
 
 ### Integration Tasks
 
@@ -59,6 +60,7 @@ This document provides an overview of all development tasks broken down for the 
 -   Task 13: Rewrite Default Curricula - Chinese Learning Focus
 -   Task 14: Rewrite Default Preferences - Chinese Learning Focus for Kids Under 12
 -   Task 15: Rewrite RedNote Default Examples - Chinese Learning Focus for Kids Under 12
+-   Task 16: Populate Bilibili Examples with Real Videos
 
 ## How to Use These Tasks
 
@@ -83,6 +85,7 @@ Task 01, 06 → Task 12 (Quick Login Buttons)
 Task 01, 02, 07 → Task 13 (Rewrite Default Curricula)
 Task 01, 03, 07, 13 → Task 14 (Rewrite Default Preferences)
 Task 05 → Task 15 (Rewrite RedNote Examples)
+Task 11 → Task 16 (Populate Bilibili Videos)
 ```
 
 ## Notes

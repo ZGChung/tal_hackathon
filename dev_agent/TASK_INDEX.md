@@ -21,6 +21,7 @@ This document provides an overview of all development tasks broken down for the 
 11. **Task 11**: Frontend YouTube Examples Module
 12. **Task 12**: Add Quick Login Buttons to Login Page
 13. **Task 13**: Rewrite Default Curricula - Chinese Learning Focus
+14. **Task 14**: Rewrite Default Preferences - Chinese Learning Focus for Kids Under 12
 
 ### Integration Tasks
 
@@ -55,6 +56,7 @@ This document provides an overview of all development tasks broken down for the 
 -   Task 11: Frontend YouTube Examples Module
 -   Task 12: Add Quick Login Buttons to Login Page
 -   Task 13: Rewrite Default Curricula - Chinese Learning Focus
+-   Task 14: Rewrite Default Preferences - Chinese Learning Focus for Kids Under 12
 
 ## How to Use These Tasks
 
@@ -77,6 +79,7 @@ All Tasks → Task 10 (Integration)
 Task 01, 02, 03, 06 → Task 11 (YouTube Examples)
 Task 01, 06 → Task 12 (Quick Login Buttons)
 Task 01, 02, 07 → Task 13 (Rewrite Default Curricula)
+Task 01, 03, 07, 13 → Task 14 (Rewrite Default Preferences)
 ```
 
 ## Notes

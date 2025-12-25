@@ -71,13 +71,29 @@ Original text: {original_text}"""
         if not keywords:
             return original_text, []
         
+        # Check for specific poetry phrases that should be used exclusively
+        # For posts about "柳暗花明又一村", only use that keyword
+        poetry_phrases = ['柳暗花明又一村']
+        text_lower = original_text.lower()
+        
+        # Check if text aligns with poetry meaning (struggling then finding solution)
+        poetry_indicators = ['做', '不会', '难', '后来', '终于', '明白', '走错', '绕', '找到', '发现']
+        has_poetry_meaning = any(indicator in original_text for indicator in poetry_indicators)
+        
+        # If we have a poetry phrase and the text aligns with its meaning, use only that phrase
+        for phrase in poetry_phrases:
+            if phrase in keywords and has_poetry_meaning:
+                # Only use this specific phrase
+                relevant_keywords = [phrase]
+                rewritten = self._paraphrase_with_keywords(original_text, relevant_keywords)
+                return rewritten, relevant_keywords
+        
         # Select diverse keywords to ensure variety across posts
         # Use a hash of the text to deterministically select different keywords for different posts
         import hashlib
         text_hash = int(hashlib.md5(original_text.encode()).hexdigest()[:8], 16)
         
         relevant_keywords = []
-        text_lower = original_text.lower()
         
         # Filter out generic words and words already in text
         candidate_keywords = []
@@ -145,6 +161,40 @@ Original text: {original_text}"""
         """Paraphrase text while naturally incorporating keywords"""
         if not keywords:
             return text
+        
+        # Special handling for Chinese poetry phrases like "柳暗花明又一村"
+        # These should be inserted naturally, not replaced
+        poetry_phrases = ['柳暗花明又一村']
+        for phrase in poetry_phrases:
+            if phrase in keywords and phrase not in text:
+                # Find a natural place to insert the poetry phrase
+                # Look for indicators of struggle then solution
+                if '终于' in text or '后来' in text or '真的' in text:
+                    # Insert after "真的" or "真的是" or before the ending
+                    if '真的' in text:
+                        # Insert after "真的" or "真的是"
+                        if '真的是' in text:
+                            text = text.replace('真的是', f"真的是'{phrase}'", 1)
+                        elif '真的' in text and '是' not in text[text.find('真的')+2:text.find('真的')+5]:
+                            # Insert after standalone "真的"
+                            text = text.replace('真的', f"真的是'{phrase}'", 1)
+                        else:
+                            # Fallback: add at the end of a sentence
+                            if '。' in text:
+                                text = text.replace('。', f"，真的是'{phrase}'。", 1)
+                            elif '！' in text:
+                                text = text.replace('！', f"，真的是'{phrase}'！", 1)
+                            else:
+                                text = f"{text} 真的是'{phrase}'。"
+                    else:
+                        # Insert before ending punctuation
+                        if '。' in text:
+                            text = text.replace('。', f"，真的是'{phrase}'。", 1)
+                        elif '！' in text:
+                            text = text.replace('！', f"，真的是'{phrase}'！", 1)
+                        else:
+                            text = f"{text} 真的是'{phrase}'。"
+                    return text
         
         original_text = text
         words = text.split()

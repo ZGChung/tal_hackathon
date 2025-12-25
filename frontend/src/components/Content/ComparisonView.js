@@ -13,98 +13,119 @@ const splitIntoClauses = (text) => {
   return text.split(/([,;:]\s+)/).filter(s => s.trim().length > 0);
 };
 
-// Compute diff at sentence/clause level for better readability
-const computeDiff = (original, rewritten) => {
+// Compute diff highlighting only the keywords that were used
+const computeDiff = (original, rewritten, keywordsUsed = []) => {
   const result = [];
   
-  // First, try sentence-level comparison
-  const originalSentences = splitIntoSentences(original);
-  const rewrittenSentences = splitIntoSentences(rewritten);
-  
-  let origIdx = 0;
-  let rewriteIdx = 0;
-  
-  while (origIdx < originalSentences.length || rewriteIdx < rewrittenSentences.length) {
-    if (origIdx >= originalSentences.length) {
-      // Only in rewritten - entire sentence added
-      result.push({ type: 'added', text: rewrittenSentences[rewriteIdx] });
-      rewriteIdx++;
-    } else if (rewriteIdx >= rewrittenSentences.length) {
-      // Only in original - entire sentence removed
-      result.push({ type: 'removed', text: originalSentences[origIdx] });
-      origIdx++;
-    } else {
-      const origSentence = originalSentences[origIdx].trim();
-      const rewriteSentence = rewrittenSentences[rewriteIdx].trim();
-      
-      // Normalize for comparison (remove extra spaces)
-      const origNormalized = origSentence.replace(/\s+/g, ' ');
-      const rewriteNormalized = rewriteSentence.replace(/\s+/g, ' ');
-      
-      if (origNormalized === rewriteNormalized) {
-        // Same sentence
-        result.push({ type: 'unchanged', text: origSentence + ' ' });
-        origIdx++;
+  // If no keywords were used, show full diff
+  if (!keywordsUsed || keywordsUsed.length === 0) {
+    // Fallback to sentence-level diff
+    const originalSentences = splitIntoSentences(original);
+    const rewrittenSentences = splitIntoSentences(rewritten);
+    
+    let origIdx = 0;
+    let rewriteIdx = 0;
+    
+    while (origIdx < originalSentences.length || rewriteIdx < rewrittenSentences.length) {
+      if (origIdx >= originalSentences.length) {
+        result.push({ type: 'added', text: rewrittenSentences[rewriteIdx] });
         rewriteIdx++;
+      } else if (rewriteIdx >= rewrittenSentences.length) {
+        result.push({ type: 'removed', text: originalSentences[origIdx] });
+        origIdx++;
       } else {
-        // Different sentences - try clause-level comparison
-        const origClauses = splitIntoClauses(origSentence);
-        const rewriteClauses = splitIntoClauses(rewriteSentence);
+        const origSentence = originalSentences[origIdx].trim();
+        const rewriteSentence = rewrittenSentences[rewriteIdx].trim();
         
-        if (origClauses.length === 1 && rewriteClauses.length === 1) {
-          // Single clause - entire sentence is different
+        if (origSentence === rewriteSentence) {
+          result.push({ type: 'unchanged', text: origSentence + ' ' });
+        } else {
           result.push({ type: 'removed', text: origSentence + ' ' });
           result.push({ type: 'added', text: rewriteSentence + ' ' });
-          origIdx++;
-          rewriteIdx++;
-        } else {
-          // Multiple clauses - compare at clause level
-          let origClauseIdx = 0;
-          let rewriteClauseIdx = 0;
-          
-          while (origClauseIdx < origClauses.length || rewriteClauseIdx < rewriteClauses.length) {
-            if (origClauseIdx >= origClauses.length) {
-              // Only in rewritten
-              result.push({ type: 'added', text: rewriteClauses[rewriteClauseIdx] });
-              rewriteClauseIdx++;
-            } else if (rewriteClauseIdx >= rewriteClauses.length) {
-              // Only in original
-              result.push({ type: 'removed', text: origClauses[origClauseIdx] });
-              origClauseIdx++;
-            } else {
-              const origClause = origClauses[origClauseIdx].trim();
-              const rewriteClause = rewriteClauses[rewriteClauseIdx].trim();
-              
-              const origClauseNorm = origClause.replace(/\s+/g, ' ');
-              const rewriteClauseNorm = rewriteClause.replace(/\s+/g, ' ');
-              
-              if (origClauseNorm === rewriteClauseNorm) {
-                // Same clause
-                result.push({ type: 'unchanged', text: origClause });
-                origClauseIdx++;
-                rewriteClauseIdx++;
-              } else {
-                // Different clauses
-                result.push({ type: 'removed', text: origClause });
-                result.push({ type: 'added', text: rewriteClause });
-                origClauseIdx++;
-                rewriteClauseIdx++;
-              }
-            }
-          }
-          
-          origIdx++;
-          rewriteIdx++;
         }
+        origIdx++;
+        rewriteIdx++;
       }
     }
+    return result;
+  }
+  
+  // Highlight only the keywords that were used
+  // Find all occurrences of keywords in the rewritten text
+  // Sort keywords by length (longest first) to match longer phrases first
+  const sortedKeywords = [...keywordsUsed].sort((a, b) => b.length - a.length);
+  
+  // Find all keyword positions in rewritten text
+  const keywordMatches = [];
+  for (const keyword of sortedKeywords) {
+    // Escape special regex characters
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedKeyword, 'g');
+    let match;
+    while ((match = regex.exec(rewritten)) !== null) {
+      keywordMatches.push({
+        keyword: keyword,
+        start: match.index,
+        end: match.index + match[0].length,
+        matchedText: match[0]
+      });
+    }
+  }
+  
+  // Sort matches by position
+  keywordMatches.sort((a, b) => a.start - b.start);
+  
+  // Remove overlapping matches (keep the first/longest one)
+  const nonOverlappingMatches = [];
+  for (const match of keywordMatches) {
+    const overlaps = nonOverlappingMatches.some(existing => 
+      (match.start < existing.end && match.end > existing.start)
+    );
+    if (!overlaps) {
+      nonOverlappingMatches.push(match);
+    }
+  }
+  
+  // Build result by highlighting only keywords
+  let currentPos = 0;
+  for (const match of nonOverlappingMatches) {
+    // Add unchanged text before keyword
+    if (match.start > currentPos) {
+      const unchangedText = rewritten.substring(currentPos, match.start);
+      if (unchangedText) {
+        result.push({ type: 'unchanged', text: unchangedText });
+      }
+    }
+    
+    // Add highlighted keyword
+    result.push({ type: 'added', text: match.matchedText });
+    
+    currentPos = match.end;
+  }
+  
+  // Add remaining unchanged text
+  if (currentPos < rewritten.length) {
+    const remainingText = rewritten.substring(currentPos);
+    if (remainingText) {
+      result.push({ type: 'unchanged', text: remainingText });
+    }
+  }
+  
+  // If no keywords found, show full rewritten text as unchanged
+  if (result.length === 0) {
+    result.push({ type: 'unchanged', text: rewritten });
   }
   
   return result;
 };
 
 const ComparisonView = ({ post, rewriteData, onClose }) => {
-  const diff = computeDiff(rewriteData.original_text, rewriteData.rewritten_text);
+  // Only highlight the keywords that were actually used
+  const diff = computeDiff(
+    rewriteData.original_text, 
+    rewriteData.rewritten_text,
+    rewriteData.keywords_used || []
+  );
 
   return (
     <div className="comparison-view-overlay" data-testid="comparison-view">

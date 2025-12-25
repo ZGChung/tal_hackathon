@@ -121,7 +121,7 @@ Original text: {original_text}"""
             "luscious": "sweet",
             "tempting": "yummy",
         }
-        
+
         for vocab_set in english_vocab_sets:
             # Check if all words in the set are in the text (case-insensitive)
             text_lower = original_text.lower()

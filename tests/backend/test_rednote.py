@@ -41,7 +41,7 @@ class TestMockRedNoteAdapter:
         adapter = MockRedNoteAdapter()
         feed = adapter.get_feed()
         assert isinstance(feed, list)
-        assert len(feed) >= 10  # Should have 10-20 posts
+        assert len(feed) == 6  # Should have exactly 6 posts
     
     def test_get_feed_returns_posts(self):
         """Test that get_feed returns Post objects"""
@@ -72,21 +72,25 @@ class TestMockRedNoteAdapter:
         assert isinstance(post.likes, int)
         assert isinstance(post.timestamp, datetime)
     
-    def test_posts_in_chinese(self):
-        """Test that posts contain Chinese text"""
+    def test_posts_have_chinese_or_english(self):
+        """Test that posts contain Chinese or English text"""
         adapter = MockRedNoteAdapter()
         feed = adapter.get_feed()
         assert len(feed) > 0
         
         # Check that at least some posts have Chinese characters
         has_chinese = False
+        has_english = False
         for post in feed:
             # Check for Chinese characters (Unicode range)
             if any('\u4e00' <= char <= '\u9fff' for char in post.text):
                 has_chinese = True
-                break
+            # Check for English (basic Latin characters)
+            if any(char.isalpha() and ord(char) < 128 for char in post.text):
+                has_english = True
         
         assert has_chinese, "At least some posts should contain Chinese text"
+        assert has_english, "At least some posts should contain English text"
     
     def test_get_post_by_id(self):
         """Test that get_post returns a post by ID"""
@@ -129,7 +133,7 @@ class TestRedNoteEndpoints:
         
         data = response.json()
         assert isinstance(data, list)
-        assert len(data) >= 10  # Should have 10-20 posts
+        assert len(data) == 6  # Should have exactly 6 posts
     
     def test_feed_endpoint_returns_valid_posts(self):
         """Test that feed endpoint returns valid post structure"""

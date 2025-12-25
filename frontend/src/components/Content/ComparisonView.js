@@ -255,11 +255,22 @@ const ComparisonView = ({ post, rewriteData, onClose }) => {
           <h3>重写此内容时使用的关键词</h3>
           <div className="keywords-list">
             {rewriteData.keywords_used && rewriteData.keywords_used.length > 0 ? (
-              rewriteData.keywords_used.map((keyword, index) => (
-                <span key={index} className="keyword-tag">
-                  {keyword}
-                </span>
-              ))
+              rewriteData.keywords_used.map((keyword, index) => {
+                // If keyword contains mapping (format: "original->new"), show only the new word
+                if (keyword.includes('->')) {
+                  const newWord = keyword.split('->')[1];
+                  return (
+                    <span key={index} className="keyword-tag">
+                      {newWord}
+                    </span>
+                  );
+                }
+                return (
+                  <span key={index} className="keyword-tag">
+                    {keyword}
+                  </span>
+                );
+              })
             ) : (
               <span className="no-keywords">无关键词</span>
             )}

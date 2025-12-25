@@ -18,6 +18,9 @@ class LLMService:
             # For testing/development without API key
             self.client = None
 
+        self.client = None
+        # force to use mock
+
     def rewrite_text(
         self, original_text: str, keywords: List[str]
     ) -> Tuple[str, List[str]]:

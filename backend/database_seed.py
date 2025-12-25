@@ -74,9 +74,35 @@ def seed_database():
             PROJECT_ROOT / "backend" / "uploads" / "curriculum",  # In case files were already uploaded
         ]
         
+        # Old default curricula to remove (replaced by new ones)
+        old_default_curricula = [
+            "language_arts_curriculum.md",
+            "social_studies_curriculum.md"
+        ]
+        
         # Seed curricula for each admin user that doesn't have any
         for admin_user in admin_users:
-            # Check if this admin already has curricula
+            # Remove old default curricula if they exist
+            old_curricula = db.query(Curriculum).filter(
+                Curriculum.user_id == admin_user.id,
+                Curriculum.filename.in_(old_default_curricula)
+            ).all()
+            
+            if old_curricula:
+                for old_curriculum in old_curricula:
+                    # Delete the file if it exists
+                    if old_curriculum.file_path and os.path.exists(old_curriculum.file_path):
+                        try:
+                            os.remove(old_curriculum.file_path)
+                        except Exception as e:
+                            print(f"Warning: Could not delete file {old_curriculum.file_path}: {e}")
+                    db.delete(old_curriculum)
+                    print(f"Removed old curriculum: {old_curriculum.filename} for {admin_user.username}")
+                
+                if old_curricula:
+                    db.commit()
+            
+            # Check if this admin already has the new curricula
             existing_count = db.query(Curriculum).filter(
                 Curriculum.user_id == admin_user.id
             ).count()

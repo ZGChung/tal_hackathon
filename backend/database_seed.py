@@ -65,9 +65,9 @@ def seed_database():
 
         # Read and seed curriculum files
         curriculum_files = [
-            ("english_vocabulary_curriculum.md", "英语词汇学习"),
-            ("chinese_idioms_curriculum.md", "中国成语学习"),
-            ("chinese_poetry_curriculum.md", "中国古诗学习"),
+            ("英语词汇学习课程.md", "英语词汇学习"),
+            ("中国成语学习课程.md", "中国成语学习"),
+            ("中国古诗学习课程.md", "中国古诗学习"),
         ]
 
         # Try to find curriculum files in multiple locations (using absolute paths)
@@ -87,6 +87,9 @@ def seed_database():
             "mathematics_curriculum.md",
             "science_curriculum.md",
             "computer_science_curriculum.md",
+            "english_vocabulary_curriculum.md",  # Old English filename
+            "chinese_idioms_curriculum.md",  # Old English filename
+            "chinese_poetry_curriculum.md"  # Old English filename
         ]
 
         # First, remove old default curricula for all admin users (always do this)

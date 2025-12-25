@@ -1,0 +1,4 @@
+# Math
+- linear
+- quadratic
+- polynomial

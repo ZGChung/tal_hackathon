@@ -30,7 +30,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
     setMessageType('');
     
     try {
-      // Fetch the template file
+      // Fetch the template file (Unicode filenames are handled by the browser/server)
       const response = await fetch(`/${templateName}.md`);
       if (!response.ok) {
         throw new Error('加载模板失败');
@@ -113,7 +113,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             type="button"
-            onClick={() => loadTemplate('english_vocabulary_curriculum', '英语词汇学习')}
+            onClick={() => loadTemplate('英语词汇学习课程', '英语词汇学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -130,7 +130,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
           </button>
           <button
             type="button"
-            onClick={() => loadTemplate('chinese_idioms_curriculum', '中国成语学习')}
+            onClick={() => loadTemplate('中国成语学习课程', '中国成语学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -147,7 +147,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
           </button>
           <button
             type="button"
-            onClick={() => loadTemplate('chinese_poetry_curriculum', '中国古诗学习')}
+            onClick={() => loadTemplate('中国古诗学习课程', '中国古诗学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',

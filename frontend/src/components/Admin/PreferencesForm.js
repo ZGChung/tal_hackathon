@@ -75,7 +75,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       setKeywords(data.keywords?.join(', ') || '');
       setSubjectPreferences(data.subject_preferences?.join(', ') || '');
       
-      setMessage(`成功加载 ${templateName.replace('example_preferences_', '模板 ')}！`);
+      setMessage(`成功加载 ${templateName.replace('default_preferences_', '').replace('_', ' ')}！`);
       setMessageType('success');
     } catch (error) {
         setMessage('加载模板失败。请重试。');
@@ -140,12 +140,12 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
-          加载示例偏好：
+          快速加载示例偏好：
         </label>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             type="button"
-            onClick={() => loadTemplate('example_preferences_1')}
+            onClick={() => loadTemplate('default_preferences_children_language')}
             disabled={loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -158,45 +158,11 @@ const PreferencesForm = ({ onSaveSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {loadingTemplate ? '加载中...' : 'STEM 模板'}
-          </button>
-          <button
-            type="button"
-            onClick={() => loadTemplate('example_preferences_2')}
-            disabled={loadingTemplate}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#1976d2',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: loadingTemplate ? 'not-allowed' : 'pointer',
-              opacity: loadingTemplate ? 0.6 : 1,
-              fontSize: '14px'
-            }}
-          >
-            {loadingTemplate ? '加载中...' : '艺术模板'}
-          </button>
-          <button
-            type="button"
-            onClick={() => loadTemplate('example_preferences_3')}
-            disabled={loadingTemplate}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#1976d2',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: loadingTemplate ? 'not-allowed' : 'pointer',
-              opacity: loadingTemplate ? 0.6 : 1,
-              fontSize: '14px'
-            }}
-          >
-            {loadingTemplate ? '加载中...' : '综合模板'}
+            {loadingTemplate ? '加载中...' : '加载示例偏好（儿童语言学习）'}
           </button>
         </div>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>
-          点击模板按钮可加载预定义偏好设置。您可以在保存前修改它们。
+          点击按钮可快速加载针对12岁以下儿童的语言学习偏好设置（中国成语、中国古诗、英语词汇）。您可以在保存前修改它们。
         </p>
       </div>
 

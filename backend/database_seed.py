@@ -146,9 +146,7 @@ def seed_database():
         
         # Seed default preferences for admin users who don't have any
         default_preferences_files = [
-            ("default_preferences_business.json", "Business & Entrepreneurship"),
-            ("default_preferences_language.json", "Language Learning"),
-            ("default_preferences_early_childhood.json", "Early Childhood Education")
+            ("default_preferences_children_language.json", "儿童语言学习偏好")
         ]
         
         # Try to find preference files

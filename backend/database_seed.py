@@ -80,19 +80,63 @@ def seed_database():
             / "curriculum",  # In case files were already uploaded
         ]
 
+        # Map old English filenames to new Chinese filenames for updating existing records
+        filename_mapping = {
+            "english_vocabulary_curriculum.md": "英语词汇学习课程.md",
+            "chinese_idioms_curriculum.md": "中国成语学习课程.md",
+            "chinese_poetry_curriculum.md": "中国古诗学习课程.md"
+        }
+
+        # First, update existing curriculum records with old English filenames to new Chinese filenames
+        for admin_user in admin_users:
+            for old_filename, new_filename in filename_mapping.items():
+                existing_curriculum = (
+                    db.query(Curriculum)
+                    .filter(
+                        Curriculum.user_id == admin_user.id,
+                        Curriculum.filename == old_filename
+                    )
+                    .first()
+                )
+                
+                if existing_curriculum:
+                    # Check if new filename already exists (shouldn't happen, but be safe)
+                    new_exists = (
+                        db.query(Curriculum)
+                        .filter(
+                            Curriculum.user_id == admin_user.id,
+                            Curriculum.filename == new_filename
+                        )
+                        .first()
+                    )
+                    
+                    if not new_exists:
+                        # Update the filename in database
+                        existing_curriculum.filename = new_filename
+                        print(f"Updated curriculum filename from {old_filename} to {new_filename} for {admin_user.username}")
+                    else:
+                        # If new filename exists, delete the old one
+                        if existing_curriculum.file_path and os.path.exists(existing_curriculum.file_path):
+                            try:
+                                os.remove(existing_curriculum.file_path)
+                            except Exception as e:
+                                print(f"Warning: Could not delete file {existing_curriculum.file_path}: {e}")
+                        db.delete(existing_curriculum)
+                        print(f"Removed duplicate curriculum {old_filename} for {admin_user.username} (new filename already exists)")
+            
+            db.commit()
+
         # Old default curricula to remove (replaced by new ones)
+        # Note: The three curricula above are already updated, so they won't be in this list
         old_default_curricula = [
             "language_arts_curriculum.md",
             "social_studies_curriculum.md",
             "mathematics_curriculum.md",
             "science_curriculum.md",
-            "computer_science_curriculum.md",
-            "english_vocabulary_curriculum.md",  # Old English filename
-            "chinese_idioms_curriculum.md",  # Old English filename
-            "chinese_poetry_curriculum.md"  # Old English filename
+            "computer_science_curriculum.md"
         ]
 
-        # First, remove old default curricula for all admin users (always do this)
+        # Remove old default curricula for all admin users (always do this)
         for admin_user in admin_users:
             old_curricula = (
                 db.query(Curriculum)

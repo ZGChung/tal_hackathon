@@ -113,7 +113,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             type="button"
-            onClick={() => loadTemplate('mathematics_curriculum', 'Mathematics')}
+            onClick={() => loadTemplate('english_vocabulary_curriculum', '英语词汇学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -126,11 +126,11 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? '加载中...' : '数学'}
+            {(loading || loadingTemplate) ? '加载中...' : '英语词汇学习'}
           </button>
           <button
             type="button"
-            onClick={() => loadTemplate('science_curriculum', 'Science')}
+            onClick={() => loadTemplate('chinese_idioms_curriculum', '中国成语学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -143,11 +143,11 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? '加载中...' : '科学'}
+            {(loading || loadingTemplate) ? '加载中...' : '中国成语学习'}
           </button>
           <button
             type="button"
-            onClick={() => loadTemplate('computer_science_curriculum', 'Computer Science')}
+            onClick={() => loadTemplate('chinese_poetry_curriculum', '中国古诗学习')}
             disabled={loading || loadingTemplate}
             style={{
               padding: '8px 16px',
@@ -160,7 +160,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               fontSize: '14px'
             }}
           >
-            {(loading || loadingTemplate) ? '加载中...' : '计算机科学'}
+            {(loading || loadingTemplate) ? '加载中...' : '中国古诗学习'}
           </button>
         </div>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginBottom: 0 }}>

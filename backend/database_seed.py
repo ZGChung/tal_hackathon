@@ -1,6 +1,6 @@
 """
 Database seeding script to populate initial data for demo purposes.
-This creates default admin user and pre-populates 2 curriculum files.
+This creates default admin user and pre-populates 3 curriculum files.
 """
 from sqlalchemy.orm import Session
 from backend.database import SessionLocal, engine, Base
@@ -62,8 +62,9 @@ def seed_database():
         
         # Read and seed curriculum files
         curriculum_files = [
-            ("language_arts_curriculum.md", "Language Arts Curriculum"),
-            ("social_studies_curriculum.md", "Social Studies Curriculum")
+            ("english_vocabulary_curriculum.md", "英语词汇学习"),
+            ("chinese_idioms_curriculum.md", "中国成语学习"),
+            ("chinese_poetry_curriculum.md", "中国古诗学习")
         ]
         
         # Try to find curriculum files in multiple locations (using absolute paths)
@@ -80,14 +81,14 @@ def seed_database():
                 Curriculum.user_id == admin_user.id
             ).count()
             
-            if existing_count >= 2:
+            if existing_count >= 3:
                 print(f"Admin {admin_user.username} already has {existing_count} curricula. Skipping.")
                 continue
             
             curricula_added = 0
             for filename, display_name in curriculum_files:
                 # Skip if we already have enough for this user
-                if curricula_added >= 2:
+                if curricula_added >= 3:
                     break
                     
                 content = None

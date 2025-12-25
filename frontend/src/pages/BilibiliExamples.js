@@ -70,7 +70,7 @@ const BilibiliExamples = () => {
           {
             id: 'bilibili_example_1',
             title: 'delicious 英语单词学习',
-            description: '五年级必备词汇，融入小学生吃播视频中，理解delicious在日常生活中用法',
+            description: '',
             original_video_url: '/videos/bilibili/eg1_original.mp4',
             modified_video_url: '/videos/bilibili/eg1_modified.mp4',
             keywords_used: ['delicious', '英语', '词汇', '单词', '学习'],
@@ -79,7 +79,7 @@ const BilibiliExamples = () => {
           {
             id: 'bilibili_example_2',
             title: '江城子 苏轼',
-            description: '以爆火动漫《斗罗大陆》 女主小舞献祭死亡，男主唐三思念女主的故事背景，学习理解诗歌中"十年生死两茫茫"，"千里孤坟，无处话凄凉"的情感',
+            description: '',
             original_video_url: '/videos/bilibili/eg2_original.mp4',
             modified_video_url: '/videos/bilibili/eg2_modified.mp4',
             keywords_used: ['江城子', '苏轼', '古诗', '诗歌', '十年生死两茫茫', '千里孤坟', '无处话凄凉'],

@@ -174,9 +174,16 @@ def seed_database():
                 db.commit()
                 print(f"Seeded {curricula_added} curricula for admin {admin_user.username}")
         
-        # Seed default preferences for admin users who don't have any
+        # Seed default preferences for admin users (always update to new default)
         default_preferences_files = [
             ("default_preferences_children_language.json", "儿童语言学习偏好")
+        ]
+        
+        # Old default preference files to replace
+        old_default_preferences = [
+            "default_preferences_business.json",
+            "default_preferences_language.json",
+            "default_preferences_early_childhood.json"
         ]
         
         # Try to find preference files
@@ -184,52 +191,56 @@ def seed_database():
             PROJECT_ROOT / "manual_test" / "preferences",
         ]
         
-        for admin_user in admin_users:
-            # Check if this admin already has preferences
-            existing_preferences = db.query(Preferences).filter(
-                Preferences.user_id == admin_user.id
-            ).first()
+        # Load the new default preference data
+        preferences_data = None
+        selected_file = None
+        
+        for filename, display_name in default_preferences_files:
+            for base_path in preferences_paths:
+                full_path = base_path / filename
+                if full_path.exists():
+                    try:
+                        with open(full_path, 'r', encoding='utf-8') as f:
+                            preferences_data = json.load(f)
+                        selected_file = display_name
+                        break
+                    except Exception as e:
+                        print(f"Warning: Could not read {filename}: {e}")
+                        continue
             
-            if existing_preferences:
-                print(f"Admin {admin_user.username} already has preferences. Skipping.")
-                continue
-            
-            # Try to load the first available default preference file
-            preferences_data = None
-            selected_file = None
-            
-            for filename, display_name in default_preferences_files:
-                for base_path in preferences_paths:
-                    full_path = base_path / filename
-                    if full_path.exists():
-                        try:
-                            with open(full_path, 'r', encoding='utf-8') as f:
-                                preferences_data = json.load(f)
-                            selected_file = display_name
-                            break
-                        except Exception as e:
-                            print(f"Warning: Could not read {filename}: {e}")
-                            continue
+            if preferences_data:
+                break
+        
+        if not preferences_data:
+            print("Warning: Could not find new default preference file. Skipping preference seeding.")
+        else:
+            # Update preferences for all admin users
+            for admin_user in admin_users:
+                # Check if this admin already has preferences
+                existing_preferences = db.query(Preferences).filter(
+                    Preferences.user_id == admin_user.id
+                ).first()
                 
-                if preferences_data:
-                    break
-            
-            if not preferences_data:
-                print(f"Warning: Could not find any default preference files for {admin_user.username}")
-                continue
-            
-            # Create preferences record
-            new_preferences = Preferences(
-                user_id=admin_user.id,
-                focus_areas=preferences_data.get("focus_areas", []),
-                keywords=preferences_data.get("keywords", []),
-                subject_preferences=preferences_data.get("subject_preferences", [])
-            )
-            
-            db.add(new_preferences)
-            db.commit()
-            db.refresh(new_preferences)
-            print(f"Added default preferences ({selected_file}) for {admin_user.username}")
+                if existing_preferences:
+                    # Update existing preferences with new default
+                    existing_preferences.focus_areas = preferences_data.get("focus_areas", [])
+                    existing_preferences.keywords = preferences_data.get("keywords", [])
+                    existing_preferences.subject_preferences = preferences_data.get("subject_preferences", [])
+                    db.commit()
+                    print(f"Updated preferences ({selected_file}) for {admin_user.username}")
+                else:
+                    # Create new preferences record
+                    new_preferences = Preferences(
+                        user_id=admin_user.id,
+                        focus_areas=preferences_data.get("focus_areas", []),
+                        keywords=preferences_data.get("keywords", []),
+                        subject_preferences=preferences_data.get("subject_preferences", [])
+                    )
+                    
+                    db.add(new_preferences)
+                    db.commit()
+                    db.refresh(new_preferences)
+                    print(f"Added default preferences ({selected_file}) for {admin_user.username}")
         
         print("Database seeding complete.")
         

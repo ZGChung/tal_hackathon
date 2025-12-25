@@ -88,6 +88,14 @@ Original text: {original_text}"""
         # Check for specific idioms (成语) that should be used exclusively
         # For posts about "助人为乐" and "熟能生巧", only use that idiom
         idiom_phrases = ["助人为乐", "熟能生巧"]
+        
+        # Check for English vocabulary words that should be used exclusively
+        # For park post: magnificent, adorable
+        # For cookies post: scrumptious, luscious, tempting
+        english_vocab_sets = [
+            ["magnificent", "adorable"],  # Park post
+            ["scrumptious", "luscious", "tempting"],  # Cookies post
+        ]
 
         # Check if text already contains the poetry phrase
         for phrase in poetry_phrases:
@@ -100,6 +108,15 @@ Original text: {original_text}"""
             if phrase in original_text:
                 # Text already contains the idiom, return unchanged with only that keyword
                 return original_text, [phrase]
+        
+        # Check if text already contains English vocabulary words
+        # Find which vocab set matches
+        for vocab_set in english_vocab_sets:
+            # Check if all words in the set are in the text (case-insensitive)
+            text_lower = original_text.lower()
+            if all(word.lower() in text_lower for word in vocab_set):
+                # All words from this set are in the text, return unchanged with only these keywords
+                return original_text, vocab_set
 
         # Check if text aligns with poetry meaning (struggling then finding solution)
         poetry_indicators = [
@@ -124,7 +141,7 @@ Original text: {original_text}"""
         has_helping_meaning = any(
             indicator in original_text for indicator in idiom_helping_indicators
         )
-        
+
         # "熟能生巧" - practice makes perfect
         idiom_practice_indicators = ["练习", "坚持", "做对", "越来越好", "多练习"]
         has_practice_meaning = any(
@@ -140,7 +157,7 @@ Original text: {original_text}"""
                     original_text, relevant_keywords
                 )
                 return rewritten, relevant_keywords
-        
+
         # If we have an idiom phrase and the text aligns with its meaning, use only that idiom
         for phrase in idiom_phrases:
             if phrase in keywords:

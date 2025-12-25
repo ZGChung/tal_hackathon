@@ -69,29 +69,21 @@ const BilibiliExamples = () => {
         const exampleVideos = [
           {
             id: 'bilibili_example_1',
-            title: '科学实验教程',
-            description: '原始视频关于一般科学。已修改以强调课程中的化学概念。',
-            original_video_url: 'placeholder_video_1_original.mp4',
-            modified_video_url: 'placeholder_video_1_modified.mp4',
-            keywords_used:
-              keywordsFromCurriculum.length > 0
-                ? keywordsFromCurriculum.slice(0, 4)
-                : ['化学', '反应', '实验', '分子'],
-            explanation:
-              '原始视频关于一般科学。已修改以强调课程中的化学概念。',
+            title: 'delicious 英语单词学习',
+            description: '五年级必备词汇，融入小学生吃播视频中，理解delicious在日常生活中用法',
+            original_video_url: '/videos/bilibili/eg1_original.mp4',
+            modified_video_url: '/videos/bilibili/eg1_modified.mp4',
+            keywords_used: ['delicious', '英语', '词汇', '单词', '学习'],
+            explanation: '五年级必备词汇，融入小学生吃播视频中，理解delicious在日常生活中用法',
           },
           {
             id: 'bilibili_example_2',
-            title: '历史纪录片',
-            description: '原始视频关于历史。已修改以关注教师/家长偏好的主题。',
-            original_video_url: 'placeholder_video_2_original.mp4',
-            modified_video_url: 'placeholder_video_2_modified.mp4',
-            keywords_used:
-              keywordsFromPreferences.length > 0
-                ? keywordsFromPreferences.slice(0, 4)
-                : ['古代历史', '文明', '考古', '文化'],
-            explanation:
-              '原始视频关于历史。已修改以关注教师/家长偏好的主题。',
+            title: '江城子 苏轼',
+            description: '以爆火动漫《斗罗大陆》 女主小舞献祭死亡，男主唐三思念女主的故事背景，学习理解诗歌中"十年生死两茫茫"，"千里孤坟，无处话凄凉"的情感',
+            original_video_url: '/videos/bilibili/eg2_original.mp4',
+            modified_video_url: '/videos/bilibili/eg2_modified.mp4',
+            keywords_used: ['江城子', '苏轼', '古诗', '诗歌', '十年生死两茫茫', '千里孤坟', '无处话凄凉'],
+            explanation: '以爆火动漫《斗罗大陆》 女主小舞献祭死亡，男主唐三思念女主的故事背景，学习理解诗歌中"十年生死两茫茫"，"千里孤坟，无处话凄凉"的情感',
           },
         ];
 

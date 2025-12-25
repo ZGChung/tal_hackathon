@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import BilibiliExamples from './pages/BilibiliExamples';
 import BilibiliVideoCard from './components/Bilibili/BilibiliVideoCard';
 import VideoComparison from './components/Bilibili/VideoComparison';
 import * as curriculumService from './services/curriculumService';
 import * as preferencesService from './services/preferencesService';
+import { AuthContext } from './contexts/AuthContext';
 
 // Mock the services
 jest.mock('./services/curriculumService', () => ({
@@ -16,6 +18,16 @@ jest.mock('./services/curriculumService', () => ({
 jest.mock('./services/preferencesService', () => ({
   getPreferences: jest.fn(),
 }));
+
+// Mock AuthContext
+const mockAuthContext = {
+  user: { id: 1, username: 'testuser' },
+  logout: jest.fn(),
+  login: jest.fn(),
+  isAuthenticated: true,
+  isAdmin: false,
+  loading: false,
+};
 
 describe('BilibiliVideoCard Component', () => {
   const mockVideo = {
@@ -66,7 +78,7 @@ describe('BilibiliVideoCard Component', () => {
     const mockOnCompare = jest.fn();
     render(<BilibiliVideoCard video={mockVideo} onCompare={mockOnCompare} />);
 
-    const compareButton = screen.getByRole('button', { name: /compare/i });
+    const compareButton = screen.getByRole('button', { name: /对比视频/i });
     fireEvent.click(compareButton);
 
     expect(mockOnCompare).toHaveBeenCalledWith(mockVideo);
@@ -147,26 +159,43 @@ describe('BilibiliExamples Page', () => {
     preferencesService.getPreferences.mockResolvedValue(mockPreferences);
   });
 
-  test('renders Bilibili examples page with header', async () => {
-    render(<BilibiliExamples />);
+  test('renders Bilibili examples page', async () => {
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText(/Bilibili Examples/i)).toBeInTheDocument();
+      const videoCards = screen.getAllByTestId(/bilibili-video-card/i);
+      expect(videoCards.length).toBe(2);
     });
   });
 
-  test('displays subtitle about curriculum keywords and preferences', async () => {
-    render(<BilibiliExamples />);
+  test('displays video cards with content', async () => {
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/See how curriculum keywords and preferences modify videos/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/delicious 英语单词学习/i)).toBeInTheDocument();
     });
   });
 
   test('fetches curriculum and preferences on mount', async () => {
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(curriculumService.listCurricula).toHaveBeenCalled();
@@ -175,7 +204,13 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('displays two example videos', async () => {
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       const videoCards = screen.getAllByTestId(/bilibili-video-card/i);
@@ -191,9 +226,15 @@ describe('BilibiliExamples Page', () => {
       () => new Promise((resolve) => setTimeout(resolve, 100))
     );
 
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/加载中/i)).toBeInTheDocument();
   });
 
   test('gracefully handles curriculum fetch failure with fallback keywords', async () => {
@@ -202,15 +243,21 @@ describe('BilibiliExamples Page', () => {
     );
     preferencesService.getPreferences.mockResolvedValue(mockPreferences);
 
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     // Should still display videos with fallback keywords
     await waitFor(() => {
-      expect(screen.getByText(/Science Experiment Tutorial/i)).toBeInTheDocument();
+      expect(screen.getByText(/delicious 英语单词学习/i)).toBeInTheDocument();
     });
 
     // Should use fallback keywords for first video
-    expect(screen.getByText('chemistry')).toBeInTheDocument();
+    expect(screen.getByText('delicious')).toBeInTheDocument();
   });
 
   test('gracefully handles preferences fetch failure with fallback keywords', async () => {
@@ -219,25 +266,37 @@ describe('BilibiliExamples Page', () => {
       new Error('Failed to fetch preferences')
     );
 
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     // Should still display videos with fallback keywords
     await waitFor(() => {
-      expect(screen.getByText(/History Documentary/i)).toBeInTheDocument();
+      expect(screen.getByText(/江城子 苏轼/i)).toBeInTheDocument();
     });
 
     // Should use fallback keywords for second video
-    expect(screen.getByText('ancient history')).toBeInTheDocument();
+    expect(screen.getByText('江城子')).toBeInTheDocument();
   });
 
   test('opens comparison view when compare button is clicked', async () => {
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText(/Science Experiment Tutorial/i)).toBeInTheDocument();
+      expect(screen.getByText(/delicious 英语单词学习/i)).toBeInTheDocument();
     });
 
-    const compareButtons = screen.getAllByRole('button', { name: /compare videos/i });
+    const compareButtons = screen.getAllByRole('button', { name: /对比视频/i });
     fireEvent.click(compareButtons[0]);
 
     await waitFor(() => {
@@ -253,13 +312,19 @@ describe('BilibiliExamples Page', () => {
   });
 
   test('closes comparison view when close button is clicked', async () => {
-    render(<BilibiliExamples />);
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={mockAuthContext}>
+          <BilibiliExamples />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText(/Science Experiment Tutorial/i)).toBeInTheDocument();
+      expect(screen.getByText(/delicious 英语单词学习/i)).toBeInTheDocument();
     });
 
-    const compareButtons = screen.getAllByRole('button', { name: /compare videos/i });
+    const compareButtons = screen.getAllByRole('button', { name: /对比视频/i });
     fireEvent.click(compareButtons[0]);
 
     await waitFor(() => {

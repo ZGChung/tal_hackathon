@@ -61,10 +61,13 @@ class MockRedNoteAdapter(PlatformAdapter):
                 shares=78
             ),
             # English Vocabulary Learning - Post 1
+            # Normal RedNote lifestyle post about a park visit
+            # Original: "Had such a great day at the park today! The weather was nice and I saw so many cute animals."
+            # Integrated vocabulary: magnificent (replaces great), ideal (replaces nice), adorable (replaces cute)
             Post(
                 id="post_005",
-                author="EnglishLearner",
-                text="Had such a wonderful day at the park today! 🎈 The weather was perfect and I saw so many cute animals. What's your favorite thing to do outside?",
+                author="WeekendVibes",
+                text="Had such a magnificent day at the park today! 🎈 The weather was ideal and I saw so many adorable animals. What's your favorite thing to do outside?",
                 image_url="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop",
                 likes=3456,
                 timestamp=base_time - timedelta(hours=9),
@@ -72,10 +75,13 @@ class MockRedNoteAdapter(PlatformAdapter):
                 shares=112
             ),
             # English Vocabulary Learning - Post 2
+            # Normal RedNote lifestyle post about baking
+            # Original: "Just made some tasty cookies with my mom! They were so sweet and yummy."
+            # Integrated vocabulary: scrumptious (replaces tasty), luscious (replaces sweet), tempting (replaces yummy)
             Post(
                 id="post_006",
-                author="HappyKid",
-                text="Just made some delicious cookies with my mom! 🍪 They were so sweet and yummy. Cooking together is so much fun! Do you like to cook?",
+                author="BakingTime",
+                text="Just made some scrumptious cookies with my mom! 🍪 They were so luscious and tempting. Cooking together is so much fun! Do you like to cook?",
                 image_url="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=300&fit=crop",
                 likes=2890,
                 timestamp=base_time - timedelta(hours=11),

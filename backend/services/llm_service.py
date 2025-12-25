@@ -84,16 +84,16 @@ Original text: {original_text}"""
         # Check for specific poetry phrases that should be used exclusively
         # For posts about "柳暗花明又一村", only use that keyword
         poetry_phrases = ["柳暗花明又一村"]
-        
+
         # Check for specific idioms (成语) that should be used exclusively
         # For posts about "助人为乐" and "熟能生巧", only use that idiom
         idiom_phrases = ["助人为乐", "熟能生巧"]
-        
+
         # Check for English vocabulary words that should be used exclusively
-        # For park post: magnificent, adorable
+        # For park post: magnificent, ideal, adorable
         # For cookies post: scrumptious, luscious, tempting
         english_vocab_sets = [
-            ["magnificent", "adorable"],  # Park post
+            ["magnificent", "ideal", "adorable"],  # Park post
             ["scrumptious", "luscious", "tempting"],  # Cookies post
         ]
 
@@ -102,21 +102,42 @@ Original text: {original_text}"""
             if phrase in original_text:
                 # Text already contains the phrase, return unchanged with only that keyword
                 return original_text, [phrase]
-        
+
         # Check if text already contains an idiom phrase
         for phrase in idiom_phrases:
             if phrase in original_text:
                 # Text already contains the idiom, return unchanged with only that keyword
                 return original_text, [phrase]
-        
+
         # Check if text already contains English vocabulary words
-        # Find which vocab set matches
+        # Find which vocab set matches and return with original word mappings
+        # Park post: great->magnificent, nice->ideal, cute->adorable
+        # Cookies post: tasty->scrumptious, sweet->luscious, yummy->tempting
+        english_vocab_mappings = {
+            "magnificent": "great",
+            "adorable": "cute",
+            "ideal": "nice",
+            "scrumptious": "tasty",
+            "luscious": "sweet",
+            "tempting": "yummy",
+        }
+        
         for vocab_set in english_vocab_sets:
             # Check if all words in the set are in the text (case-insensitive)
             text_lower = original_text.lower()
             if all(word.lower() in text_lower for word in vocab_set):
                 # All words from this set are in the text, return unchanged with only these keywords
-                return original_text, vocab_set
+                # Also return the original word mappings for comparison view
+                # Store mappings in a special format in keywords_used
+                # Format: "original_word->new_word" for each mapping
+                keywords_with_mappings = []
+                for new_word in vocab_set:
+                    if new_word.lower() in english_vocab_mappings:
+                        original_word = english_vocab_mappings[new_word.lower()]
+                        keywords_with_mappings.append(f"{original_word}->{new_word}")
+                    else:
+                        keywords_with_mappings.append(new_word)
+                return original_text, keywords_with_mappings
 
         # Check if text aligns with poetry meaning (struggling then finding solution)
         poetry_indicators = [

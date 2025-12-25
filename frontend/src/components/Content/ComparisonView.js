@@ -50,64 +50,152 @@ const computeDiff = (original, rewritten, keywordsUsed = []) => {
     return result;
   }
   
-  // Highlight only the keywords that were used
-  // Find all occurrences of keywords in the rewritten text
-  // Sort keywords by length (longest first) to match longer phrases first
-  const sortedKeywords = [...keywordsUsed].sort((a, b) => b.length - a.length);
+  // Check if keywords contain mappings (format: "original->new")
+  // This indicates English vocabulary word replacements
+  const hasMappings = keywordsUsed.some(kw => kw.includes('->'));
   
-  // Find all keyword positions in rewritten text
-  const keywordMatches = [];
-  for (const keyword of sortedKeywords) {
-    // Escape special regex characters
-    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(escapedKeyword, 'g');
-    let match;
-    while ((match = regex.exec(rewritten)) !== null) {
-      keywordMatches.push({
-        keyword: keyword,
-        start: match.index,
-        end: match.index + match[0].length,
-        matchedText: match[0]
-      });
-    }
-  }
-  
-  // Sort matches by position
-  keywordMatches.sort((a, b) => a.start - b.start);
-  
-  // Remove overlapping matches (keep the first/longest one)
-  const nonOverlappingMatches = [];
-  for (const match of keywordMatches) {
-    const overlaps = nonOverlappingMatches.some(existing => 
-      (match.start < existing.end && match.end > existing.start)
-    );
-    if (!overlaps) {
-      nonOverlappingMatches.push(match);
-    }
-  }
-  
-  // Build result by highlighting only keywords
-  let currentPos = 0;
-  for (const match of nonOverlappingMatches) {
-    // Add unchanged text before keyword
-    if (match.start > currentPos) {
-      const unchangedText = rewritten.substring(currentPos, match.start);
-      if (unchangedText) {
-        result.push({ type: 'unchanged', text: unchangedText });
+  if (hasMappings) {
+    // Handle English vocabulary word replacements
+    // Show original word (removed) followed by new word (added)
+    const vocabMappings = {};
+    const newWords = [];
+    
+    keywordsUsed.forEach(kw => {
+      if (kw.includes('->')) {
+        const [original, newWord] = kw.split('->');
+        vocabMappings[newWord.toLowerCase()] = original.toLowerCase();
+        newWords.push(newWord);
+      } else {
+        newWords.push(kw);
+      }
+    });
+    
+    // Sort new words by length (longest first) to match longer phrases first
+    const sortedNewWords = [...newWords].sort((a, b) => b.length - a.length);
+    
+    // Find all new word positions in rewritten text
+    const keywordMatches = [];
+    for (const newWord of sortedNewWords) {
+      const originalWord = vocabMappings[newWord.toLowerCase()];
+      // Escape special regex characters
+      const escapedNewWord = newWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedNewWord, 'gi');
+      let match;
+      while ((match = regex.exec(rewritten)) !== null) {
+        keywordMatches.push({
+          originalWord: originalWord,
+          newWord: newWord,
+          start: match.index,
+          end: match.index + match[0].length,
+          matchedText: match[0]
+        });
       }
     }
     
-    // Add highlighted keyword
-    result.push({ type: 'added', text: match.matchedText });
+    // Sort matches by position
+    keywordMatches.sort((a, b) => a.start - b.start);
     
-    currentPos = match.end;
-  }
-  
-  // Add remaining unchanged text
-  if (currentPos < rewritten.length) {
-    const remainingText = rewritten.substring(currentPos);
-    if (remainingText) {
-      result.push({ type: 'unchanged', text: remainingText });
+    // Remove overlapping matches (keep the first/longest one)
+    const nonOverlappingMatches = [];
+    for (const match of keywordMatches) {
+      const overlaps = nonOverlappingMatches.some(existing => 
+        (match.start < existing.end && match.end > existing.start)
+      );
+      if (!overlaps) {
+        nonOverlappingMatches.push(match);
+      }
+    }
+    
+    // Build result showing original word (removed) and new word (added)
+    let currentPos = 0;
+    for (const match of nonOverlappingMatches) {
+      // Add unchanged text before keyword
+      if (match.start > currentPos) {
+        const unchangedText = rewritten.substring(currentPos, match.start);
+        if (unchangedText) {
+          result.push({ type: 'unchanged', text: unchangedText });
+        }
+      }
+      
+      // Add original word (removed) and new word (added)
+      if (match.originalWord) {
+        result.push({ type: 'removed', text: match.originalWord });
+        result.push({ type: 'added', text: match.matchedText });
+      } else {
+        result.push({ type: 'added', text: match.matchedText });
+      }
+      
+      currentPos = match.end;
+    }
+    
+    // Add remaining unchanged text
+    if (currentPos < rewritten.length) {
+      const remainingText = rewritten.substring(currentPos);
+      if (remainingText) {
+        result.push({ type: 'unchanged', text: remainingText });
+      }
+    }
+  } else {
+    // Original logic for non-mapping keywords (Chinese idioms, poetry, etc.)
+    // Highlight only the keywords that were used
+    // Find all occurrences of keywords in the rewritten text
+    // Sort keywords by length (longest first) to match longer phrases first
+    const sortedKeywords = [...keywordsUsed].sort((a, b) => b.length - a.length);
+    
+    // Find all keyword positions in rewritten text
+    const keywordMatches = [];
+    for (const keyword of sortedKeywords) {
+      // Escape special regex characters
+      const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedKeyword, 'g');
+      let match;
+      while ((match = regex.exec(rewritten)) !== null) {
+        keywordMatches.push({
+          keyword: keyword,
+          start: match.index,
+          end: match.index + match[0].length,
+          matchedText: match[0]
+        });
+      }
+    }
+    
+    // Sort matches by position
+    keywordMatches.sort((a, b) => a.start - b.start);
+    
+    // Remove overlapping matches (keep the first/longest one)
+    const nonOverlappingMatches = [];
+    for (const match of keywordMatches) {
+      const overlaps = nonOverlappingMatches.some(existing => 
+        (match.start < existing.end && match.end > existing.start)
+      );
+      if (!overlaps) {
+        nonOverlappingMatches.push(match);
+      }
+    }
+    
+    // Build result by highlighting only keywords
+    let currentPos = 0;
+    for (const match of nonOverlappingMatches) {
+      // Add unchanged text before keyword
+      if (match.start > currentPos) {
+        const unchangedText = rewritten.substring(currentPos, match.start);
+        if (unchangedText) {
+          result.push({ type: 'unchanged', text: unchangedText });
+        }
+      }
+      
+      // Add highlighted keyword
+      result.push({ type: 'added', text: match.matchedText });
+      
+      currentPos = match.end;
+    }
+    
+    // Add remaining unchanged text
+    if (currentPos < rewritten.length) {
+      const remainingText = rewritten.substring(currentPos);
+      if (remainingText) {
+        result.push({ type: 'unchanged', text: remainingText });
+      }
     }
   }
   

@@ -31,16 +31,16 @@ const PreferencesForm = ({ onSaveSuccess }) => {
       // 404 is expected if preferences don't exist yet - don't show error
       // Only show error for other status codes (500, network errors, etc.)
       const status = error.response?.status || error.status || error.data?.status;
-      const isNotFound = status === 404 || 
-                        error.message?.includes('not found') || 
-                        error.message?.includes('Preferences not found');
-      
+      const isNotFound = status === 404 ||
+        error.message?.includes('not found') ||
+        error.message?.includes('Preferences not found');
+
       if (!isNotFound) {
         // Only show error for non-404 errors
-        const errorMsg = error.response?.data?.detail || 
-                       error.data?.detail || 
-                       error.message || 
-                       '加载偏好设置失败';
+        const errorMsg = error.response?.data?.detail ||
+          error.data?.detail ||
+          error.message ||
+          '加载偏好设置失败';
         setMessage(errorMsg);
         setMessageType('error');
       }
@@ -62,23 +62,23 @@ const PreferencesForm = ({ onSaveSuccess }) => {
     setLoadingTemplate(true);
     setMessage('');
     setMessageType('');
-    
+
     try {
       const response = await fetch(`/${templateName}.json`);
       if (!response.ok) {
         throw new Error('Failed to load template');
       }
       const data = await response.json();
-      
+
       // Populate form fields with template data
       setFocusAreas(data.focus_areas?.join(', ') || '');
       setKeywords(data.keywords?.join(', ') || '');
       setSubjectPreferences(data.subject_preferences?.join(', ') || '');
-      
+
       setMessage(`成功加载 ${templateName.replace('default_preferences_', '').replace('_', ' ')}！`);
       setMessageType('success');
     } catch (error) {
-        setMessage('加载模板失败。请重试。');
+      setMessage('加载模板失败。请重试。');
       setMessageType('error');
       console.error('Error loading template:', error);
     } finally {
@@ -110,7 +110,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
         setMessage('偏好设置保存成功！');
       }
       setMessageType('success');
-      
+
       // Notify parent component
       if (onSaveSuccess) {
         onSaveSuccess();
@@ -136,7 +136,7 @@ const PreferencesForm = ({ onSaveSuccess }) => {
   return (
     <div className="admin-section">
       <h2>偏好设置</h2>
-      
+
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>

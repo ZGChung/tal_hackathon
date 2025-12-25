@@ -28,7 +28,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
     setLoadingTemplate(true);
     setMessage('');
     setMessageType('');
-    
+
     try {
       // Fetch the template file (Unicode filenames are handled by the browser/server)
       const response = await fetch(`/${templateName}.md`);
@@ -36,24 +36,24 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
         throw new Error('加载模板失败');
       }
       const content = await response.text();
-      
+
       // Create a File object from the content
       const blob = new Blob([content], { type: 'text/markdown' });
       const templateFile = new File([blob], `${templateName}.md`, { type: 'text/markdown' });
-      
+
       // Set the file and upload it
       setFile(templateFile);
-      
+
       // Create a form and submit it programmatically
       const formData = new FormData();
       formData.append('file', templateFile);
-      
+
       setLoading(true);
       const uploadResponse = await uploadCurriculum(templateFile);
       setMessage(`模板 "${displayName}" 上传成功！关键词：${uploadResponse.keywords.join('、')}`);
       setMessageType('success');
       setFile(null);
-      
+
       // Notify parent component
       if (onUploadSuccess) {
         onUploadSuccess();
@@ -69,7 +69,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!file) {
       setMessage('请选择要上传的文件');
       setMessageType('error');
@@ -87,7 +87,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
       setFile(null);
       // Reset file input
       e.target.reset();
-      
+
       // Notify parent component
       if (onUploadSuccess) {
         onUploadSuccess();
@@ -104,7 +104,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
   return (
     <div className="admin-section">
       <h2>课程上传</h2>
-      
+
       {/* Template Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '10px', fontWeight: '500', color: '#555' }}>
@@ -180,15 +180,15 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
               disabled={loading || loadingTemplate}
               style={{ display: 'none' }}
             />
-            <div 
+            <div
               onClick={() => {
                 if (!loading && !loadingTemplate) {
                   document.getElementById('curriculum-file').click();
                 }
               }}
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
                 flex: 1,
                 border: '1px solid #ddd',
                 borderRadius: '4px',
@@ -232,8 +232,8 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
                 </span>
               )}
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading || !file || loadingTemplate}
               style={{
                 padding: '0.5rem 1.5rem',
@@ -250,7 +250,7 @@ const CurriculumUpload = ({ onUploadSuccess }) => {
             </button>
           </div>
         </div>
-        
+
         {message && (
           <div className={`message ${messageType}`}>
             {message}

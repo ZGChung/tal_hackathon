@@ -39,21 +39,27 @@ class MockRedNoteAdapter(PlatformAdapter):
                 shares=45
             ),
             # 古诗学习 (Chinese Poetry Learning) - Post 1
+            # Normal RedNote post about struggling with homework then finding solution
+            # Original: "今天做数学题做了好久都不会，感觉好难啊。后来问了同学，终于明白了！有时候换个方法就能解决问题。"
+            # Rewritten with poetry: 柳暗花明又一村 (finding hope/solution after difficulty)
             Post(
                 id="post_003",
-                author="古诗爱好者",
-                text="今天看到窗外的月亮特别圆，想起了'床前明月光'这首诗。🌙 月亮真的好美啊，你们最喜欢哪首关于月亮的古诗呢？",
-                image_url="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=400&h=300&fit=crop",
+                author="学习日记",
+                text="今天做数学题做了好久都不会，感觉好难啊😭 后来问了同学，终于明白了！真的是'柳暗花明又一村'，有时候换个方法就能解决问题。你们有没有这样的经历呢？",
+                image_url="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop",
                 likes=3124,
                 timestamp=base_time - timedelta(hours=5),
                 comments=234,
                 shares=89
             ),
             # 古诗学习 (Chinese Poetry Learning) - Post 2
+            # Normal RedNote post about being lost then finding the way
+            # Original: "今天和妈妈去公园，走错路了，绕了好久。后来找到了正确的路，看到了特别美的风景！"
+            # Rewritten with poetry: 柳暗花明又一村 (discovering something new after difficulty)
             Post(
                 id="post_004",
-                author="春天小诗人",
-                text="春天来了！🌸 看到公园里的花都开了，想起了'春眠不觉晓，处处闻啼鸟'。春天真的好美，你们喜欢春天吗？",
+                author="周末小记",
+                text="今天和妈妈去公园，走错路了，绕了好久😅 后来找到了正确的路，看到了特别美的风景！真的是'柳暗花明又一村'，虽然走错了路，但发现了新的美景。你们有没有这样的经历呢？🌸",
                 image_url="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=300&fit=crop",
                 likes=2789,
                 timestamp=base_time - timedelta(hours=7),

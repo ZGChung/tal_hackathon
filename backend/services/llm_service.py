@@ -84,11 +84,21 @@ Original text: {original_text}"""
         # Check for specific poetry phrases that should be used exclusively
         # For posts about "柳暗花明又一村", only use that keyword
         poetry_phrases = ["柳暗花明又一村"]
+        
+        # Check for specific idioms (成语) that should be used exclusively
+        # For posts about "助人为乐" and "熟能生巧", only use that idiom
+        idiom_phrases = ["助人为乐", "熟能生巧"]
 
         # Check if text already contains the poetry phrase
         for phrase in poetry_phrases:
             if phrase in original_text:
                 # Text already contains the phrase, return unchanged with only that keyword
+                return original_text, [phrase]
+        
+        # Check if text already contains an idiom phrase
+        for phrase in idiom_phrases:
+            if phrase in original_text:
+                # Text already contains the idiom, return unchanged with only that keyword
                 return original_text, [phrase]
 
         # Check if text aligns with poetry meaning (struggling then finding solution)
@@ -108,6 +118,19 @@ Original text: {original_text}"""
             indicator in original_text for indicator in poetry_indicators
         )
 
+        # Check if text aligns with idiom meanings
+        # "助人为乐" - helping others brings joy
+        idiom_helping_indicators = ["帮助", "互相", "朋友", "助人"]
+        has_helping_meaning = any(
+            indicator in original_text for indicator in idiom_helping_indicators
+        )
+        
+        # "熟能生巧" - practice makes perfect
+        idiom_practice_indicators = ["练习", "坚持", "做对", "越来越好", "多练习"]
+        has_practice_meaning = any(
+            indicator in original_text for indicator in idiom_practice_indicators
+        )
+
         # If we have a poetry phrase and the text aligns with its meaning, use only that phrase
         for phrase in poetry_phrases:
             if phrase in keywords and has_poetry_meaning:
@@ -117,6 +140,23 @@ Original text: {original_text}"""
                     original_text, relevant_keywords
                 )
                 return rewritten, relevant_keywords
+        
+        # If we have an idiom phrase and the text aligns with its meaning, use only that idiom
+        for phrase in idiom_phrases:
+            if phrase in keywords:
+                # Check which idiom it is
+                if phrase == "助人为乐" and has_helping_meaning:
+                    relevant_keywords = [phrase]
+                    rewritten = self._paraphrase_with_keywords(
+                        original_text, relevant_keywords
+                    )
+                    return rewritten, relevant_keywords
+                elif phrase == "熟能生巧" and has_practice_meaning:
+                    relevant_keywords = [phrase]
+                    rewritten = self._paraphrase_with_keywords(
+                        original_text, relevant_keywords
+                    )
+                    return rewritten, relevant_keywords
 
         # Select diverse keywords to ensure variety across posts
         # Use a hash of the text to deterministically select different keywords for different posts

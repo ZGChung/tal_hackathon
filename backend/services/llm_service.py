@@ -74,7 +74,12 @@ Original text: {original_text}"""
         # Check for specific poetry phrases that should be used exclusively
         # For posts about "柳暗花明又一村", only use that keyword
         poetry_phrases = ['柳暗花明又一村']
-        text_lower = original_text.lower()
+        
+        # Check if text already contains the poetry phrase
+        for phrase in poetry_phrases:
+            if phrase in original_text:
+                # Text already contains the phrase, return unchanged with only that keyword
+                return original_text, [phrase]
         
         # Check if text aligns with poetry meaning (struggling then finding solution)
         poetry_indicators = ['做', '不会', '难', '后来', '终于', '明白', '走错', '绕', '找到', '发现']
@@ -127,12 +132,24 @@ Original text: {original_text}"""
         rewritten = self._paraphrase_with_keywords(original_text, relevant_keywords)
         
         # Ensure text was actually modified
+        # But don't add English text to Chinese posts
         if rewritten == original_text and relevant_keywords:
-            # Force a modification by adding keyword naturally
             first_keyword = relevant_keywords[0]
-            rewritten = original_text.replace('.', f' This relates to {first_keyword}.', 1)
-            if rewritten == original_text:
-                rewritten = f"{original_text} This connects to {first_keyword}."
+            has_chinese = any('\u4e00' <= char <= '\u9fff' for char in original_text)
+            
+            if has_chinese:
+                # For Chinese text, add in Chinese
+                if '。' in original_text:
+                    rewritten = original_text.replace('。', f"，这让我想起了'{first_keyword}'。", 1)
+                elif '！' in original_text:
+                    rewritten = original_text.replace('！', f"，这让我想起了'{first_keyword}'！", 1)
+                else:
+                    rewritten = f"{original_text} 这让我想起了'{first_keyword}'。"
+            else:
+                # For English text, use English
+                rewritten = original_text.replace('.', f' This relates to {first_keyword}.', 1)
+                if rewritten == original_text:
+                    rewritten = f"{original_text} This connects to {first_keyword}."
         
         return rewritten, relevant_keywords
     
@@ -332,30 +349,55 @@ Original text: {original_text}"""
                         break
         
         # Third pass: if still no keywords used, force insertion
+        # But only for English text, not Chinese
         if not keywords_used:
             first_keyword = keywords[0]
-            # Insert at natural break points
-            if '!' in rewritten:
-                rewritten = rewritten.replace('!', f' This {first_keyword} experience!', 1)
-            elif '.' in rewritten:
-                rewritten = rewritten.replace('.', f' This relates to {first_keyword}.', 1)
+            # Check if text is Chinese (contains Chinese characters)
+            has_chinese = any('\u4e00' <= char <= '\u9fff' for char in original_text)
+            
+            if has_chinese:
+                # For Chinese text, insert naturally in Chinese
+                if '。' in rewritten:
+                    rewritten = rewritten.replace('。', f"，这让我想起了'{first_keyword}'。", 1)
+                elif '！' in rewritten:
+                    rewritten = rewritten.replace('！', f"，这让我想起了'{first_keyword}'！", 1)
+                else:
+                    rewritten = f"{rewritten} 这让我想起了'{first_keyword}'。"
             else:
-                rewritten = f"{rewritten} This connects to {first_keyword}."
+                # For English text, use English insertion
+                if '!' in rewritten:
+                    rewritten = rewritten.replace('!', f' This {first_keyword} experience!', 1)
+                elif '.' in rewritten:
+                    rewritten = rewritten.replace('.', f' This relates to {first_keyword}.', 1)
+                else:
+                    rewritten = f"{rewritten} This connects to {first_keyword}."
             keywords_used.append(first_keyword.lower())
         
         # Clean up
         rewritten = rewritten.replace('  ', ' ').strip()
         
         # Ensure text was actually modified
+        # But don't add English text to Chinese posts
         if rewritten == original_text:
-            # Force modification by adding keyword phrase
             first_keyword = keywords[0]
-            if rewritten.endswith('!'):
-                rewritten = rewritten[:-1] + f' This {first_keyword} journey!' 
-            elif rewritten.endswith('.'):
-                rewritten = rewritten[:-1] + f' This {first_keyword} experience.'
+            has_chinese = any('\u4e00' <= char <= '\u9fff' for char in original_text)
+            
+            if has_chinese:
+                # For Chinese text, add in Chinese
+                if rewritten.endswith('！'):
+                    rewritten = rewritten[:-1] + f"，这让我想起了'{first_keyword}'！"
+                elif rewritten.endswith('。'):
+                    rewritten = rewritten[:-1] + f"，这让我想起了'{first_keyword}'。"
+                else:
+                    rewritten = f"{rewritten} 这让我想起了'{first_keyword}'。"
             else:
-                rewritten = f"{rewritten} This {first_keyword} learning journey."
+                # For English text, use English
+                if rewritten.endswith('!'):
+                    rewritten = rewritten[:-1] + f' This {first_keyword} journey!' 
+                elif rewritten.endswith('.'):
+                    rewritten = rewritten[:-1] + f' This {first_keyword} experience.'
+                else:
+                    rewritten = f"{rewritten} This {first_keyword} learning journey."
         
         return rewritten
     
